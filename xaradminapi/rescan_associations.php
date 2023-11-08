@@ -49,7 +49,7 @@ function uploads_adminapi_rescan_associations($args)
     // 3. get the list of dynamic objects we're interesting in
     if (!empty($modid)) {
         $objectinfolist = [];
-        $objectinfolist[] = DataObjectMaster::getObjectInfo(
+        $objectinfolist[] = DataObjectFactory::getObjectInfo(
             ['modid' => $modid,
                                          'itemtype' => $itemtype ?? null, ]
         );

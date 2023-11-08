@@ -54,7 +54,7 @@ function uploads_adminapi_delete_associations($args)
 
     // 3. get the list of dynamic objects we're interesting in
     $objectinfolist = [];
-    $objectinfolist[] = DataObjectMaster::getObjectInfo(
+    $objectinfolist[] = DataObjectFactory::getObjectInfo(
         ['modid' => $modid,
                                             'itemtype' => $itemtype ?? null, ]
     );

@@ -3,5 +3,4 @@
     <h1 align="center">
       <a href="#xarController::URL('uploads', 'admin')#">Uploads Administration</a>
     </h1>
-</xar:template >
 </xar:template>

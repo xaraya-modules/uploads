@@ -1,0 +1,5 @@
+{# @uploads/includes/image-thumbnail.html.twig #}
+
+{% block image_thumbnail %}
+<xar:image-resize src="$fileInfo[fileId]" width="200px" constrain="1" label="$fileInfo[fileName]"/>
+{% endblock %}

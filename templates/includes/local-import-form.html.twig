@@ -1,0 +1,115 @@
+{# @uploads/includes/local-import-form.html.twig #}
+
+{% block local_import_form %}
+<div>
+      {% if curDir is not null %}
+        <div>
+          <p>
+            <span>
+              <strong>
+                Current Directory:
+                &#160;{{ xar_var({scope: "module", module: "uploads", name: "imports_directory"}) }}{{ curDir }}
+              </strong>
+            </span>
+          </p>
+        </div>
+      {% endif %}
+
+      {{ xar_javascript({filename: "checkall.js"}) }}
+      {#  TODO: split this, with an included template so this file can be valid xml #}
+      {% if fileList is not null and fileList|length %}
+        <form name="local_import_form" id="local_import_form" action="{{ local_import_post_url }}" method="post">
+      <table summary="Files" width="100%" border="0" cellpadding="2" cellspacing="1" class="xar-accent xar-accent-outline">
+        <tr>
+          <th width="10%">Select</th>
+          <th width="65%">File / Directory</th>
+          <th width="25%">Size (in bytes)</th>
+        </tr>
+        {% if noPrevDir is not null and (noPrevDir == FALSE) %}
+          <tr>
+            <td width="10%" class="xar-norm" align="center">
+              &#160;
+            </td>
+            <td width="65%" class="xar-norm" align="left">&#160;
+              <a href="{{ xar_moduleurl('uploads', 'admin', 'get_files', {'inode': '...', 'action': getAction['REFRESH']}) }}"
+                 alt="{{ xar_translate('Open Folder') }}"
+                 title="{{ xar_translate('Open Folder') }}">
+                <img src="{{ xar_imageurl('folder.png', 'uploads') }}" width="16" height="18"/>
+                
+                  <strong>Previous Folder</strong>
+                
+              </a>
+            </td>
+            <td width="25%" class="xar-norm" align="right">
+              &#160;N/A
+            </td>
+          </tr>
+        {% endif %}
+        <tr>
+          <td width="10%" align="center">
+            {% if fileList is not null and fileList|length %}
+              <input type="checkbox" name="file_all" id="file_all" onclick="CheckAll();"/>
+            {% endif %}
+          </td>
+          <td width="65%" align="left">&#160;
+            <img src="{{ xar_imageurl('folder.png', 'uploads') }}" width="16" height="18"/>&#160;
+              <strong>Current Folder</strong>
+          </td>
+          <td width="25%" align="right">
+            &#160;N/A
+          </td>
+        </tr>
+
+        {% if fileList is not null and fileList|length %}
+          {% for loop_key1, loop_item1 in fileList %}{% set loop_index1 = loop.index %}
+            <tr>
+              {% if ((loop_index1 + 1) % 2) %}
+                {% set rowclass = 'xar-norm' %}
+                {% else %}
+                {% set rowclass = 'xar-accent' %}
+              {% endif %}
+              <td width="10%" class="{{ rowclass }}" align="center">
+                <input type="checkbox" name="fileList[]" id="file_{{ loop_index1 }}" value="{{ loop_item1['fileName'] }}"/>
+              </td>
+              <td width="65%" class="{{ rowclass }}" align="left">&#160;
+                {% if loop_item1['inodeType'] == inodeType['DIRECTORY'] %}
+                  <a href="{{ local_import_post_url }}&amp;inode={{ loop_item1['fileName'] }}&amp;action={{ getAction['REFRESH'] }}"
+                     alt="{{ xar_translate('Open Folder') }}"
+                     title="{{ xar_translate('Open Folder') }}">
+                    <img src="{{ xar_imageurl('folder.png', 'uploads') }}" width="16" height="18"/>
+                      <strong>{{ loop_item1['fileName'] }}</strong>
+                  </a>
+                  {% else %}
+                  <img src="{{ xar_apifunc('mime', 'user', 'get_mime_image', {'mimeType': loop_item1['fileType']}) }}"
+                       width="16" height="18"/>&#160;
+                  {{ loop_item1['fileName'] }}
+                {% endif %}
+              </td>
+              {% if loop_item1['fileSize'] is iterable %}
+                <td width="25%" class="{{ rowclass }}" align="right">&#160;{{ loop_item1['fileSize']['long'] }}</td>
+                {% else %}
+                <td width="25%" class="{{ rowclass }}" align="right">&#160;{{ loop_item1['fileSize'] }}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3" class="xar-accent xar-accent-outline">
+              <div class="xar-norm">
+                {% set label = 'Add Files' %}
+                {{- xar_button({type: "submit", name: "addbutton", id: "addbutton", label: label}) -}}
+                {# <!--
+                {% set label = 'Delete Files' %}
+                {{- xar_button({type: "submit", name: "delbutton", id: "delbutton", label: label}) -}}
+                --> #}
+                <input type="hidden" name="action" id="action" value="{{ getAction['LOCAL'] }}"/>
+                <input type="hidden" name="authid" value="{{ authid }}"/>
+              </div>
+            </td>
+          </tr>                                    
+        {% endif %}
+      </table>
+      <br />                    
+      </form>
+    {% endif %}
+    </div>
+{% endblock %}

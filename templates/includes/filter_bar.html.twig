@@ -1,0 +1,128 @@
+{# @uploads/includes/filter_bar.html.twig #}
+
+{% block filter_bar %}
+<table width="100%" border="0" class="xar-norm xar-accent-outline">
+        <tr>
+            <th colspan="6">
+                <h4>Filtering Options</h4>
+            </th>
+        </tr>
+        <tr>
+            <form action="{{ xar_moduleurl('uploads','admin','view') }}" method="post">
+            <td width="15%" align="center">
+                <label for="inverse">
+                    
+                        Invert Filter
+                    
+                </label>
+                <br />
+                {% if filters['inverse'] == TRUE %}
+                    <input type="checkbox" name="inverse" id="inverse" value="invert" checked="checked"/>
+                {% else %}
+                    <input type="checkbox" name="inverse" id="inverse" value="invert"/>
+                {% endif %}
+            </td>
+            <td width="10%" align="center">
+                <label for="mimetype">
+                    
+                        MIME Type
+                    
+                </label>
+                <br />
+                <select name="mimetype" id="mimetype" onchange="this.form.submit();">
+                    {% for key, type in filters['mimetypes'] %}
+                        {% if type['selected'] is not null %}
+                            <option value="{{ type['typeId'] }}" selected="selected">
+                                {{ type['typeName'] }} 
+                            </option>
+                        {% else %}
+                            <option value="{{ type['typeId'] }}">
+                                {{ type['typeName'] }} 
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td width="25%" align="center">
+                <label for="subtypes">
+                    
+                        MIME SubType
+                    
+                </label>
+                <br />
+                <select name="subtype" id="subtypes" onchange="this.form.submit();">
+                    {% for key, subtype in filters['subtypes'] %}
+                        {% if subtype['selected'] is not null %}
+                            <option value="{{ subtype['subtypeId'] }}" selected="selected">
+                                {{ subtype['subtypeName'] }} 
+                            </option>
+                        {% else %}
+                            <option value="{{ subtype['subtypeId'] }}">
+                                {{ subtype['subtypeName'] }} 
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td width="15%" align="center">
+                <label for="status">
+                    
+                        File Status
+                    
+                </label>
+                <br />
+                <select name="status" id="status" onchange="this.form.submit();">
+                    {% for key, status in filters['status'] %}
+                        {% if status['selected'] is not null %}
+                            <option value="{{ status['statusId'] }}" selected="selected">
+                                {{ status['statusName'] }} 
+                            </option>
+                        {% else %}
+                            <option value="{{ status['statusId'] }}">
+                                {{ status['statusName'] }} 
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td width="25%" align="center">
+                <label for="action">
+                    
+                        action
+                    
+                </label>
+                <br />
+                <select name="action" id="action" onchange="this.form.submit();">
+                    {% for key, status in filters['status'] %}
+                        {% if key == '0' %}
+                            <option value="{{ status['statusId'] }}" selected="selected">
+                                Change View
+                            </option>
+                        {% else %}
+                            <option value="{{ status['statusId'] }}">
+                                Change all to {{ status['statusName'] }} 
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td width="10%" align="center">
+                <br />
+                {% if catid %}
+                    <input type="hidden" name="catid" value="{{ catid }}"/>
+                {% endif %}
+                {% set label = 'Refresh' %}
+                {{- xar_button({type: "submit", name: "do_it", label: label}) -}}
+            </td>
+            </form>
+        </tr>
+        {% if xar_coremethod('xarMod', 'isAvailable', 'categories') and xar_coremethod('xarModHooks', 'isHooked', ['categories','uploads',1]) %}
+        <tr>
+            <td colspan="6">
+                {{ include('@uploads/includes/catnavigation.html.twig') }}
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+    <br />
+{% endblock %}

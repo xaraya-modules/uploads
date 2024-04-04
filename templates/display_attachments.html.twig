@@ -1,0 +1,23 @@
+{# @uploads/display_attachments.html.twig #}
+
+{% extends '@uploads/base.html.twig' %}
+
+{% block modulespace %}
+{{ xar_style({scope: "module", module: "uploads", file: "uploads"}) }}
+    {{ xar_javascript({filename: "openDialog.js"}) }} 
+    <div class="xar-uploads-attachment-wrapper xar-accent-outline">
+        <h2>
+            &#160;List of Attachments:
+        </h2>
+        <a name="Attachments"/>
+        {{ include('@uploads/includes/attachment-list.html.twig') }}
+    </div>
+
+    <div class="xar-uploads-clearer">&#160;</div>
+    <br />
+    {% if xar_security_check('AddUploads') %}
+        <a name="set_attachments" onclick="AttachmentsDialog('{{ local_import_post_url }}', '{{ xar_translate('Add / Remove Attachments') }}'); return false;">
+            {{ xar_translate('Add / Remove Attachments') }}
+        </a>
+    {% endif %}
+{% endblock %}

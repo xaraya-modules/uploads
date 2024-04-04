@@ -1,0 +1,258 @@
+{# @uploads/admin/assoc.html.twig #}
+
+{% block assoc %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>View File Associations</h2>
+
+        {% if fileId %}
+            {{ xar_javascript({filename: "openDialog.js"}) }}
+            <h3>
+                {% if fileinfo[fileId] %}
+                    {% set fileName = fileinfo[fileId]['fileName'] %}
+                {% else %}
+                    {% set fileName = '' %}
+                {% endif %}
+                {% set fileLink = 'PropertiesDialog(\&#39;' ~ xar_moduleurl('uploads','user','file_properties', {'fileId': fileId}) ~ '\&#39;); return false;' %}
+                For File <a style="cursor:pointer;" onclick="{{ fileLink }}">[{{ fileId }}] {{ fileName }}</a>
+            </h3>
+        {% endif %}
+
+        {% if not missing %}
+            <p><a href="{{ xar_moduleurl('uploads','admin','assoc',{'action': 'missing'}) }}">Check Missing Files</a></p>
+        {% else %}
+            <p><strong>Missing Files in Associations</strong></p>
+            <ul>
+            {% for id, num in missing %}
+                <li>
+                    <a href="{{ xar_moduleurl('uploads','admin','assoc',{'fileId': id}) }}">
+                        {{ xar_translate('File #(1) - #(2) association(s)', id, num) }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div style="margin: auto;">
+        {% if not modid %}
+            <table border="0" cellpadding="2" cellspacing="1" class="xar-accent xar-accent-outline">
+                <tr>
+                    <th valign="center" width="30%">
+                        <strong>Module Name</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Module<br />Items</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Distinct<br />Files</strong>
+                    </th>
+                    <th align="center" valign="center" width="15%">
+                        <strong>Total<br />Associations</strong>
+                    </th>
+                    <th align="center" valign="center" width="25%">
+                        <strong>Action</strong>
+                    </th>
+                </tr>
+
+
+                {% if not moditems or moditems|length == '0' %}
+                    <tr>
+                        <td colspan="5" align="center">
+                            <p>                            
+                                There are currently no file associations in the database...                            
+                            </p>
+
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="xar-norm-outline" style="margin-left: 1em; margin-right: 1em; width: auto;border-style: dotted none none none;"></div>
+                        </td>
+                    </tr>
+                    {% for moditem in moditems %}
+                        <tr>
+                            <td valign="center" width="30%">
+                                <a href="{{ moditem['link'] }}">{{ moditem['name'] }}</a>
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numitems'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numfiles'] }}
+                            </td>
+                            <td align="center" valign="center" width="15%">
+                                {{ moditem['numlinks'] }}
+                            </td>
+                            <td align="center" valign="center" width="25%">
+                                <p><a href="{{ moditem['rescan'] }}"><strong>Rescan</strong></a>
+                                |
+                                <a href="{{ moditem['delete'] }}"><strong>Delete</strong></a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="xar-norm-outline" style=" margin-left: 1em; margin-right: 1em; width: auto;border-style: dotted none none none;"></div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                <tr>
+                    <td valign="center" width="30%">
+                        <strong>Grand Total</strong>
+                    </td>
+                    <td align="center" valign="center" width="15%">
+                        <strong>{{ numitems }}</strong>
+                    </td>
+                    <td align="center" valign="center" width="15%">
+                        <strong>-</strong>
+                    </td>
+                    <td align="center" valign="center" width="15%">
+                        <strong>{{ numlinks }}</strong>
+                    </td>
+                    <td align="center" valign="center" width="25%">
+                        <a href="{{ rescan }}">Rescan All</a>
+                        {#  
+                        |
+                        <a href="{{ delete }}">Delete All</a>
+                         #}
+                    </td>
+                </tr>
+            </table>
+            <p>
+                
+                By clicking on <strong>Delete</strong> you can delete all file associations with a particular
+                module. Clicking on a module will take you to that module's statistics page containing
+                the figures for each of that module's items that have files associated with them.
+                From there you can delete all file associations with a particular item.
+                
+            </p>
+        {% else %}
+            <h3>
+                {{ xar_translate('In Module #(1)', modname) }}
+            </h3>
+
+            {% if action and action == 'delete' %}
+                <form method="post" action="{{ xar_moduleurl('uploads', 'admin', 'assoc') }}">
+                    <p><strong>Are you sure you want to remove the file associations in these module items ?</strong></p>
+                    <input type="hidden" name="modid" value="{{ modid }}"/>
+                    <input type="hidden" name="itemtype" value="{{ itemtype }}"/>
+                    <input type="hidden" name="itemid" value="{{ itemid }}"/>
+                    <input type="hidden" name="fileId" value="{{ fileId }}"/>
+                    <input type="hidden" name="action" value="delete"/>
+                    <input type="hidden" name="authid" value="{{ authid }}"/>
+                    {% set label = 'Confirm' %}
+                    {{- xar_button({type: "submit", name: "confirm", label: label}) -}}
+                    {% set label = 'Cancel' %}
+                    {{- xar_button({type: "cancel", label: label}) -}}
+                </form>
+            {% endif %}
+
+            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th valign="center" width="50%">
+                        {% if not sortlink['itemid'] %}
+                            <strong>Item Id</strong>
+                        {% else %}
+                            <a href="{{ sortlink['itemid'] }}"><strong>Item Id</strong></a>
+                        {% endif %}
+                    </th>
+                    <th align="center" valign="center" width="25%">
+                        <strong>File<br />Associations</strong>
+                    </th>
+                    <th align="center" valign="center" width="25%">
+                        <strong>Action</strong>
+                    </th>
+                </tr>
+
+                <tr>
+                    <td colspan="3">
+                        &#160;
+                    </td>
+                </tr>
+
+                {% if not moditems or moditems|length == '0' %}
+                    <tr>
+                        <td colspan="3" align="center">
+                            <br />
+                            
+                                There are currently no file associations to this module...
+                            
+                            <br />
+                            <br />
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="xar-norm-outline" style="margin-left: 1em; margin-right: 1em; width: auto;border-style: dotted none none none;"></div>
+                        </td>
+                    </tr>
+                    {% for itemid, moditem in moditems %}
+                        <tr>
+                            {% if moditem['title'] and moditem['link'] %}
+                                <td valign="center" width="50%">
+                                    {{ itemid }}&#160;<a href="{{ moditem['link'] }}">{{ moditem['title'] }} </a>
+                                </td>
+                            {% else %}
+                                <td align="center" valign="center" width="50%">
+                                    {{ itemid }}
+                                </td>
+                            {% endif %}
+                            <td align="center" valign="center" width="25%">
+                            {% for fileId in moditem['filelist'] %}
+                              <a href="{{ xar_moduleurl('uploads','admin','assoc', {'fileId': fileId}) }}">
+                              {% if fileinfo[fileId] %}
+                                  {{ fileinfo[fileId]['fileName'] }}
+                              {% else %}
+                                {{ fileId }}
+                              {% endif %}
+                              </a><br/>
+                            {% endfor %}
+                            </td>
+                            <td align="center" valign="center" width="25%">
+                                <a href="{{ moditem['rescan'] }}"><strong>Rescan</strong></a>
+                                |
+                                <a href="{{ moditem['delete'] }}"><strong>Delete</strong></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                            <div class="xar-norm-outline" style="margin-left: 1em; margin-right: 1em; width: auto;border-style: dotted none none none;"></div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if pager %}
+                    <tr>
+                        <td colspan="3" align="center">
+                            {{ pager }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endif %}
+                <tr>
+                    <td valign="center" width="50%">
+                        <strong>Grand Total</strong>:
+                    </td>
+                    <td align="center" valign="center" width="25%">
+                        <strong>{{ numlinks }}</strong>
+                    </td>
+                    <td align="center" valign="center" width="25%">
+                        <a href="{{ rescan }}">Rescan All</a>
+                        |
+                        <a href="{{ delete }}">Delete All</a>
+                    </td>
+                </tr>
+
+            </table>
+            <p>
+                
+                    By clicking on <strong>Delete</strong> you can delete all file associations with a particular
+                    module's item.
+                
+            </p>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{# @uploads/attach_files.html.twig #}
+
+{% extends '@uploads/base.html.twig' %}
+
+{% block modulespace %}
+{{ xar_javascript({filename: "switchImport.js"}) }}
+    {{ xar_style({scope: "module", module: "uploads", file: "uploads"}) }}
+    <div class="xar-form-container-after">
+        Attach file(s) from source:<br />
+
+        {% if methods['trusted'] == TRUE %}
+            <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport(1, {{ getAction['LOCAL'] }}, '{{ id }}');true;" 
+               name="attach_trusted_{{ id }}" title="{{ xar_translate('Attach file from Trusted Directory') }}">Trusted</a> |
+        {% endif %}
+
+        {% if methods['external'] == TRUE %}
+            <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport(2, {{ getAction['EXTERNAL'] }}, '{{ id }}');true;" 
+               name="attach_external_{{ id }}" title="{{ xar_translate('Attach file from external source (http(s)|ftp)') }}">External</a> |
+        {% endif %}
+
+        {% if methods['upload'] == TRUE %}
+            <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport(3, {{ getAction['UPLOAD'] }}, '{{ id }}');true;" 
+               name="attach_upload_{{ id }}" title="{{ xar_translate('Attach uploaded file') }}">Upload</a> |
+        {% endif %}
+
+        {% if methods['stored'] == TRUE and (storedList is not null and storedList|length) %}
+            <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport(4, {{ getAction['STORED'] }}, '{{ id }}');true;" 
+               name="attach_stored_{{ id }}" title="{{ xar_translate('Attach previously stored file') }}">Stored</a> |
+        {% endif %}
+
+        <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport(5, -1, '{{ id }}');true;" 
+           name="attach_reset_{{ id }}" title="{{ xar_translate('Revert to initial state') }}">Reset</a> | 
+
+        <input type="checkbox" id="attach_clear_{{ id }}" onclick="javascript:xar_uploads_switchImport(6, -2, '{{ id }}');true;" 
+           name="attach_clear_{{ id }}"/> <label for="attach_clear_{{ id }}" title="{{ xar_translate('Clear stored value') }}">Clear</label>
+        <br />
+
+        <div id="{{ id }}_attach_trusted" style="display: none;">
+            {{ include('@uploads/includes/attach_trusted.html.twig') }}
+        </div>
+
+        <div id="{{ id }}_attach_external" style="display: none;">
+            {{ include('@uploads/includes/attach_external.html.twig') }}
+        </div>
+
+        <div id="{{ id }}_attach_upload" style="display: none;">
+            {{ include('@uploads/includes/attach_upload.html.twig') }}
+        </div>
+
+        <div id="{{ id }}_attach_stored" style="display: none;">
+            {{ include('@uploads/includes/attach_stored.html.twig') }}
+        </div>
+
+        <input type="hidden" name="{{ id }}_attach_type" id="{{ id }}_attach_type" value="{{ getAction['STORED'] }}"/>
+    </div>
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

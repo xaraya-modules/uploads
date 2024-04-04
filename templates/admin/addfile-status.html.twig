@@ -1,0 +1,152 @@
+{# @uploads/admin/addfile-status.html.twig #}
+
+{% block addfile_status %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            Upload/Import Status
+        </h2>
+
+        <table width="100%">
+        <tr>
+            <td colspan="2">
+                <h3>
+                    File Upload/Import Status List
+                </h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                   <table width="100%">
+                    <tr>
+                        <th>File Name</th>
+                        <th>Status</th>
+                    </tr>
+                    {% for loop_key1, loop_item1 in fileList %}{% set loop_index1 = loop.index %}
+                        <tr>
+                            <td width="25%" class="xar-accent">
+                                {{ loop_item1['fileName'] }}
+                            </td>
+                            {% if ((loop_index1 + 1) % 2) %}
+                                {% if loop_item1['fileId'] is not null %}
+                                    <td width="75%" class="xar-norm">
+                                        
+                                            File has been added with ID: 
+                                         {{ loop_item1['fileId'] }}
+                                        <br />
+                                        
+                                            This ID can be used in the content field of any module that this module is hooked to,
+                                            in the format: 
+                                        
+                                            <pre>file:{{ loop_item1['fileId'] }}</pre>
+                                        
+                                            Doing so will create a link to the item for downloading purposes.
+                                        
+                                    </td>
+                                {% elseif loop_item1['errors'] is not null %}
+                                    <td width="75%" class="xar-norm">
+                                        <strong>
+                                            
+                                                The following errors were detected while attempting to add this file.
+                                            
+                                        </strong>
+                                        <br />
+                                        <table width="100%" cellspacing="1" cellpadding="1" border="0">
+                                            <tr>
+                                                <xar.loop name="loop_item1['errors']">
+                                                    {% if ((loop_index1 + 1) % 2) %}
+                                                        <td width="65%" class="xar-norm">
+                                                            & }}160;
+                                                            {{ loop_item1['errorMesg'] }}
+                                                        </td>
+                                                    {% else %}
+                                                        <td width="65%" class="xar-accent">
+                                                            &#160;
+                                                            {{ loop_item1['errorMesg'] }}
+                                                        </td>
+                                                    {% endif %}                                                
+                                                </xar:loop>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                {% else %}
+                                    <td width="75%" class="xar-accent">
+                                        
+                                            File not added and no errors were detected. Please submit a bug report 
+                                            as you might have found a bug. (<a href="http://bugs.xaraya.com">bugs.xaraya.com</a>)
+                                        
+                                        <br />
+                                    </td>
+                                {% endif %}
+                            {% else %}
+                                {% if loop_item1['fileId'] is not null %}
+                                    <td width="75%" class="xar-accent">
+                                        
+                                            File has been added with ID: 
+                                         {{ loop_item1['fileId'] }}
+                                        <br />
+                                        
+                                            This ID can be used in the content field of any module that this module is hooked to,
+                                            in the format: 
+                                        
+                                            <pre>file:{{ loop_item1['fileId'] }}#</pre>
+                                        
+                                            Doing so will create a link to the item for downloading purposes.
+                                        
+                                    </td>
+                                {% elseif loop_item1['errors'] is not null %}
+                                    <td width="75%" class="xar-accent">
+                                        <strong>
+                                            
+                                                The following errors were detected while attempting to add this file.
+                                            
+                                        </strong>
+                                        <br />
+                                        <table width="100%" cellspacing="1" cellpadding="1" border="0">
+                                            <tr>
+                                                <xar.loop name="loop_item1['errors']">
+                                                    {% if ((loop_index1 + 1) % 2) %}
+                                                        <td width="65%" class="xar-norm">
+                                                            & }}160;
+                                                            {{ loop_item1['errorMesg'] }}
+                                                        </td>
+                                                    {% else %}
+                                                        <td width="65%" class="xar-accent">
+                                                            &#160;
+                                                            {{ loop_item1['errorMesg'] }}
+                                                        </td>
+                                                    {% endif %}                                                
+                                                </xar:loop>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                {% else %}
+                                    <td width="75%" class="xar-accent">
+                                        
+                                            File not added and no errors were detected. Please submit a bug report 
+                                            as you might have found a bug. (<a href="http://bugs.xaraya.com">bugs.xaraya.com</a>)
+                                        
+                                        <br />
+                                    </td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <br />
+                <a href="{{ xar_moduleurl('uploads', 'admin', 'get_files') }}" alt="{{ xar_translate('Add more files.') }}">
+                    
+                        Add Files
+                    
+                </a>
+                &#160;|&#160;
+                <a href="{{ xar_moduleurl('uploads', 'admin', 'view') }}" alt="{{ xar_translate('View files.') }}">
+                    
+                        View files
+                    
+                </a>
+            </td>
+        </tr>
+    </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{# @uploads/includes/external-import-form.html.twig #}
+
+{% block external_import_form %}
+<div>
+        <form id="external_import_form" action="{{ external_import_post_url }}" method="post">
+            <table summary="Files" width="100%" border="0" cellpadding="2" cellspacing="1" class="xar-accent xar-accent-outline">
+                <tr>
+                    <th align="center">External File URL:</th>
+                    <th align="center">Save Location<br />DB / FS</th>
+                    <th align="center">Action</th>
+                </tr>
+                <tr>
+                    <td class="xar-norm" align="left" width="45%">
+                        <input type="text" name="import" value="" size="40" id="import" maxlength="128"/>
+                    </td>
+                    <td class="xar-norm" align="center" width="28%">
+                        <input type="radio" name="storeType" id="storeType" value="{{ storeType['DB_FULL'] }}" />&#160;
+                        <input type="radio" name="storeType" id="storeType" value="{{ storeType['FSDB'] }}" checked="checked"  />
+                    </td>
+                    <td class="xar-norm" align="center" width="27%">
+                        {% set label = 'Import' %}
+                        {{- xar_button({type: "submit", name: "button", id: "button", label: label}) -}}
+                        <input type="hidden" name="action" id="action" value="2"/>
+                        <input type="hidden" name="authid" value="{{ authid }}"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

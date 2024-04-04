@@ -1,0 +1,63 @@
+{# @uploads/includes/upload-form.html.twig #}
+
+{% block upload_form %}
+<div>
+        <form id="upload_form" action="{{ xar_moduleurl('uploads', 'admin', 'get_files') }}" method="post" enctype="multipart/form-data">
+            <table summary="Files" width="100%" border="0" cellpadding="2" cellspacing="1" class="xar-accent xar-accent-outline">
+                {% if orientation is not null and orientation == 'vertical' %}
+                    <tr>
+                        <th class="xar-align-center">Browse for File:</th>
+                    </tr>
+                    <tr>
+                        <td class="xar-norm xar-align-left" width="45%">
+                            {{ xar_data_input({type: "uploads", name: "upload", multiple: "5", methods: "1"}) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="xar-align-center">Save Location<br />DB / FS</th>
+                    </tr>
+                    <tr>
+                        <td class="xar-norm xar-align-center" width="28%">
+                            <input type="radio" name="storeType" id="storeType" value="{{ storeType['DB_FULL'] }}" />&#160;
+                            <input type="radio" name="storeType" id="storeType" value="{{ storeType['FSDB'] }}" checked="checked"  />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th align="center">Action</th>
+                    </tr>
+                    <tr>
+                        <td class="xar-norm xar-align-center" width="27%">
+                            {% set label = 'Upload' %}
+                            {{- xar_button({type: "submit", name: "button", id: "button", label: label}) -}}
+                            <input type="hidden" name="action" id="action" value="1"/>
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="{{ file_maxsize }}"/>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th class="xar-align-center">Browse for File:</th>
+                        <th class="xar-align-center">Save Location<br />DB / FS</th>
+                        <th class="xar-align-center">Action</th>
+                    </tr>
+                    <tr>
+                        <td class="xar-norm xar-align-left" width="45%">
+                            {{ xar_data_input({type: "uploads", name: "upload", multiple: "5", methods: "1", size: "28"}) }}
+                        </td>
+                        <td class="xar-norm xar-align-center" width="28%">
+                            <input type="radio" name="storeType" id="storeType" value="{{ storeType['DB_FULL'] }}" />&#160;
+                            <input type="radio" name="storeType" id="storeType" value="{{ storeType['FSDB'] }}" checked="checked" />
+                        </td>
+                        <td class="xar-norm xar-align-center" width="27%">
+                            {% set label = 'Upload' %}
+                            {{- xar_button({type: "submit", name: "button", id: "button", label: label}) -}}
+                            <input type="hidden" name="action" id="action" value="1"/>
+                            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="{{ file_maxsize }}"/>
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+        </form>
+    </div>
+{% endblock %}

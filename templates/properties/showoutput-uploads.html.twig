@@ -1,0 +1,36 @@
+{# @uploads/properties/showoutput-uploads.html.twig #}
+
+{% block showoutput_uploads %}
+{% if format and format == 'textupload' %}
+        {% for loop_key1, loop_item1 in Attachments %}{% set loop_index1 = loop.index %}file:&#160;{{ loop_item1['fileId'] }}&#160;</xar:loop>
+    {% else %}
+        {{ xar_style({module: "uploads", scope: "module", file: "uploads"}) }}
+        <xar:loop name="$attachments">
+            {% if outputstyle is not null and outputstyle == 'icon' %}
+                <div class="xar-uploads-icon">
+                    <a href="{{ loop_item1['fileDownload'] }}" alt="{{ loop_item1['fileName'] }}" title="{{ loop_item1['DownloadLabel'] }}">
+                            <img src="{{ loop_item1['mimeImage'] }}" alt="{{ loop_item1['fileType'] }}"/>
+                            {{ loop_item1['fileName'] }}
+                    </a>
+                </div>
+            {% elseif outputstyle is not null and outputstyle == 'transform' %}
+                {#  do something special when working through transform hooks, e.g. show images directly #}
+                {% set filetype = loop_item1['fileType'] %}
+                {% if filetype|slice(0,5) == 'image' %}
+                    <img src="{{ loop_item1['fileDownload'] }}" alt="{{ loop_item1['fileName'] }}" border="0"/>
+                {% else %}
+                    <a href="{{ loop_item1['fileDownload'] }}" alt="{{ loop_item1['fileName'] }}" title="{{ loop_item1['DownloadLabel'] }}">
+                    {{ loop_item1['fileName'] }}
+                    </a>
+                {% endif %}
+                <br />
+            {% else %}
+                <a href="{{ loop_item1['fileDownload'] }}" alt="{{ loop_item1['fileName'] }}" title="{{ loop_item1['DownloadLabel'] }}">
+                    {{ loop_item1['fileName'] }}
+                </a>
+                <br />
+            {% endif %}
+        {% endfor %}
+        <div class="xar-uploads-clearer">&#160;</div>
+    {% endif %}
+{% endblock %}

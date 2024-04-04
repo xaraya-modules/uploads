@@ -1,0 +1,337 @@
+{# @uploads/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            Modify Uploads Configuration
+        </h2>
+        <form method="post" action="{{ xar_moduleurl('uploads', 'admin', 'updateconfig') }}">
+            {{ xar_data_form({object: module_settings}) }}
+            <fieldset>
+                <legend>
+                    Upload Options
+                </legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="uploads_directory" class="xar-form-label" title="{{ xar_translate('Full path to your upload directory') }}">
+                                Uploads Directory:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_modulevar('uploads', 'uploads_directory') %}
+                            <input type="text" name="uploads_directory" value="{{ value }}" size="60"/>
+                            {% if uploads_directory_message %}
+                                &#160;<span class="xar-alert">{{ uploads_directory_message }}</span>
+                            {% endif %}
+                            <div class="xar-form-input-wrapper-after">
+                                This is the path, relative to the root directory, to the directory where uploaded and external import files will be placed.
+                                It is strongly recommended that this directory be located outside of your web directory.
+                                <br />NOTE: This directory MUST be writable by the webserver.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="imports_directory" class="xar-form-label" title="{{ xar_translate('Full path to the local trusted directory') }}">                            
+                                Trusted Directory:                            
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_modulevar('uploads', 'imports_directory') %}
+                            <input type="text" name="imports_directory" value="{{ value }}" size="60"/>
+                            {% if imports_directory_message %}
+                                &#160;<span class="xar-alert">{{ imports_directory_message }}</span>
+                            {% endif %}
+                            <div class="xar-form-input-wrapper-after">
+                                This is the path, relative to the root directory, to the local trusted directory. Files located in this directory will
+                                be immediately available for users to attach to other objects (ie: articles). Files in this directory
+                                are <strong>not</strong> counted in the disk usage summary totals. It is strongly recommended
+                                that this directory be located outside of your web directory.
+                                <br />NOTE: This directory MUST be readable and should also be writable by the webserver.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[maxsize]" class="xar-form-label" title="{{ xar_translate('Auto approve files') }}">
+                                Maximum Upload Size :
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            <input type="text" name="file[maxsize]" value="{{ file['maxsize'] }}"/> 
+                            in bytes (commas are fine)
+                            <div class="xar-form-input-wrapper-after">
+                                This is the maximum size an uploaded file may be.<br />
+                                NOTE: The server wide PHP setting, if set to a lower value, <em>will</em> override this setting.
+                                Please ask your web host provider for details on the settings that they use for uploaded files.
+                            </div>
+                        </div>
+                     </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[auto-approve]" class="xar-form-label" title="{{ xar_translate('Auto approve files') }}">
+                                Auto approve files added by:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set options = [
+                                      {'id': _UPLOADS_APPROVE_NOONE, 'name': xar_translate('No one')},
+                                      {'id': _UPLOADS_APPROVE_ADMIN, 'name': xar_translate('Admin')},
+                                      {'id': _UPLOADS_APPROVE_EVERYONE, 'name': xar_translate('Everyone')},
+                                     ] %}
+                            {{ xar_data_input({type: "radio", name: "file[auto-approve]", id: "auto-approve", value: file['auto-approve'], options: options}) }}
+                            <div class="xar-form-input-wrapper-after">
+                                This option allows you to make all newly added files' status set to approved for Everyone (not recommended), Admins only, or No One.
+                            </div>
+                        </div>
+                    </div>
+                    {% set options = [
+                              {'id': 0, 'name': xar_translate('No')},
+                              {'id': 1, 'name': xar_translate('Yes')},
+                             ] %}
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[delete-confirmation]" class="xar-form-label" title="{{ xar_translate('Confirm deletion of files') }}">
+                                Confirm deletion of files:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "radio", name: "file[delete-confirmation]", id: "delete-confirmation", value: file['delete-confirmation'], options: options}) }}
+                            <div class="xar-form-input-wrapper-after">
+                                Confirmation must be provided before files are deleted.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[auto-purge]" class="xar-form-label" title="{{ xar_translate('Auto purge files marked as rejected') }}">
+                                Auto purge 'rejected' files:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "radio", name: "file[auto-purge]", id: "auto-purge", value: file['auto-purge'], options: options}) }}
+                            <div class="xar-form-input-wrapper-after">
+                                Normally, when you reject files, you have to manually purge them by clicking on
+                                the 'Purge Rejected' button located on the <em>Admin->Uploads->View page</em>. This
+                                option forces any file you set to 'rejected' status to be deleted right away.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[obfuscate-on-import]" class="xar-form-label" title="{{ xar_translate('Obfuscate/Secure Imported Files') }}">
+                                    Secure Imported Files:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "radio", name: "file[obfuscate-on-import]", id: "obfuscate-on-import", value: file['obfuscate-on-import'], options: options}) }}
+                            <div class="xar-form-input-wrapper-after">
+                                If Yes, imported files will be stored with their original names obfuscated for added security.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[obfuscate-on-upload]" class="xar-form-label" title="{{ xar_translate('Obfuscate/Secure Uploaded Files') }}">
+                                Secure Uploaded Files:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {{ xar_data_input({type: "radio", name: "file[obfuscate-on-upload]", id: "obfuscate-on-upload", value: file['obfuscate-on-upload'], options: options}) }}
+                            <div class="xar-form-input-wrapper-after">
+                                If Yes, uploaded files will be stored with their original names obfuscated for added security.
+                                <br />
+                                <strong style="color: red;">NOTE:</strong>Setting this option to 'No' can open a possible route for users
+                                to upload and run malicious scripts on your site. It is <strong>highly</strong>
+                                recommended that you leave this option on unless you have a thorough understanding
+                                of the implications behind turning it off.
+                            </div>
+                        </div>
+                     </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[allow-duplicate-upload]" class="xar-form-label" title="{{ xar_translate('Reaction to Duplicate Filenames') }}">
+                                Allow Duplicate Filenames?
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set dup_options = [
+                                {'0': xar_translate('No upload allowed')},
+                                {'1': xar_translate('Save as new version')},
+                                {'2': xar_translate('Replace original')},
+                            ] %}
+                            <select name="file[allow-duplicate-upload]" id="file_allow_duplicate_upload">
+                                {% for id, val in dup_options %}
+                                {% if file['allow-duplicate-upload'] == id %}
+                                    <option value="{{ id }}" selected="selected"> {{ val }} </option>
+                                {% else %}
+                                    <option value="{{ id }}"> {{ val }} </option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                            <div class="xar-form-input-wrapper-after">
+                                For new version, files with the same name of existing files will be stored alongside the originals.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="file[cache-expire" class="xar-form-label" title="{{ xar_translate('Cache trusted file information') }}">
+                                Cache trusted file information:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "uploads", name: "file.cache-expire"}) %}
+                            <input type="text" name="file[cache-expire]" id="file_cache_expire" size="3" maxlength="3" value="{{ value }}"/>
+                            seconds
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="view[itemsperpage]" class="xar-form-label" title="{{ xar_translate('Items per page in admin view') }}">
+                                Items per page in admin view:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "uploads", name: "view.itemsperpage"}) %}
+                            <input type="text" name="view[itemsperpage]" id="view_itemsperpage" size="3" maxlength="3" value="{{ value }}"/>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>
+                        Dynamic File Upload Property Configuration
+                    </legend>
+                    <p class="xar-form-input-wrapper-before">
+                        These settings allow you to redefine certain characteristics of the FileUpload DynamicData Property. 
+                        These settings only take effect if you have 'hooked' the uploads module to the module using the
+                        FileUpload property.
+                    </p>
+                    <p>
+                        <strong>
+                            Select file sources for the FileUpload Property:
+                        </strong>
+                    </p>
+                    <p>
+                        Note: be sure to choose at <strong>least</strong> one!
+                    </p>
+
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="ddprop[trusted]">
+                                Files located in the Trusted directory
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% if ddprop['trusted'] == TRUE %}
+                                <input type="checkbox" name="ddprop[trusted]" value="1" checked="checked"/>
+                            {% else %}
+                                <input type="checkbox" name="ddprop[trusted]" value="1"/>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="ddprop[external]">
+                                Externally located files (http / ftp / file)
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% if ddprop['external'] == TRUE %}
+                                <input type="checkbox" name="ddprop[external]" value="1" checked="checked"/>
+                            {% else %}
+                                <input type="checkbox" name="ddprop[external]" value="1"/>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="ddprop[upload]">
+                                User uploaded files
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% if ddprop['upload'] == TRUE %}
+                                <input type="checkbox" name="ddprop[upload]" value="1" checked="checked"/>
+                            {% else %}
+                                <input type="checkbox" name="ddprop[upload]" value="1"/>
+                            {% endif %}
+                        </div>
+                   </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                             <label for="ddprop[stored]">
+                                Files previously stored
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% if ddprop['stored'] == TRUE %}
+                                <input type="checkbox" name="ddprop[stored]" value="1" checked="checked"/>
+                            {% else %}
+                                <input type="checkbox" name="ddprop[stored]" value="1"/>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Hook configuration for uploaded files
+                    </legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            {% if hooks %}
+                                {% for hookmodule in hooks|keys %}
+                                    {{ hooks[hookmodule] }}
+                                {% endfor %}
+                            {% else %}
+                                No hooks configured. 
+                                <a href="{{ xar_moduleurl('modules', 'admin', 'hooks') }}">Configure hooks now</a>.
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>                        
+                        Downloads
+                    </legend>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="permit_download" class="xar-form-label" title="{{ xar_translate('Full path to your upload directory') }}">
+                                Permitted:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set options = [
+                                    {'id': 0, 'name': xar_translate('No downloads')},
+                                    {'id': 1, 'name': xar_translate('Personally owned files')},
+                                    {'id': 2, 'name': xar_translate('Group owned files')},
+                                    {'id': 3, 'name': xar_translate('All files')},
+                                ] %}
+                            {% set value = xar_var({scope: "module", module: "uploads", name: "permit_download"}) %}
+                            {{ xar_data_input({type: "dropdown", name: "permit_download", options: options, value: value}) }}
+                        </div>
+                    </div>
+                    <div class="xar-row">
+                        <div class="xar-col">
+                            <label for="permit_download_function" class="xar-form-label" title="{{ xar_translate('Full path to your upload directory') }}">
+                                Permission Function:
+                            </label>
+                        </div>
+                        <div class="xar-col">
+                            {% set value = xar_var({scope: "module", module: "uploads", name: "permit_download_function"}) %}
+                            {{ xar_data_input({type: "textbox", name: "permit_download_function", value: value}) }}
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="xar-form-input-wrapper-after">
+                        <input type="hidden" name="authid" value="{{ authid }}"/>
+                        {% set label = 'Update Configuration' %}
+                        {{- xar_button({type: "submit", name: "update", label: label}) -}}
+                    </div>
+                </fieldset>
+            </form>
+    </div>
+{% endblock %}

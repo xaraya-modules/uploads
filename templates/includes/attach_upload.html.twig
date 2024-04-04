@@ -1,0 +1,17 @@
+{# @uploads/includes/attach_upload.html.twig #}
+
+{% block attach_upload %}
+{{ xar_javascript({filename: "jquery-1.2.6.pack.js", module: "jquery", position: "head"}) }}
+    {{ xar_javascript({filename: "jquery.MultiFile.pack.js", module: "jquery", position: "head"}) }}
+    <input type="hidden" name="{{ name }}_max_file_size" value="{{ max_file_size }}"/>
+    {# <!--
+    <input type="file" name="{{ name }}_attach_upload" id="{{ name }}_attach_upload_id"/>
+    --> #}
+    {% set maxlength = 'multiple_' ~ name %}
+    {% if maxlength %}
+        <input type="file" name="{{ name }}_attach_upload[]" id="{{ name }}_attach_upload_id" class="multi" maxlength="{{ maxlength }}" accept="{{ file_extensions }}"/>
+    {% else %}
+        <input type="file" name="{{ name }}_attach_upload[]" id="{{ name }}_attach_upload_id" class="multi" maxlength="{{ maxlength }}" accept="{{ file_extensions }}"/>
+    {% endif %}
+    <input type="hidden" name="{{ name }}_dbvalue" id="{{ name }}_dbvalue" value="{{ dbvalue }}"/>
+{% endblock %}

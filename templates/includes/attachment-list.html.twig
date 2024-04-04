@@ -1,0 +1,20 @@
+{# @uploads/includes/attachment-list.html.twig #}
+
+{% block attachment_list %}
+{{ xar_style({scope: "module", module: "uploads", file: "uploads"}) }}
+
+    {% if fileList is not null and fileList is iterable and fileList|length %}
+        {% for loop_key1, loop_item1 in Attachments %}{% set loop_index1 = loop.index %}
+            <div class="xar-uploads-icon" id="{{ id }}_alist">
+                <a href="{{ loop_item1['fileDownload'] }}" alt="{{ loop_item1['fileName'] }}" title="{{ loop_item1['DownloadLabel'] }}">
+                        <img src="{{ loop_item1['mimeImage'] }}" alt="{{ loop_item1['fileType'] }}"/>
+                        {{ loop_item1['fileName'] }}
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        
+            &#160;There are no attachments for this item.
+        
+    {% endif %}
+{% endblock %}

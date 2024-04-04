@@ -1,0 +1,141 @@
+{# @uploads/admin/view.html.twig #}
+
+{% block view %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>View Files</h2>
+            Directory: {{ uploadsdir }}
+            {% if diskUsage is not null %}
+                <table summary="Files" width="100%" border="0" cellpadding="2" cellspacing="1" class="xar-accent xar-accent-outline">
+                    <tr>
+                        <th>Physical Device Space</th>
+                        <th>Stored File Size Usage</th>
+                        <th>Number of Files</th>
+                    </tr>
+                    <tr>
+                        <td class="xar-norm" align="center">Total / Used / Free</td>
+                        <td class="xar-norm" align="center">current view / stored total</td>
+                        <td class="xar-norm" align="center">current view / stored total</td>
+                    </tr>
+                    <tr>
+                        <td class="xar-norm" align="center">
+                            {{ diskUsage['device_total']['short'] }} / {{ diskUsage['device_used']['short'] }} / {{ diskUsage['device_free']['short'] }}
+                        </td>
+                        <td class="xar-norm" align="center">
+                            {{ diskUsage['stored_size_filtered']['short'] }} / {{ diskUsage['stored_size_total']['short'] }}
+                        </td>
+                        <td class="xar-norm" align="center">
+                            {{ diskUsage['numfiles_filtered'] }} / {{ diskUsage['numfiles_total'] }}
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            {% endif %}
+            {{ include('@uploads/includes/filter_bar.html.twig') }}
+
+            {{ xar_javascript({filename: "openDialog.js"}) }}
+            {{ xar_javascript({module: "base", filename: "checkall.js"}) }}
+
+            <table summary="Files" border="0" class="xar-fullwidth xar-accent-outline">
+                    <tr>
+                        <th><a href="{{ xar_moduleurl('uploads','admin','view') }}">Select</a></th>
+                        <th><a href="{{ xar_moduleurl('uploads','admin','view',{'sort': 'name'}) }}">File Name</a></th>
+                        <th>&#160;</th>
+                        <th><a href="{{ xar_moduleurl('uploads','admin','view',{'sort': 'size'}) }}">File Size</a></th>
+                        <th><a href="{{ xar_moduleurl('uploads','admin','view',{'sort': 'id'}) }}">File Date</a></th>
+                        <th><a href="{{ xar_moduleurl('uploads','admin','view',{'sort': 'user'}) }}">Uploaded By</a></th>
+                        <th><a href="{{ xar_moduleurl('uploads','admin','view',{'sort': 'status'}) }}">Status</a></th>
+                    </tr>
+            {% if items|length %}
+                <form id="viewfiles" action="{{ xar_moduleurl('uploads','admin','view') }}" method="post">
+                    {% for loop_key1, loop_item1 in items %}{% set loop_index1 = loop.index %}
+                    {% if ((loop_index1 + 1) % 2) %}
+                    <tr>    
+                        <td class="xar-norm xar-align-center">
+                            <input type="checkbox" name="fileId[]" id="fileId_{{ loop_item1['fileId'] }}" value="{{ loop_item1['fileId'] }}"/>
+                        </td>
+                        <td class="xar-norm" align="center">&#160;
+                            <a style="cursor: pointer;" onclick="PropertiesDialog('{{ xar_moduleurl('uploads','user','file_properties', {'fileId': loop_item1['fileId']}) }}'); return false;">
+                                {{ loop_item1['fileName'] }}
+                            </a>
+                        </td>
+                        <td class="xar-norm" align="center">&#160;{% if numassoc[loop_item1['fileId']] %}<a href="{{ xar_moduleurl('uploads','admin','assoc',{'fileId': loop_item1['fileId']}) }}">{{ numassoc[loop_item1['fileId']] }}</a>{% endif %}</td>
+                        <td class="xar-norm" align="right">&#160;{{ loop_item1['fileSize'] }}</td>
+                        <td class="xar-norm" align="center">&#160;{% if loop_item1['fileModified'] %}{{ xar_localedate(loop_item1['fileModified'], 'medium', '') }}{% endif %}</td>
+                        <td class="xar-norm" align="center">&#160;{{ loop_item1['userName'] }}</td>
+                        <td class="xar-norm" align="center">&#160;{{ loop_item1['fileStatusName'] }}</td>
+                    </tr>
+            {% else %}
+                    <tr>
+                        <td class="xar-accent" align="center">
+                            <input type="checkbox" name="fileId[]" id="fileId_{{ loop_item1['fileId'] }}" value="{{ loop_item1['fileId'] }}"/>
+                        </td>
+                        <td class="xar-accent" align="center">&#160;
+                            <a style="cursor: pointer;" onclick="PropertiesDialog('{{ xar_moduleurl('uploads','user','file_properties', {'fileId': loop_item1['fileId']}) }}'); return false;">
+                                {{ loop_item1['fileName'] }}
+                            </a>
+                        </td>
+                        <td class="xar-accent" align="center">&#160;{% if numassoc[loop_item1['fileId']] %}<a href="{{ xar_moduleurl('uploads','admin','assoc',{'fileId': loop_item1['fileId']}) }}">{{ numassoc[loop_item1['fileId']] }}</a>{% endif %}</td>
+                        <td class="xar-accent" align="right">&#160;{{ loop_item1['fileSize'] }}</td>
+                        <td class="xar-accent" align="center">&#160;{% if loop_item1['fileModified'] %}{{ xar_localedate(loop_item1['fileModified'], 'medium', '') }}{% endif %}</td>
+                        <td class="xar-accent" align="center">&#160;{{ loop_item1['userName'] }}</td>
+                        <td class="xar-accent" align="center">&#160;{{ loop_item1['fileStatusName'] }}</td>
+                    </tr>  
+            {% endif %}
+            {% endfor %}
+                    <tr>
+                        <td colspan="7" class="xar-norm xar-align-center">
+    [&#160;<a href="javascript:xar_base_checkall(document.forms['viewfiles'],true)">Check All</a>&#160;|&#160;<a href="javascript:xar_base_checkall(document.forms['viewfiles'],false)">Uncheck All</a>&#160;]
+                 {{ pager }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <table summary="Commands" width="100%" border="0" cellpadding="0" cellspacing="0" class="xar-norm">
+                            <tr>
+                                <td width="100%">
+                                    Change selected files to:&#160;
+                                    <select name="action" id="action">
+                                        {% for key, status in filters['status'] %}
+                                            {% if key == '0' %}
+                                                {#   skip  #}
+                                            {% else %}
+                                                <option value="{{ status['statusId'] }}">
+                                                    {{ status['statusName'] }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% set label = 'Change' %}
+                                    {{- xar_button({type: "submit", name: "fileDo", id: "file_change", label: label}) -}}
+                                </td>
+                            </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </form>
+                <tr>
+                    <td colspan="7" style="text-align:right;">
+                        {% if not xar_modulevar('uploads', 'file.auto-purge') %}
+                        <form action="{{ xar_moduleurl('uploads','admin','purge_rejected') }}" method="post">
+                            <input type="hidden" name="authid" value="{{ xar_coremethod('xarSec', 'genAuthKey') }}"/>
+                            {% set label = 'Purge Rejected Files' %}
+                            {{- xar_button({type: "submit", name: "fileDo", id: "fileDo_purge", label: label}) -}}
+                        </form>
+                        {% else %}
+                            &#160;
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="xar-norm" colspan="7" align="center">
+                        <p>
+                            There are currently no files to view with the filter you have chosen.
+                        </p>
+                    </td>
+                </tr>
+            {% endif %}
+            </table>
+    </div>
+{% endblock %}

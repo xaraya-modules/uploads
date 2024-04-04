@@ -1,0 +1,46 @@
+{# @uploads/admin/fileimport.html.twig #}
+
+{% block fileimport %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body"><h2>
+        Import Files</h2>
+        {% if file2import is not null and (file2import != '') %}
+            {{ file2import }} imported successfully.
+        {% endif %}
+
+    {% if files is iterable and files|length %}
+    <form method="post" action="{{ xar_moduleurl('uploads', 'admin', 'fileimport') }}">
+        <table summary="Imported Files" width="100%" border="0" cellpadding="2" cellspacing="1" class="xar-accent">
+        <tr>
+            <th>File<input type="hidden" name="authid" value="{{ authid }}"/></th>
+            <th>In System As</th>
+            <th>Import</th>
+        </tr>
+
+        {% for loop_key1, loop_item1 in files %}{% set loop_index1 = loop.index %}
+            <tr>
+                    {% if loop_item1['insystem'] == 'No' %}
+                <td class="xar-norm"><label for="file2import[{{ loop_item1['filename'] }}]">{{ loop_item1['filename'] }}</label></td>
+                        <td class="xar-norm"><input type="checkbox" name="file2import[{{ loop_item1['filename'] }}]" id="file2import[{{ loop_item1['filename'] }}]" value="1"/></td>
+                        <td class="xar-norm"><a href="{{ loop_item1['importlink'] }}">Import</a></td>
+                    {% else %}
+                <td class="xar-norm">{{ loop_item1['filename'] }}</td>
+                        <td class="xar-norm">{{ loop_item1['ulfile'] }}</td>
+                        <td class="xar-norm"></td>
+                    {% endif %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" align="center">
+            {% set label = 'Import' %}
+            {{- xar_button({type: "submit", label: label}) -}}
+            </td>
+        </tr>
+        </table>
+    </form>
+    {% else %}
+        No files found to import.
+    {% endif %}
+
+    </div>
+{% endblock %}

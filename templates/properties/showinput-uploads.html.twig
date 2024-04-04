@@ -1,0 +1,93 @@
+{# @uploads/properties/showinput-uploads.html.twig #}
+
+{% block showinput_uploads %}
+{{ xar_javascript({module: "uploads", filename: "switchImport.js"}) }}
+    {{ xar_style({scope: "module", module: "uploads", file: "uploads"}) }}
+    {% if file_input_methods|length > 1 %}
+        Attach file(s) from source:
+        <div>
+            {% if getAction['LOCAL'] in file_input_methods %}
+                <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport({{ getAction['LOCAL'] }}, '{{ id }}');true;" 
+                   name="attach_trusted_{{ id }}" title="{{ xar_translate('Attach file from Trusted Directory') }}">Trusted
+                </a> |
+            {% endif %}
+    
+            {% if getAction['EXTERNAL'] in file_input_methods %}
+                <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport({{ getAction['EXTERNAL'] }}, '{{ id }}');true;" 
+                   name="attach_external_{{ id }}" title="{{ xar_translate('Attach file from external source (http(s) }}|ftp)') }}">External
+                </a> |
+            {% endif %}
+    
+            {% if getAction['UPLOAD'] in file_input_methods %}
+                <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport({{ getAction['UPLOAD'] }}, '{{ id }}');true;" 
+                   name="attach_upload_{{ id }}" title="{{ xar_translate('Attach uploaded file') }}">Upload
+                </a> |
+            {% endif %}
+    
+            {% if getAction['STORED'] in file_input_methods %}
+                <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport({{ getAction['STORED'] }}, '{{ id }}');true;" 
+                   name="attach_stored_{{ id }}" title="{{ xar_translate('Attach previously stored file') }}">Stored
+                </a> |
+            {% endif %}
+    
+            <a class="xar-uploads-action" onclick="javascript:xar_uploads_switchImport(-1, '{{ id }}');true;" 
+               name="attach_reset_{{ id }}" title="{{ xar_translate('Revert to initial state') }}">Reset
+            </a>
+        </div>
+    {% endif %}
+
+    {% if attachments %}
+        <span style="margin-left: 10px;" id="{{ id }}_alist">
+            Currently stored:&#160;
+            {% for attachment in attachments %}
+                {{ attachment.fileName }}&#160;
+            {% endfor %}
+            {% set name = id ~ '_clear' %}
+            {{ xar_data_input({type: "checkbox", name: name}) }} 
+            <label for="{{ id }}_attach_clear" title="{{ xar_translate('Clear stored value') }}">
+                Remove
+            </label>
+        </span>
+    {% endif %}
+    {% set setdisplay = 'none' %}
+    {% if active_method == getAction['LOCAL'] %}
+        {% set setdisplay = 'block' %}
+    {% endif %}
+    <div id="{{ id }}_attach_trusted" style="display: {{ setdisplay }};">
+        {{ include('@uploads/includes/attach_trusted.html.twig') }}
+    </div>
+
+    {% set setdisplay = 'none' %}
+    {% if active_method == getAction['EXTERNAL'] %}
+        {% set setdisplay = 'block' %}
+    {% endif %}
+    <div id="{{ id }}_attach_external" style="display: {{ setdisplay }};">
+        {{ include('@uploads/includes/attach_external.html.twig') }}
+    </div>
+
+    {% set setdisplay = 'none' %}
+    {% if active_method == getAction['UPLOAD'] %}
+        {% set setdisplay = 'block' %}
+    {% endif %}
+    <div id="{{ id }}_attach_upload" style="display: {{ setdisplay }};">
+        {{ include('@uploads/includes/attach_upload.html.twig') }}
+        {% if file_extensions %}
+            <div>
+                {{ xar_translate('Allowed file types : #(1)', file_extensions) }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% set setdisplay = 'none' %}
+    {% if active_method == getAction['STORED'] %}
+        {% set setdisplay = 'block' %}
+    {% endif %}
+    <div id="{{ id }}_attach_stored" style="display: {{ setdisplay }};">
+        {{ include('@uploads/includes/attach_stored.html.twig') }}
+    </div>
+
+    <input type="hidden" name="{{ name }}_active_method" id="{{ id }}_active_method" value="{{ active_method }}"/>
+    <input type="hidden" name="{{ name }}_initial_method" id="{{ id }}_initial_method" value="{{ initial_method }}"/>
+
+    {{ include('@base/includes/dataproperty_additions.html.twig') }}
+{% endblock %}

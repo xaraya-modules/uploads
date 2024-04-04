@@ -1,0 +1,55 @@
+{# @uploads/admin/purge_rejected.html.twig #}
+
+{% block purge_rejected %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Purge Rejected Files</h2>
+                {% if not fileList|length %}
+                    <p class="xar-norm xar-align-left">&#160;
+                        
+                            There are no files marked as rejected.
+                        
+                    </p>
+                {% else %}
+                    <form action="{{ xar_moduleurl('uploads','admin','purge_rejected') }}" method="post">
+                        <fieldset>
+                            <legend>
+                                Delete confirmation
+                            </legend>
+                            <div class="xar-form-input-wrapper">
+                                <label for="confirmdelete" class="xar-form-label" title="{{ xar_translate('Confirm deletion of this rejected file') }}">
+                                    
+                                        Are you sure you want to delete the following files?
+                                    &#160;
+                                </label>
+
+                                {% set label = 'Delete' %}
+                                {{- xar_button({type: "submit", name: "submit", label: label}) -}}
+                            </div>
+                            <div class="xar-form-input-wrapper-before">
+                                <ul>
+                                {% for loop_key1, loop_item1 in fileList %}{% set loop_index1 = loop.index %}
+                                    {# <!-- TODO: reformulate this --> #}
+                               <li style="list-type-style:none;">
+                                <a onclick="MyWindow=window.open('{{ xar_moduleurl('uploads','user','file_properties') }}&amp;fileId={{ loop_item1['fileId'] }}',
+                                                                '{{ loop_item1['fileName'] }}',
+                                                                'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500,height=375,left=20,top=20');
+                                                                return false;">
+                                    {{ loop_item1['fileName'] }}
+                                </a>
+                               </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            </fieldset>
+                            <div class="xar-form-input-wrapper">
+                                <input type="hidden" name="authid" value="{{ authid }}"/>
+                                <input type="hidden" name="confirmation" value="1"/>
+
+                                {% set label = 'Cancel' %}
+                                {{- xar_button({type: "cancel", label: label}) -}}
+                            </div>
+                            </form>
+                {% endif %}
+    </div>
+{% endblock %}

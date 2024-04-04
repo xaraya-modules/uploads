@@ -1,0 +1,36 @@
+{# @uploads/includes/attach_stored.html.twig #}
+
+{% block attach_stored %}
+{% if storedList is not null and storedList|length %}
+            Attach a previously stored file:<br />
+
+            {% set multiple = "multiple_{id}" %}
+
+            {% if multiple is not null and multiple == TRUE %}
+                <select name="{{ id }}_attach_stored[]" id="{{ id }}_attach_stored_id" multiple="multiple" size="5">
+                    {# <!-- TODO: consider putting this in an separate template --> #}
+                    {% for loop_key1, loop_item1 in storedList %}{% set loop_index1 = loop.index %}
+                        {% if loop_item1['selected'] is not null %}
+                            <option value="{{ loop_item1['fileId'] }}" selected="selected">{{ loop_item1['fileHashRealName'] }}</option>
+                        {% else %}
+                            <option value="{{ loop_item1['fileId'] }}">{{ loop_item1['fileHashRealName'] }}</option>
+                        {% endif %}
+                    </xar:loop>
+                </select>
+            {% else %}
+                {# <!-- TODO: consider putting this in an separate template --> #}
+                <select name="{{ id }}_attach_stored[]" id="{{ id }}_attach_stored_id" size="5">
+                    <xar:loop name="$storedList">
+                        {% if loop_item1['selected'] is not null %}
+                            <option value="{{ loop_item1['fileId'] }}" selected="selected">{{ loop_item1['fileHashRealName'] }}</option>
+                        {% else %}
+                            <option value="{{ loop_item1['fileId'] }}">{{ loop_item1['fileHashRealName'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+    {% else %}
+        No files to display<br />
+        <input type="hidden" name="{{ id }}_attach_stored[]" value="" style="display: none;"/>
+    {% endif %}
+{% endblock %}

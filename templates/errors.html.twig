@@ -1,0 +1,48 @@
+{# @uploads/errors.html.twig #}
+
+{% extends '@uploads/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">Upload Error</span>
+    </div>
+    <div class="xar-mod-body">
+        <fieldset>
+            <legend>Problem Uploading</legend>
+            {% set label = 'System Message' %}
+            {{- xar_image({scope: "theme", file: "user-error.png", alt: label, width: "96", height: "96", class: "xar-module-icon"}) -}}
+            {% if layout is null %}
+                <div style="margin-top: 20px">No error message is available. 
+                <br />Please contact the system administrator.</div>
+            {% elseif layout == 'dir_not_set' %}
+                <div style="margin-top: 20px">
+                    The directory is not set.
+                </div>
+            {% elseif layout == 'dir_not_found' %}
+                <div style="margin-top: 20px">
+                    The location [{{ location }}] either does not exist or is not a valid directory.
+                </div>
+            {% elseif layout == 'dir_not_writable' %}
+                <div style="margin-top: 20px">
+                    The location [{{ location }}] cannot be written to - please check permissions and try again
+                </div>
+            {% elseif layout == 'maxfilesize' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                   File size exceeds the maximum allowable based on the server's settings.
+                   <br/> Maximun allowed file size: {{ maxallowed }}
+                </div>
+            {% elseif layout == 'not_accessible' %}
+                <div style="margin-top: 20px">
+                    The file you requested is not available.
+                </div>
+            {% elseif layout == 'no_permission' %}
+                <div style="margin-top: 20px">
+                    You are not allowed to access this file.
+                </div>
+            {% else %}
+                <div style="margin-top: 20px">No error message is available. 
+                <br />Please contact the system administrator.</div>
+            {% endif %}
+        </fieldset>
+    </div>
+{% endblock %}

@@ -1,0 +1,173 @@
+{# @uploads/admin/privileges.html.twig #}
+
+{% block privileges %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>
+            {{ xar_translate('Select Access Modes for Privilege \'#(1)\'') }}
+        </h2>
+
+
+        <form method="post" action="{{ xar_moduleurl('uploads', 'admin', 'privileges') }}">
+            <input type="hidden" name="extpid" id="extpid" value="{{ extpid }}"/>
+            <input type="hidden" name="extname" id="extname" value="{{ extname }}"/>
+            <input type="hidden" name="extrealm" id="extrealm" value="{{ extrealm }}"/>
+            <input type="hidden" name="extmodule" id="extmodule" value="{{ extmodule }}"/>
+            <input type="hidden" name="extcomponent" id="extcomponent" value="{{ extcomponent }}"/>
+
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr>
+                    <th>
+                        
+                            MIME Type
+                        
+                    </th>
+                    <td>
+                        <select name="mimetype" id="mimetype" onchange="this.form.submit();">
+                            {% for key, type in mimetypeList %}
+                                {% if type['selected'] is not null %}
+                                    <option value="{{ type['typeId'] }}" selected="selected">
+                                        {{ type['typeName'] }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ type['typeId'] }}">
+                                        {{ type['typeName'] }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        
+                            MIME SubType
+                        
+                    </th>
+                    <td>
+                        <select name="subtype" id="subtypeList" onchange="this.form.submit();">
+                            {% for key, subtype in subtypeList %}
+                                {% if subtype['selected'] is not null %}
+                                    <option value="{{ subtype['subtypeId'] }}" selected="selected">
+                                        {{ subtype['subtypeName'] }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ subtype['subtypeId'] }}">
+                                        {{ subtype['subtypeName'] }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        
+                            User
+                        
+                    </th>
+                    <td>
+                        <select name="userId" id="userNameList" onchange="this.form.submit();">
+                            {% for userId, user in userNameList %}
+                                {% if user['selected'] is not null %}
+                                    <option value="{{ userId }}" selected="selected">
+                                        {{ user['userName'] }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ userId }}">
+                                        {{ user['userName'] }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="text" name="userName" id="userName" value="{{ userName }}" size="15" onchange="submit()"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        
+                            File
+                        
+                    </th>
+                    <td>
+                        <select name="fileId" id="fileList" onchange="this.form.submit();">
+                            {% for fileId, file in fileList %}
+                                {% if file['selected'] is not null %}
+                                    <option value="{{ fileId }}" selected="selected">
+                                        {{ file['fileName'] }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ fileId }}">
+                                        {{ file['fileName'] }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" align="right">
+                        Access Level
+                    </th>
+                    <td>
+                        <select name="extlevel" id="extlevel">
+                            {% if extlevel == 0 %}
+                                <option value="0" selected="selected">No Access</option>
+                            {% else %}
+                                <option value="0">No Access</option>
+                            {% endif %}
+                            {% if extlevel == 100 %}
+                                <option value="100" selected="selected">Overview</option>
+                            {% else %}
+                                <option value="100">Overview</option>
+                            {% endif %}
+                            {% if extlevel == 200 %}
+                                <option value="200" selected="selected">Read</option>
+                            {% else %}
+                                <option value="200">Read</option>
+                            {% endif %}
+                            {% if extlevel == 300 %}
+                                <option value="300" selected="selected">Submit (Comment)</option>
+                            {% else %}
+                                <option value="300">Submit (Comment)</option>
+                            {% endif %}
+                            {% if extlevel == 500 %}
+                                <option value="500" selected="selected">Edit / Approve</option>
+                            {% else %}
+                                <option value="500">Edit / Approve</option>
+                            {% endif %}
+                            {% if extlevel == 700 %}
+                                <option value="700" selected="selected">Delete</option>
+                            {% else %}
+                                <option value="700">Delete</option>
+                            {% endif %}
+                            {% if extlevel == 800 %}
+                                <option value="800" selected="selected">Admin</option>
+                            {% else %}
+                                <option value="800">Admin</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                </tr>
+
+                    <tr>
+                        <td colspan="2" align="center">
+                            {% set label = 'Refresh' %}
+                            {{- xar_button({type: "submit", label: label}) -}}
+                        </td>
+                    </tr>
+            </table>
+
+            <br />
+            {{ xar_translate('There are #(1) items matching these selection criteria at the moment') }}
+            <br />
+            <hr />
+            <p>
+            (Instance Definition {{ extinstance }})
+            </p>
+            {% set label = 'Finish and apply to privilege' %}
+            {{- xar_button({type: "submit", label: label}) -}}
+        </form>
+
+    </div>
+{% endblock %}

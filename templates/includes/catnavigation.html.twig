@@ -1,0 +1,8 @@
+{# @uploads/includes/catnavigation.html.twig #}
+
+{% block catnavigation %}
+{% if catid is null %}
+      {% set catid = '' %}
+    {% endif %}
+    {{ xar_data_output({type: "categorynavigation", layout: "trails", showchildren: "1", module: "uploads", urltype: "admin", urlfunc: "view", itemtype: "1", itemid: "0", catid: catid, showcatcount: "0"}) }}
+{% endblock %}

@@ -1,0 +1,16 @@
+{# @uploads/admin/get_files.html.twig #}
+
+{% block get_files %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        {% set orientation = 'horizontal' %}
+        <h2>Upload File</h2>
+        {{ include('@uploads/includes/upload-form.html.twig') }}
+
+        <h2>Import External File(s)</h2>
+        {{ include('@uploads/includes/external-import-form.html.twig') }}
+
+        <h2>Import Local File(s)</h2>
+        {{ include('@uploads/includes/local-import-form.html.twig') }}
+    </div>
+{% endblock %}

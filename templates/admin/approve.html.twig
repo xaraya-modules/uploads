@@ -1,0 +1,30 @@
+{# @uploads/admin/approve.html.twig #}
+
+{% block approve %}
+{{ include('@uploads/includes/admin-mod-head.html.twig') }}
+    <div class="xar-mod-body">
+        <h2>Uploads Module Overview</h2>
+
+            <form action="{{ xar_moduleurl('uploads','admin','approvefinal') }}" method="post">
+            <fieldset>
+                <legend>
+                    Approval
+                </legend>
+                    <div class="xar-form-input-wrapper">
+                        <label for="approval" class="xar-form-label">
+                            Are you sure?
+                        </label>
+                    </div>
+            </fieldset>
+
+            <div class="xar-form-input-wrapper">
+                <input type="hidden" name="authid" value="{{ authid }}"/>
+                <input type="hidden" name="ulid" value="{{ ulid }}"/>
+                <input type="hidden" name="ulhash" value="{{ ulhash }}"/>
+
+                {% set label = 'Approve' %}
+                {{- xar_button({type: "submit", label: label}) -}}
+            </div>
+            </form>
+    </div>
+{% endblock %}

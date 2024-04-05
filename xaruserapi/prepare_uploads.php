@@ -28,11 +28,11 @@
  *  @access  public
  *  @param   boolean obfuscate            whether or not to obfuscate the filename
  *  @param   string  savePath             Complete path to directory in which we want to save this file
- *  @return boolean                      TRUE on success, FALSE on failure
+ *  @return boolean|array                      TRUE on success, FALSE on failure
  */
 
 
-function uploads_userapi_prepare_uploads($args)
+function uploads_userapi_prepare_uploads(array $args = [], $context = null)
 {
     extract($args);
 
@@ -88,19 +88,15 @@ function uploads_userapi_prepare_uploads($args)
     // meets any requirements we might have for it. If it doesn't pass the tests,
     // then return FALSE
     if (!xarMod::apiFunc('uploads', 'user', 'validate_upload', ['fileInfo' => $fileInfo])) {
-        $errorObj = xarCurrentError();
 
         if (is_object($errorObj)) {
             $fileError['errorMesg'] = $errorObj->getShort();
             $fileError['errorId']   = $errorObj->getID();
         } else {
             $fileError['errorMesg'] = 'Unknown Error!';
-            $fileError['errorId']   = _UPLOADS_ERROR_UNKOWN;
+            $fileError['errorId']   = '_UPLOADS_ERROR_UNKOWN';
         }
         $fileInfo['errors']      = [$fileError];
-
-        // clear the exception
-        xarErrorHandled();
 
         // continue on to the next uploaded file in the list
         return ["$fileInfo[fileName]" => $fileInfo];
@@ -121,7 +117,7 @@ function uploads_userapi_prepare_uploads($args)
         'mime',
         'user',
         'analyze_file',
-        ['fileName' => $fileInfo['fileSrc'], 'altFileName'=>$fileInfo['fileName']]
+        ['fileName' => $fileInfo['fileSrc'], 'altFileName' => $fileInfo['fileName']]
     );
 
 
@@ -164,7 +160,7 @@ function uploads_userapi_prepare_uploads($args)
         $i = 0;
         while (file_exists($fileInfo['fileDest'])) {
             $i++;
-            $fileInfo['fileDest'] = $savePath. '/' .$filename. '_' . $i;
+            $fileInfo['fileDest'] = $savePath . '/' . $filename . '_' . $i;
         }
     }
 

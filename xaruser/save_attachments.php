@@ -16,7 +16,7 @@
  * Save attachments
  * @return bool true
  */
-function uploads_user_save_attachments($args)
+function uploads_user_save_attachments(array $args = [], $context = null)
 {
     // Get parameters
     if (!xarVar::fetch('modname', 'isset', $modname, null, xarVar::DONT_SET)) {
@@ -51,7 +51,7 @@ function uploads_user_save_attachments($args)
                                     'rating'     => $rating, ]
     );
 
-    xarController::redirect($returnurl);
+    xarController::redirect($returnurl, null, $context);
 
     return true;
 }

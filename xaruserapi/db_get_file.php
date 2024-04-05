@@ -35,11 +35,10 @@
  * @param  mixed    getnext      (Optional) grab the next file after this one (file id or file name)
  * @param  mixed    getprev      (Optional) grab the previous file before this one (file id or file name)
  *
- * @return array   All of the metadata stored for the particular file(s)
- * @throws BAD_PARAM
+ * @return array|void   All of the metadata stored for the particular file(s)
  */
 
-function uploads_userapi_db_get_file($args)
+function uploads_userapi_db_get_file(array $args = [], $context = null)
 {
     extract($args);
 
@@ -265,9 +264,9 @@ function uploads_userapi_db_get_file($args)
         if (empty($startnum) || !is_numeric($startnum)) {
             $startnum = 1;
         }
-        $result =& $dbconn->SelectLimit($sql, $numitems, $startnum-1);
+        $result = & $dbconn->SelectLimit($sql, $numitems, $startnum - 1);
     } else {
-        $result =& $dbconn->Execute($sql);
+        $result = & $dbconn->Execute($sql);
     }
 
     if (!$result) {

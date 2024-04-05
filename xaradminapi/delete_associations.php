@@ -27,10 +27,10 @@
  *  @return  mixed TRUE on success, void with exception on error
  */
 
-function uploads_adminapi_delete_associations($args)
+function uploads_adminapi_delete_associations(array $args = [], $context = null)
 {
     // FIXME: don't use this as such in the uploads_guimods version, because you'd
-//        loose information about the categories and direct file associations
+    //        loose information about the categories and direct file associations
 
     extract($args);
 

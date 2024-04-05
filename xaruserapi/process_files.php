@@ -29,7 +29,7 @@
 
 xarMod::apiLoad('uploads', 'user');
 
-function uploads_userapi_process_files($args)
+function uploads_userapi_process_files(array $args = [], $context = null)
 {
     extract($args);
 
@@ -126,7 +126,7 @@ function uploads_userapi_process_files($args)
                             $fileList[0] = $file;
                             break;
 
-                        // if we want to replace duplicate files
+                            // if we want to replace duplicate files
                         } elseif ($allow_duplicate == 2) {
                             // pass original fileId and fileLocation to $upload,
                             // and do something special in prepare_uploads / file_store ?

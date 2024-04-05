@@ -22,7 +22,7 @@
  * @return boolean             true if successful, false otherwise
  */
 
-function uploads_userapi_purge_files($args)
+function uploads_userapi_purge_files(array $args = [], $context = null)
 {
     extract($args);
 

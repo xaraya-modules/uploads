@@ -18,7 +18,7 @@
  * @return array
  * @return $array[$modid][$itemtype] = array('items' => $numitems,'files' => $numfiles,'links' => $numlinks);
  */
-function uploads_userapi_db_group_associations($args)
+function uploads_userapi_db_group_associations(array $args = [], $context = null)
 {
     // Get arguments from argument array
     extract($args);

@@ -21,7 +21,7 @@
  *  @return <type>
  */
 
-function uploads_userapi_file_rename($args)
+function uploads_userapi_file_rename(array $args = [], $context = null)
 {
     return xarMod::apiFunc('uploads', 'user', 'file_move', $args);
 }

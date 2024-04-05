@@ -26,7 +26,7 @@
  *  @return boolean TRUE on success, FALSE otherwise
  */
 
-function uploads_userapi_file_move($args)
+function uploads_userapi_file_move(array $args = [], $context = null)
 {
     extract($args);
 

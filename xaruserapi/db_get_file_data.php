@@ -23,11 +23,10 @@
  * @access public
  * @param  integer  fileId     The ID of the file we are are retrieving
  *
- * @return array   All the (4K) blocks stored for this file
- * @throws BAD_PARAM
+ * @return array|void   All the (4K) blocks stored for this file
  */
 
-function uploads_userapi_db_get_file_data($args)
+function uploads_userapi_db_get_file_data(array $args = [], $context = null)
 {
     extract($args);
 

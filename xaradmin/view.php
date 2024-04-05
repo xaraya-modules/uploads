@@ -27,9 +27,9 @@ xarMod::apiLoad('uploads', 'user');
  * @param int numitems
  * @param string sort
  * @param string catid
- * @return array
+ * @return array|void
  */
-function uploads_admin_view()
+function uploads_admin_view(array $args = [], $context = null)
 {
     //security check
     if (!xarSecurity::check('AdminUploads')) {
@@ -218,7 +218,7 @@ function uploads_admin_view()
     /**
      *  Check for exceptions
      */
-    if (!isset($items) && xarCurrentErrorType() != XAR_NO_EXCEPTION) {
+    if (!isset($items)) {
         return;
     } // throw back
 

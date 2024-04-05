@@ -15,7 +15,7 @@
 /**
  * Modify the configuration for the Uploads module
  */
-function uploads_admin_modifyconfig()
+function uploads_admin_modifyconfig(array $args = [], $context = null)
 {
     xarMod::apiLoad('uploads', 'user');
 

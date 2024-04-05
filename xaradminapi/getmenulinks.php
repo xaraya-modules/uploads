@@ -18,7 +18,7 @@
  * @return array
  * @return array containing the menulinks for the main menu items.
  */
-function uploads_adminapi_getmenulinks()
+function uploads_adminapi_getmenulinks(array $args = [], $context = null)
 {
     return xarMod::apiFunc('base', 'admin', 'loadmenuarray', ['modname' => 'uploads', 'modtype' => 'admin']);
 }

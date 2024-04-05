@@ -15,7 +15,7 @@
 /**
  * View statistics about file associations (adapted from categories stats)
  */
-function uploads_admin_assoc()
+function uploads_admin_assoc(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminUploads')) {
@@ -91,7 +91,7 @@ function uploads_admin_assoc()
                 if (!$result) {
                     return;
                 }
-                xarController::redirect(xarController::URL('uploads', 'admin', 'assoc'));
+                xarController::redirect(xarController::URL('uploads', 'admin', 'assoc'), null, $context);
                 return true;
             }
         }
@@ -120,14 +120,11 @@ function uploads_admin_assoc()
         foreach ($modlist as $modid => $itemtypes) {
             $modinfo = xarMod::getInfo($modid);
             // Get the list of all item types for this module (if any)
-            $mytypes = xarMod::apiFunc(
-                $modinfo['name'],
-                'user',
-                'getitemtypes',
-                // don't throw an exception if this function doesn't exist
-                [],
-                0
-            );
+            try {
+                $mytypes = xarMod::apiFunc($modinfo['name'], 'user', 'getitemtypes');
+            } catch (Exception $e) {
+                $mytypes = [];
+            }
             foreach ($itemtypes as $itemtype => $stats) {
                 $moditem = [];
                 $moditem['numitems'] = $stats['items'];
@@ -135,11 +132,11 @@ function uploads_admin_assoc()
                 $moditem['numlinks'] = $stats['links'];
                 if ($itemtype == 0) {
                     $moditem['name'] = ucwords($modinfo['displayname']);
-                //    $moditem['link'] = xarController::URL($modinfo['name'],'user','main');
+                    //    $moditem['link'] = xarController::URL($modinfo['name'],'user','main');
                 } else {
                     if (isset($mytypes) && !empty($mytypes[$itemtype])) {
                         $moditem['name'] = ucwords($modinfo['displayname']) . ' ' . $itemtype . ' - ' . $mytypes[$itemtype]['label'];
-                    //    $moditem['link'] = $mytypes[$itemtype]['url'];
+                        //    $moditem['link'] = $mytypes[$itemtype]['url'];
                     } else {
                         $moditem['name'] = ucwords($modinfo['displayname']) . ' ' . $itemtype;
                         //    $moditem['link'] = xarController::URL($modinfo['name'],'user','view',array('itemtype' => $itemtype));
@@ -209,17 +206,14 @@ function uploads_admin_assoc()
             }
         } else {
             // Get the list of all item types for this module (if any)
-            $mytypes = xarMod::apiFunc(
-                $modinfo['name'],
-                'user',
-                'getitemtypes',
-                // don't throw an exception if this function doesn't exist
-                [],
-                0
-            );
+            try {
+                $mytypes = xarMod::apiFunc($modinfo['name'], 'user', 'getitemtypes');
+            } catch (Exception $e) {
+                $mytypes = [];
+            }
             if (isset($mytypes) && !empty($mytypes[$itemtype])) {
                 $data['modname'] = ucwords($modinfo['displayname']) . ' ' . $itemtype . ' - ' . $mytypes[$itemtype]['label'];
-            //    $data['modlink'] = $mytypes[$itemtype]['url'];
+                //    $data['modlink'] = $mytypes[$itemtype]['url'];
             } else {
                 $data['modname'] = ucwords($modinfo['displayname']) . ' ' . $itemtype;
                 //    $data['modlink'] = xarController::URL($modinfo['name'],'user','view',array('itemtype' => $itemtype));
@@ -283,14 +277,17 @@ function uploads_admin_assoc()
         $showtitle = true;
         if (!empty($getitems) && !empty($showtitle)) {
             $itemids = array_keys($getitems);
-            $itemlinks = xarMod::apiFunc(
-                $modinfo['name'],
-                'user',
-                'getitemlinks',
-                ['itemtype' => $itemtype,
-                                            'itemids' => $itemids, ],
-                0
-            ); // don't throw an exception here
+            try {
+                $itemlinks = xarMod::apiFunc(
+                    $modinfo['name'],
+                    'user',
+                    'getitemlinks',
+                    ['itemtype' => $itemtype,
+                    'itemids' => $itemids]
+                );
+            } catch (Exception $e) {
+                $itemlinks = [];
+            }
         } else {
             $itemlinks = [];
         }

@@ -18,7 +18,7 @@
  * @return array
  * @return array containing the item types and their description
  */
-function uploads_userapi_getitemtypes($args)
+function uploads_userapi_getitemtypes(array $args = [], $context = null)
 {
     $itemtypes = [];
 

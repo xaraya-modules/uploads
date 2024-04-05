@@ -29,7 +29,7 @@
  * @return integer             The total amount of diskspace used by the current set of selected files
  */
 
-function uploads_userapi_db_diskusage($args)
+function uploads_userapi_db_diskusage(array $args = [], $context = null)
 {
     extract($args);
 
@@ -69,7 +69,7 @@ function uploads_userapi_db_diskusage($args)
 
     if (count($where) > 1) {
         if ($inverse) {
-            $where = 'WHERE NOT (' . implode(' OR ', $where) .')';
+            $where = 'WHERE NOT (' . implode(' OR ', $where) . ')';
         } else {
             $where = 'WHERE ' . implode(' AND ', $where);
         }

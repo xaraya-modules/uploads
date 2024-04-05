@@ -19,7 +19,7 @@
  * @return string relative path of the directory
  */
 
-function uploads_userapi_db_get_dir($args)
+function uploads_userapi_db_get_dir(array $args = [], $context = null)
 {
     extract($args);
 

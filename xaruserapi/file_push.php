@@ -25,11 +25,9 @@
  *  @param    long int  fileSize        The size of the file (in bytes)
  *  @param    int       storeType       The type of storage of the file
  *  @return  boolean                    This function will return true upon succes and, returns False and throws an exception otherwise
- *  @throws   BAD_PARAM                 missing or invalid parameter
- *  @throws   UPLOADS_ERR_NO_READ       couldn't read from the specified file
  */
 
-function uploads_userapi_file_push($args)
+function uploads_userapi_file_push(array $args = [], $context = null)
 {
     extract($args);
 
@@ -171,6 +169,5 @@ function uploads_userapi_file_push($args)
     unset($pageBuffer);
 
     $msg = xarML('Could not open file [#(1)] for reading', $fileName);
-    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'UPLOADS_ERR_NO_READ', new SystemException($msg));
-    return false;
+    throw new BadParameterException(null, $msg);
 }

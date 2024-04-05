@@ -17,7 +17,7 @@
  * This function redirects the user to the view function
  * @return bool true
  */
-function uploads_admin_main()
+function uploads_admin_main(array $args = [], $context = null)
 {
     if (!xarSecurity::check('EditUploads')) {
         return;
@@ -26,7 +26,7 @@ function uploads_admin_main()
     if (xarModVars::get('modules', 'disableoverview') == 0) {
         return [];
     } else {
-        xarController::redirect(xarController::URL('uploads', 'admin', 'view'));
+        xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $context);
     }
     // success
     return true;

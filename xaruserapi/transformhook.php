@@ -27,16 +27,16 @@ function & uploads_userapi_transformhook($args)
         if (isset($extrainfo['transform']) && is_array($extrainfo['transform'])) {
             foreach ($extrainfo['transform'] as $key) {
                 if (isset($extrainfo[$key])) {
-                    $extrainfo[$key] =& uploads_userapi_transform($extrainfo[$key]);
+                    $extrainfo[$key] = & uploads_userapi_transform($extrainfo[$key]);
                 }
             }
             return $extrainfo;
         }
         foreach ($extrainfo as $key => $text) {
-            $result[] =& uploads_userapi_transform($text);
+            $result[] = & uploads_userapi_transform($text);
         }
     } else {
-        $result =& uploads_userapi_transform($extrainfo);
+        $result = & uploads_userapi_transform($extrainfo);
     }
     return $result;
 }
@@ -47,7 +47,7 @@ function & uploads_userapi_transformhook($args)
 function & uploads_userapi_transform($body)
 {
     while (preg_match('/#(ulid|file|ulidd|ulfn|fileURL|fileIcon|fileName|fileLinkedIcon):([^#]+)#/i', $body, $matches)) {
-        $replacement=null;
+        $replacement = null;
         array_shift($matches);
         [$type, $id] = $matches;
         switch ($type) {

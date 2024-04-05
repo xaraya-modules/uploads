@@ -30,7 +30,7 @@
  *  @return integer The number of affected rows on success, or FALSE on error
  */
 
-function uploads_userapi_db_modify_file($args)
+function uploads_userapi_db_modify_file(array $args = [], $context = null)
 {
     extract($args);
 

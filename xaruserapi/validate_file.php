@@ -26,7 +26,7 @@
  *                   fileInfo['fileSize']   The size of the file (in bytes)
  *  @return boolean            TRUE if it passed the checks, FALSE otherwise
  */
-function uploads_userapi_validate_file($args)
+function uploads_userapi_validate_file(array $args = [], $context = null)
 {
     extract($args);
 

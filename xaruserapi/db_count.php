@@ -32,7 +32,7 @@
  * @return array   All of the metadata stored for the particular file
  */
 
-function uploads_userapi_db_count($args)
+function uploads_userapi_db_count(array $args = [], $context = null)
 {
     extract($args);
 

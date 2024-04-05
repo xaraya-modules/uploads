@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_userapi_process_filters($args)
+function uploads_userapi_process_filters(array $args = [], $context = null)
 {
     extract($args);
     /**
@@ -27,9 +27,9 @@ function uploads_userapi_process_filters($args)
 
     $data      =  $options['data'];
     $filter    =  $options['filter'];
-    $mimetypes =& $data['filters']['mimetypes'];
-    $subtypes  =& $data['filters']['subtypes'];
-    $statuses  =& $data['filters']['status'];
+    $mimetypes = & $data['filters']['mimetypes'];
+    $subtypes  = & $data['filters']['subtypes'];
+    $statuses  = & $data['filters']['status'];
 
     $data['filters']['inverse'] = $inverse ?? false;
     $filter['inverse']  = $inverse ?? false;

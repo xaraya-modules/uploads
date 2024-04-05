@@ -19,7 +19,7 @@
  * @since 19 Feb 2008
  * @return array count of the files in 'submitted' status
  */
-function uploads_admin_waitingcontent()
+function uploads_admin_waitingcontent(array $args = [], $context = null)
 {
     // Get count of files in submitted state
     unset($count_submitted);

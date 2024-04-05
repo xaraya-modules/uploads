@@ -22,7 +22,7 @@
  */
 
 
-function uploads_userapi_encode_shorturl($args)
+function uploads_userapi_encode_shorturl(array $args = [], $context = null)
 {
     // Get arguments from argument array
     extract($args);

@@ -29,7 +29,7 @@
  *  @return integer The id of the fileEntry that was added, or FALSE on error
  */
 
-function uploads_userapi_db_add_file($args)
+function uploads_userapi_db_add_file(array $args = [], $context = null)
 {
     extract($args);
 
@@ -87,7 +87,7 @@ function uploads_userapi_db_add_file($args)
     }
 
     if (!isset($fileType)) {
-        $fileType = xarMod::apiFunc('mime', 'user', 'analyze_file', ['fileName' => $fileLocation, 'altFileName'=>$fileName]);
+        $fileType = xarMod::apiFunc('mime', 'user', 'analyze_file', ['fileName' => $fileLocation, 'altFileName' => $fileName]);
         if (empty($fileType)) {
             $fileType = 'application/octet-stream';
         }

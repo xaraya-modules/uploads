@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_userapi_uploadmagic($args)
+function uploads_userapi_uploadmagic(array $args = [], $context = null)
 {
     $fileUpload = xarMod::apiFunc('uploads', 'user', 'upload', $args);
 

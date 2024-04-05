@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_userapi_normalize_filesize($args)
+function uploads_userapi_normalize_filesize(array $args = [], $context = null)
 {
     if (is_array($args)) {
         extract($args);
@@ -30,7 +30,7 @@ function uploads_userapi_normalize_filesize($args)
         $size /= 1024;
     }
 
-    $short = round($size, 2).' '.$range[$i];
+    $short = round($size, 2) . ' ' . $range[$i];
 
     return ['long' => number_format($fileSize), 'short' => $short];
 }

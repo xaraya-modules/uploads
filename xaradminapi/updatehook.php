@@ -21,9 +21,8 @@
  * @param $args['extrainfo'] extra information
  * @return bool
  * @return true on success, false on failure
- * @throws BAD_PARAM, NO_PERMISSION, DATABASE_ERROR
  */
-function uploads_adminapi_updatehook($args)
+function uploads_adminapi_updatehook(array $args = [], $context = null)
 {
     extract($args);
 
@@ -33,7 +32,7 @@ function uploads_adminapi_updatehook($args)
 
     if (!isset($objectid) || !is_numeric($objectid)) {
         $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID', 'admin', 'createhook', 'uploads');
-        xarErrorSet(XAR_USER_EXCEPTION, 'BAD_PARAM', new SystemException($msg));
+        //throw new BadParameterException(null, $msg);
         // Return the extra info
         return $extrainfo;
     }
@@ -49,7 +48,7 @@ function uploads_adminapi_updatehook($args)
     $modid = xarMod::getRegID($modname);
     if (empty($modid)) {
         $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module name', 'admin', 'createhook', 'uploads');
-        xarErrorSet(XAR_USER_EXCEPTION, 'BAD_PARAM', new SystemException($msg));
+        //throw new BadParameterException(null, $msg);
         // Return the extra info
         return $extrainfo;
     }

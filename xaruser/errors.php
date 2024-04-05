@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_user_errors()
+function uploads_user_errors(array $args = [], $context = null)
 {
     if (!xarSecurity::check('ViewUploads')) {
         return;

@@ -25,7 +25,7 @@
 
 xarMod::apiLoad('uploads', 'user');
 
-function uploads_user_purge_rejected($args)
+function uploads_user_purge_rejected(array $args = [], $context = null)
 {
     extract($args);
 
@@ -55,7 +55,7 @@ function uploads_user_purge_rejected($args)
         );
 
         if (empty($fileList)) {
-            xarController::redirect(xarController::URL('uploads', 'admin', 'view'));
+            xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $context);
             return;
         } else {
             $result = xarMod::apiFunc(
@@ -86,5 +86,5 @@ function uploads_user_purge_rejected($args)
         return $data;
     }
 
-    xarController::redirect(xarController::URL('uploads', 'admin', 'view'));
+    xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $context);
 }

@@ -25,7 +25,7 @@
  *  @return integer The id of the file that was associated, FALSE with exception on error
  */
 
-function uploads_userapi_db_add_association($args)
+function uploads_userapi_db_add_association(array $args = [], $context = null)
 {
     extract($args);
 
@@ -76,7 +76,7 @@ function uploads_userapi_db_add_association($args)
                VALUES
                       ( ?, ?, ?, ? )";
 
-    $bindvars = [(int)$fileId,(int)$modid,(int)$itemtype,(int)$itemid];
+    $bindvars = [(int) $fileId,(int) $modid,(int) $itemtype,(int) $itemid];
     $result = &$dbconn->Execute($sql, $bindvars);
 
     if (!$result) {

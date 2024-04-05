@@ -26,7 +26,7 @@
  *                            or an array of fileId's and their number of associations
  */
 
-function uploads_userapi_db_count_associations($args)
+function uploads_userapi_db_count_associations(array $args = [], $context = null)
 {
     extract($args);
 

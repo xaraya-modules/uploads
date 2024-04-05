@@ -15,7 +15,7 @@
 // load defined constants
 xarMod::apiLoad('uploads', 'user');
 
-function uploads_admin_get_files()
+function uploads_admin_get_files(array $args = [], $context = null)
 {
     if (!xarSecurity::check('AddUploads')) {
         return;
@@ -129,7 +129,7 @@ function uploads_admin_get_files()
     if (is_array($list) && count($list)) {
         return xarTpl::module('uploads', 'admin', 'addfile-status', ['fileList' => $list], null);
     } else {
-        xarController::redirect(xarController::URL('uploads', 'admin', 'get_files'));
+        xarController::redirect(xarController::URL('uploads', 'admin', 'get_files'), null, $context);
         return;
     }
 

@@ -17,7 +17,7 @@
  * @param string importFrom
  * @return mixed
  */
-function uploads_user_upload()
+function uploads_user_upload(array $args = [], $context = null)
 {
     if (!xarSecurity::check('AddUploads')) {
         return;
@@ -35,6 +35,6 @@ function uploads_user_upload()
     if (is_array($list) && count($list)) {
         return ['fileList' => $list];
     } else {
-        xarController::redirect(xarController::URL('uploads', 'user', 'uploadform'));
+        xarController::redirect(xarController::URL('uploads', 'user', 'uploadform'), null, $context);
     }
 }

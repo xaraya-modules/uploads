@@ -20,7 +20,7 @@
  * @return array
  * @return array containing the itemlink(s) for the item(s).
  */
-function uploads_userapi_getitemlinks($args)
+function uploads_userapi_getitemlinks(array $args = [], $context = null)
 {
     extract($args);
 

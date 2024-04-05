@@ -23,7 +23,7 @@
  * @return array   All of the metadata stored for the particular file
  */
 
-function uploads_userapi_db_get_users($args)
+function uploads_userapi_db_get_users(array $args = [], $context = null)
 {
     extract($args);
 

@@ -21,7 +21,7 @@
  *  @return integer The number of affected rows on success, or FALSE on error
  */
 
-function uploads_userapi_db_change_status($args)
+function uploads_userapi_db_change_status(array $args = [], $context = null)
 {
     extract($args);
 
@@ -51,12 +51,12 @@ function uploads_userapi_db_change_status($args)
     if (isset($fileId)) {
         // Looks like we have an array of file ids, so change them all
         if (is_array($fileId)) {
-            $where = " WHERE xar_fileEntry_id IN (" . implode(',', $fileId) .")";
-        // Guess we're only changing one file id ...
+            $where = " WHERE xar_fileEntry_id IN (" . implode(',', $fileId) . ")";
+            // Guess we're only changing one file id ...
         } else {
             $where = " WHERE xar_fileEntry_id = $fileId";
         }
-    // Otherwise, we're changing based on MIME type
+        // Otherwise, we're changing based on MIME type
     } else {
         if (!$inverse) {
             $where = " WHERE xar_mime_type LIKE '$fileType'";

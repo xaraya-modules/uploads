@@ -16,7 +16,7 @@
  * Update the configuration
  * @return bool
  */
-function uploads_admin_updateconfig()
+function uploads_admin_updateconfig(array $args = [], $context = null)
 {
     // Get parameters
     if (!xarVar::fetch('file', 'list:str:1:', $file, '', xarVar::NOT_REQUIRED)) {
@@ -60,7 +60,7 @@ function uploads_admin_updateconfig()
             }
             // check to make sure that the value passed in is
             // a real uploads module variable
-            if (null !== xarModVars::get('uploads', 'file.'.$varname)) {
+            if (null !== xarModVars::get('uploads', 'file.' . $varname)) {
                 xarModVars::set('uploads', 'file.' . $varname, $value);
             }
         }
@@ -115,7 +115,7 @@ function uploads_admin_updateconfig()
                           'itemtype' => 1, ]
     ); // Files
 
-    xarController::redirect(xarController::URL('uploads', 'admin', 'modifyconfig'));
+    xarController::redirect(xarController::URL('uploads', 'admin', 'modifyconfig'), null, $context);
 
     // Return
     return true;

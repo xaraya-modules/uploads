@@ -34,7 +34,7 @@ class UploadProperty extends FileUploadProperty
 
     public $display_size                      = 40;
     public $validation_max_file_size          = 0;
-//    public $initialization_basepath         = null;
+    //    public $initialization_basepath         = null;
     public $initialization_basedirectory      = 'html/var/uploads';
     public $initialization_import_directory   = null;
     public $initialization_directory_name     = 'User_';
@@ -93,10 +93,10 @@ class UploadProperty extends FileUploadProperty
         // Save the value in a separate var that won't be changed with this->value
     }
 
-    public function checkInput($name='', $value = null)
+    public function checkInput($name = '', $value = null)
     {
-//        if (isset($this->fieldname)) $name = $this->fieldname;
-//        else $name = 'dd_'.$this->id;
+        //        if (isset($this->fieldname)) $name = $this->fieldname;
+        //        else $name = 'dd_'.$this->id;
         if (empty($name)) {
             $name = 'dd_' . $this->id;
         }
@@ -107,7 +107,7 @@ class UploadProperty extends FileUploadProperty
         if (!xarVar::fetch($name . '_clear', 'checkbox', $clear, 0, xarVar::NOT_REQUIRED)) {
             return;
         }
-//        echo $name . '_dbvalue';
+        //        echo $name . '_dbvalue';
         $this->dbvalue = $dbvalue;
         $this->upload_clear = $clear;
         return parent::checkInput($name, $value);
@@ -120,12 +120,12 @@ class UploadProperty extends FileUploadProperty
     {
         // TODO: move some of this to the parent
         // problematic, because the field names are different here and for the parent
-//        if (!parent::validateValue($value)) return false;
+        //        if (!parent::validateValue($value)) return false;
 
         if (isset($this->fieldname)) {
             $name = $this->fieldname;
         } else {
-            $name = 'dd_'.$this->id;
+            $name = 'dd_' . $this->id;
         }
 
         // retrieve new value for preview + new/modify combinations
@@ -147,7 +147,7 @@ class UploadProperty extends FileUploadProperty
                     return;
                 }
 
-                $data['upload'] =& $_FILES[$name . '_attach_upload'];
+                $data['upload'] = & $_FILES[$name . '_attach_upload'];
                 //array_pop($data['upload']);
                 if (empty($data['upload']['name'])) {
                     // No file name entered, ignore
@@ -258,7 +258,7 @@ class UploadProperty extends FileUploadProperty
                 break;
         }
 
-//        if(!$this->createValue($data))return false;
+        //        if(!$this->createValue($data))return false;
 
         // Store the particulares so the createValue method can find them
         $this->propertydata = $data;
@@ -266,16 +266,16 @@ class UploadProperty extends FileUploadProperty
         return true;
     }
 
-    public function updateValue($itemid=0)
+    public function updateValue($itemid = 0)
     {
         return $this->createValue($itemid);
     }
 
-    public function createValue($itemid=0)
+    public function createValue($itemid = 0)
     {
         $data = $this->propertydata;
         if (!empty($data['action'])) {
-//            if (isset($storeType)) $data['storeType'] = $storeType;
+            //            if (isset($storeType)) $data['storeType'] = $storeType;
 
             // This is where the actual saves happen
             $data['override']['upload']['path'] = $this->initialization_basedirectory;
@@ -334,7 +334,7 @@ class UploadProperty extends FileUploadProperty
             $this->name = $data['name'];
         }
         if (empty($data['name'])) {
-            $data['name'] = 'dd_'.$this->id;
+            $data['name'] = 'dd_' . $this->id;
         }
         if (!empty($data['value'])) {
             $this->value = $data['value'];
@@ -542,7 +542,7 @@ class UploadProperty extends FileUploadProperty
         return DataProperty::showOutput($data);
     }
 
-    public function getActiveInputMethod($name=null)
+    public function getActiveInputMethod($name = null)
     {
         if (!empty($this->initialization_initial_method)) {
             return $this->initialization_initial_method;
@@ -575,14 +575,14 @@ class UploadProperty extends FileUploadProperty
 
         if (empty($value)) {
             return $value;
-        // For current values when DD stored the ULID
+            // For current values when DD stored the ULID
         } elseif (is_numeric($value)) {
             $ulid = ";$value";
-        // For old values, pull the ULID from the URL that is stored
+            // For old values, pull the ULID from the URL that is stored
         } elseif (strstr($value, 'ulid=')) {
             mb_ereg('ulid=([0-9]+)', $value, $reg);
             $ulid = ";$reg[1]";
-        // For new values when DD stores a ;-separated list
+            // For new values when DD stores a ;-separated list
         } elseif (strstr($value, ';')) {
             $ulid = $value;
         }

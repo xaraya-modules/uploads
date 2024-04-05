@@ -21,7 +21,7 @@
  */
 xarMod::apiLoad('uploads', 'user');
 
-function uploads_user_file_properties($args)
+function uploads_user_file_properties(array $args = [], $context = null)
 {
     extract($args);
 
@@ -85,10 +85,14 @@ function uploads_user_file_properties($args)
                     );
                     throw new Exception($msg);
                 }
-                xarController::redirect(xarController::URL('uploads', 'user', 'file_properties', ['fileId' => $fileId]));
+                xarController::redirect(xarController::URL(
+                    'uploads',
+                    'user',
+                    'file_properties',
+                    ['fileId' => $fileId]
+                ), null, $context);
                 return;
             } else {
-                xarErrorHandled();
                 $msg = xarML('You do not have the necessary permissions for this object.');
                 throw new Exception($msg);
             }
@@ -124,7 +128,7 @@ function uploads_user_file_properties($args)
                 if (xarMod::isAvailable('images')) {
                     $fileInfo['image'] = true;
 
-                // try to get the image size
+                    // try to get the image size
                 } elseif (file_exists($fileInfo['fileLocation'])) {
                     $imageInfo = @getimagesize($fileInfo['fileLocation']);
                     if (is_array($imageInfo)) {
@@ -146,7 +150,7 @@ function uploads_user_file_properties($args)
                         }
                     }
 
-                // check if someone else already stored this information
+                    // check if someone else already stored this information
                 } elseif (!empty($fileInfo['extrainfo']) && !empty($fileInfo['extrainfo']['width'])) {
                     $fileInfo['image']['height'] = $fileInfo['extrainfo']['height'];
                     $fileInfo['image']['width']  = $fileInfo['extrainfo']['width'];
@@ -170,7 +174,6 @@ function uploads_user_file_properties($args)
             echo xarTpl::module('uploads', 'user', 'file_properties', $data, null);
             exit();
         } else {
-            xarErrorHandled();
             $msg = xarML('You do not have the necessary permissions for this object.');
             throw new Exception($msg);
         }

@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_user_download()
+function uploads_user_download(array $args = [], $context = null)
 {
     if (!xarSecurity::check('ViewUploads')) {
         return;
@@ -28,7 +28,7 @@ function uploads_user_download()
     $fileInfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
 
     if (empty($fileName) && (empty($fileInfo) || !count($fileInfo))) {
-        xarController::redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif');
+        xarController::redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif', null, $context);
         return true;
     }
 
@@ -74,14 +74,14 @@ function uploads_user_download()
                 } catch (Exception $e) {
                     $permitted = false;
                 }
-            break;
+                break;
                 // All files
             case 3:
                 $permitted = true;
                 break;
         }
         if (!$permitted) {
-            return xarResponse::NotFound();
+            return xarController::notFound(null, $context);
         }
 
         $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
@@ -110,7 +110,7 @@ function uploads_user_download()
             $result = xarMod::apiFunc('uploads', 'user', 'file_push', $fileInfo);
 
             /*
-            if (!$result || xarCurrentErrorType() !== XAR_NO_EXCEPTION) {
+            if (!$result) {
                 // now just return and let the error bubble up
                 return FALSE;
             }

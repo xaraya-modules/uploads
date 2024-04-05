@@ -21,7 +21,7 @@
  *  @return <type>
  */
 
-function uploads_userapi_file_obfuscate_name($args)
+function uploads_userapi_file_obfuscate_name(array $args = [], $context = null)
 {
     extract($args);
 

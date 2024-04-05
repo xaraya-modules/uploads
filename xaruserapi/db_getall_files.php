@@ -26,7 +26,7 @@
  * @return array   All of the metadata stored for all files
  */
 
-function uploads_userapi_db_getall_files($args)
+function uploads_userapi_db_getall_files(array $args = [], $context = null)
 {
     extract($args);
 
@@ -117,9 +117,9 @@ function uploads_userapi_db_getall_files($args)
         if (empty($startnum) || !is_numeric($startnum)) {
             $startnum = 1;
         }
-        $result =& $dbconn->SelectLimit($sql, $numitems, $startnum-1);
+        $result = & $dbconn->SelectLimit($sql, $numitems, $startnum - 1);
     } else {
-        $result =& $dbconn->Execute($sql);
+        $result = & $dbconn->Execute($sql);
     }
 
     if (!$result) {

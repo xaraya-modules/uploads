@@ -25,7 +25,7 @@
 * @return string
 * @return string containing the input fields
 */
-function uploads_adminapi_showinput($args)
+function uploads_adminapi_showinput(array $args = [], $context = null)
 {
     extract($args);
     if (empty($id)) {
@@ -49,7 +49,7 @@ function uploads_adminapi_showinput($args)
     // Check to see if an old value is present. Old values just file names
     // and do not start with a semicolon (our delimiter)
     if (xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', $value)) {
-        $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' =>$value]);
+        $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' => $value]);
 
         // if we were unable to convert the value, then go ahead and and return
         // an empty string instead of processing the value and bombing out

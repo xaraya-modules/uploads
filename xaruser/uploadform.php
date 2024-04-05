@@ -16,7 +16,7 @@
  * Show the uploads form
  * @return array
  */
-function uploads_user_uploadform()
+function uploads_user_uploadform(array $args = [], $context = null)
 {
     if (!xarSecurity::check('AddUploads')) {
         return;

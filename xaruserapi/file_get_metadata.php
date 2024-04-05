@@ -24,7 +24,7 @@
  *
  */
 
-function uploads_userapi_file_get_metadata($args)
+function uploads_userapi_file_get_metadata(array $args = [], $context = null)
 {
     extract($args);
 
@@ -37,7 +37,7 @@ function uploads_userapi_file_get_metadata($args)
     }
 
     if (isset($fileLocation) && !empty($fileLocation) && file_exists($fileLocation)) {
-        $file =& $fileLocation;
+        $file = & $fileLocation;
         if (is_dir($file)) {
             $type = _INODE_TYPE_DIRECTORY;
             $size = 'N/A';

@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_adminapi_dd_convert_value($args)
+function uploads_adminapi_dd_convert_value(array $args = [], $context = null)
 {
     extract($args);
 

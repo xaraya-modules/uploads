@@ -28,7 +28,7 @@
  * @return array
  * @return array of (result, value) with result true, false or NULL (= error)
  */
-function uploads_adminapi_validatevalue($args)
+function uploads_adminapi_validatevalue(array $args = [], $context = null)
 {
     extract($args);
     if (empty($id)) {
@@ -58,7 +58,7 @@ function uploads_adminapi_validatevalue($args)
     // Check to see if an old value is present. Old values just file names
     // and do not start with a semicolon (our delimiter)
     if (xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', $value)) {
-        $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' =>$value]);
+        $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' => $value]);
 
         // if we were unable to convert the value, then go ahead and and return
         // an empty string instead of processing the value and bombing out
@@ -108,8 +108,8 @@ function uploads_adminapi_validatevalue($args)
                 return;
             }
 
-            $upload         =& $_FILES[$id . '_attach_upload'];
-            $args['upload'] =& $_FILES[$id . '_attach_upload'];
+            $upload         = & $_FILES[$id . '_attach_upload'];
+            $args['upload'] = & $_FILES[$id . '_attach_upload'];
             break;
         case _UPLOADS_GET_EXTERNAL:
             // minimum external import link must be: ftp://a.ws  <-- 10 characters total

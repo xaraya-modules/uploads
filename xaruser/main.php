@@ -16,7 +16,7 @@
  * Return to the download function
  * @param array $args
  */
-function uploads_user_main($args)
+function uploads_user_main(array $args = [], $context = null)
 {
     return xarMod::guiFunc('uploads', 'user', 'download', $args);
 }

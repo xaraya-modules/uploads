@@ -12,7 +12,7 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_admin_newhook($args)
+function uploads_admin_newhook(array $args = [], $context = null)
 {
     // TODO: do you really want to generate some input field here or not ?
 

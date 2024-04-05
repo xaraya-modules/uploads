@@ -21,9 +21,8 @@
  * @param $args['extrainfo'] extra information
  * @return bool
  * @return true on success, false on failure
- * @throws BAD_PARAM, NO_PERMISSION, DATABASE_ERROR
  */
-function uploads_adminapi_removehook($args)
+function uploads_adminapi_removehook(array $args = [], $context = null)
 {
     extract($args);
 
@@ -35,7 +34,7 @@ function uploads_adminapi_removehook($args)
     // here, because the current module is probably going to be 'modules' !!!
     if (!isset($objectid) || !is_string($objectid)) {
         $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID (= module name)', 'admin', 'removehook', 'uploads');
-        xarErrorSet(XAR_USER_EXCEPTION, 'BAD_PARAM', new SystemException($msg));
+        //throw new BadParameterException(null, $msg);
         // Return the extra info
         return $extrainfo;
     }
@@ -43,7 +42,7 @@ function uploads_adminapi_removehook($args)
     $modid = xarMod::getRegID($objectid);
     if (empty($modid)) {
         $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module ID', 'admin', 'removehook', 'uploads');
-        xarErrorSet(XAR_USER_EXCEPTION, 'BAD_PARAM', new SystemException($msg));
+        //throw new BadParameterException(null, $msg);
         // Return the extra info
         return $extrainfo;
     }

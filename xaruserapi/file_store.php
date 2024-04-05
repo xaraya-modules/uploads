@@ -30,7 +30,7 @@
 
 xarMod::apiLoad('uploads', 'user');
 
-function uploads_userapi_file_store($args)
+function uploads_userapi_file_store(array $args = [], $context = null)
 {
     extract($args);
 
@@ -113,7 +113,7 @@ function uploads_userapi_file_store($args)
             }
 
             if ($result) {
-                $fileInfo['fileLocation'] =& $fileInfo['fileDest'];
+                $fileInfo['fileLocation'] = & $fileInfo['fileDest'];
             } else {
                 // if it wasn't moved successfully, then we should remove
                 // the database entry (if there is one) so that we don't have
@@ -128,7 +128,7 @@ function uploads_userapi_file_store($args)
                     }
                 }
 
-                $fileInfo['fileLocation'] =& $fileInfo['fileSrc'];
+                $fileInfo['fileLocation'] = & $fileInfo['fileSrc'];
             }
         }
 
@@ -146,30 +146,6 @@ function uploads_userapi_file_store($args)
             }
         }
     }
-    // If there were any errors generated while attempting to add this file,
-    // we run through and grab them, adding them to this file
-    /*    while (xarCurrentErrorType() !== XAR_NO_EXCEPTION) {
 
-            $errorObj = xarCurrentError();
-
-            if (is_object($errorObj)) {
-                $fileError = array('errorMesg'   => $errorObj->getShort(),
-                                   'errorId'    => $errorObj->getID());
-            } else {
-                $fileError = array('errorMesg'   => 'Unknown Error!',
-                                   'errorId'    => _UPLOADS_ERROR_UNKNOWN);
-            }
-
-            if (!isset($fileInfo['errors'])) {
-                $fileInfo['errors'] = array();
-            }
-
-            $fileInfo['errors'][] = $fileError;
-
-            // Clear the exception because we've handled it already
-            xarErrorHandled();
-
-        }
-    */
     return $fileInfo;
 }

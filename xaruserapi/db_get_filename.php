@@ -22,7 +22,7 @@
  * @return array   All of the metadata stored for the particular file
  */
 
-function uploads_userapi_db_get_filename($args)
+function uploads_userapi_db_get_filename(array $args = [], $context = null)
 {
     extract($args);
 

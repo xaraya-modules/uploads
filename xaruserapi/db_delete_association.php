@@ -29,7 +29,7 @@
  *  @return bool TRUE on success, FALSE with exception on error
  */
 
-function uploads_userapi_db_delete_association($args)
+function uploads_userapi_db_delete_association(array $args = [], $context = null)
 {
     extract($args);
 

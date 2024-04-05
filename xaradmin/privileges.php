@@ -18,7 +18,7 @@
  * @param
  * @return array
  */
-function uploads_admin_privileges($args)
+function uploads_admin_privileges(array $args = [], $context = null)
 {
     extract($args);
 
@@ -164,7 +164,7 @@ function uploads_admin_privileges($args)
         $fileInfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
 
         if (isset($fileInfo[$fileId])) {
-            $fileTypeInfo =& $fileInfo[$fileId]['fileTypeInfo'];
+            $fileTypeInfo = & $fileInfo[$fileId]['fileTypeInfo'];
 
             // If the mimetype is the same and the subtype is either
             // the same or ALL (0) then add the file to the list
@@ -205,7 +205,7 @@ function uploads_admin_privileges($args)
             'admin',
             'modifyprivilege',
             ['pid' => $pid]
-        ));
+        ), null, $context);
         return true;
     }
 

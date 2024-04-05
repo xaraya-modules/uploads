@@ -21,7 +21,7 @@
  *  @return mixed list of associations with missing files on success, void with exception on error
  */
 
-function uploads_adminapi_check_associations($args)
+function uploads_adminapi_check_associations(array $args = [], $context = null)
 {
     // Get database setup
     $dbconn = xarDB::getConn();

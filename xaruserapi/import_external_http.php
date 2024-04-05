@@ -20,10 +20,10 @@
  *  @param   array  uri         the array containing the broken down url information
  *  @param   boolean obfuscate  whether or not to obfuscate the filename
  *  @param   string  savePath   Complete path to directory in which we want to save this file
- *  @return array          FALSE on error, otherwise an array containing the fileInformation
+ *  @return array|void          FALSE on error, otherwise an array containing the fileInformation
  */
 
-function uploads_userapi_import_external_http($args)
+function uploads_userapi_import_external_http(array $args = [], $context = null)
 {
     extract($args);
 
@@ -119,29 +119,25 @@ function uploads_userapi_import_external_http($args)
                     if ($total > $maxSize) {
                         $msg = xarML('File size is greater than the maximum allowable.');
                         throw new Exception($msg);
-                        break;
                     } elseif (fwrite($tmpId, $data, strlen($data)) !== strlen($data)) {
                         $msg = xarML('Unable to write to temp file!');
                         throw new Exception($msg);
-                        break;
                     }
                 }
             } while (true);
 
             // if we haven't hit an exception, then go ahead and close everything up
-            if (xarCurrentErrorType() === XAR_NO_EXCEPTION) {
-                if (is_resource($tmpId)) {
-                    @fclose($tmpId);
-                }
-                $fileInfo['fileType'] = xarMod::apiFunc(
-                    'mime',
-                    'user',
-                    'analyze_file',
-                    ['fileName' => $fileInfo['fileLocation']]
-                );
-
-                $fileInfo['fileSize'] = filesize($tmpName);
+            if (is_resource($tmpId)) {
+                @fclose($tmpId);
             }
+            $fileInfo['fileType'] = xarMod::apiFunc(
+                'mime',
+                'user',
+                'analyze_file',
+                ['fileName' => $fileInfo['fileLocation']]
+            );
+
+            $fileInfo['fileSize'] = filesize($tmpName);
         }
     }
 
@@ -153,49 +149,25 @@ function uploads_userapi_import_external_http($args)
         @fclose($httpId);
     }
 
-    if (xarCurrentErrorType() !== XAR_NO_EXCEPTION) {
-        unlink($tmpName);
+    $fileInfo['fileSrc'] = $fileInfo['fileLocation'];
 
-        while (xarCurrentErrorType() !== XAR_NO_EXCEPTION) {
-            $errorObj = xarCurrentError();
+    // remoe any trailing slash from the Save Path
+    $savePath = preg_replace('/\/$/', '', $savePath);
 
-            if (is_object($errorObj)) {
-                $fileError = ['errorMesg' => $errorObj->getShort(),
-                                   'errorId'   => $errorObj->getID(), ];
-            } else {
-                $fileError = ['errorMesg' => 'Unknown Error!',
-                                   'errorId'   => _UPLOADS_ERROR_UNKNOWN, ];
-            }
-
-            if (!isset($fileInfo['errors'])) {
-                $fileInfo['errors'] = [];
-            }
-
-            $fileInfo['errors'][] = $fileError;
-
-            // Clear the exception because we've handled it already
-            xarErrorHandled();
-        }
+    if ($obfuscate_fileName) {
+        $obf_fileName = xarMod::apiFunc(
+            'uploads',
+            'user',
+            'file_obfuscate_name',
+            ['fileName' => $fileInfo['fileName']]
+        );
+        $fileInfo['fileDest'] = $savePath . '/' . $obf_fileName;
     } else {
-        $fileInfo['fileSrc'] = $fileInfo['fileLocation'];
-
-        // remoe any trailing slash from the Save Path
-        $savePath = preg_replace('/\/$/', '', $savePath);
-
-        if ($obfuscate_fileName) {
-            $obf_fileName = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'file_obfuscate_name',
-                ['fileName' => $fileInfo['fileName']]
-            );
-            $fileInfo['fileDest'] = $savePath . '/' . $obf_fileName;
-        } else {
-            // if we're not obfuscating it,
-            // just use the name of the uploaded file
-            $fileInfo['fileDest'] = $savePath . '/' . xarVar::prepForOS($fileInfo['fileName']);
-        }
-        $fileInfo['fileLocation'] = $fileInfo['fileDest'];
+        // if we're not obfuscating it,
+        // just use the name of the uploaded file
+        $fileInfo['fileDest'] = $savePath . '/' . xarVar::prepForOS($fileInfo['fileName']);
     }
+    $fileInfo['fileLocation'] = $fileInfo['fileDest'];
+
     return [$fileInfo['fileLocation'] => $fileInfo];
 }

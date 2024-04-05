@@ -21,7 +21,7 @@
  * @return output
  * @return output with rating information
  */
-function uploads_user_display_attachments($args)
+function uploads_user_display_attachments(array $args = [], $context = null)
 {
     extract($args);
 

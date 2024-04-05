@@ -26,16 +26,16 @@
  *  @param   boolean  analyze        Analyze each file for mime type (default TRUE)
  *
  *  @return array
- *  @return array of file information
+ *  @return array|string of file information
  */
 
-function uploads_userapi_import_get_filelist($args)
+function uploads_userapi_import_get_filelist(array $args = [], $context = null)
 {
     extract($args);
 
     if (!empty($cacheExpire) && is_numeric($cacheExpire)) {
         $cachekey = md5(serialize($args));
-        $cacheinfo = xarModVars::get('uploads', 'file.cachelist.'.$cachekey);
+        $cacheinfo = xarModVars::get('uploads', 'file.cachelist.' . $cachekey);
         if (!empty($cacheinfo)) {
             $cacheinfo = @unserialize($cacheinfo);
             if (!empty($cacheinfo['time']) && $cacheinfo['time'] > time() - $cacheExpire) {
@@ -78,11 +78,21 @@ function uploads_userapi_import_get_filelist($args)
     $fileList = [];
 
     if (!isset($fileLocation)) {
-        return xarController::redirect(xarController::URL('uploads', 'user', 'errors', ['layout' => 'dir_not_set']));
+        return xarController::redirect(xarController::URL(
+            'uploads',
+            'user',
+            'errors',
+            ['layout' => 'dir_not_set']
+        ), null, $context);
     }
 
     if (!file_exists($fileLocation)) {
-        return xarController::redirect(xarController::URL('uploads', 'user', 'errors', ['layout' => 'dir_not_found','location' => $fileLocation]));
+        return xarController::redirect(xarController::URL(
+            'uploads',
+            'user',
+            'errors',
+            ['layout' => 'dir_not_found','location' => $fileLocation]
+        ), null, $context);
     }
 
     if (is_file($fileLocation)) {
@@ -139,11 +149,11 @@ function uploads_userapi_import_get_filelist($args)
         case _INODE_TYPE_DIRECTORY:
             if ($fp = opendir($fileLocation)) {
                 while (false !== ($inode = readdir($fp))) {
-                    if (is_dir($fileLocation . '/'. $inode) && !preg_match('/^([.]{1,2})$/i', $inode)) {
+                    if (is_dir($fileLocation . '/' . $inode) && !preg_match('/^([.]{1,2})$/i', $inode)) {
                         $type = _INODE_TYPE_DIRECTORY;
-                    } elseif (is_file($fileLocation. '/' . $inode)) {
+                    } elseif (is_file($fileLocation . '/' . $inode)) {
                         $type = _INODE_TYPE_FILE;
-                    } elseif (is_link($fileLocation. '/' . $inode)) {
+                    } elseif (is_link($fileLocation . '/' . $inode)) {
                         $linkLocation = readlink($fileLocation . '/' . $inode);
 
                         while (is_link($linkLocation)) {
@@ -185,7 +195,7 @@ function uploads_userapi_import_get_filelist($args)
                                     'user',
                                     'file_get_metadata',
                                     ['fileLocation' => $fileName,
-                                                              'analyze'      => $analyze, ]
+                                    'analyze'      => $analyze, ]
                                 );
                                 $fileList["$file[inodeType]:$fileName"] = $file;
                             }
@@ -198,10 +208,10 @@ function uploads_userapi_import_get_filelist($args)
                                     'user',
                                     'import_get_filelist',
                                     ['fileLocation' => $dirName,
-                                                          'descend' => true,
-                                                          'analyze' => $analyze,
-                                                          'exclude' => $exclude,
-                                                          'search' => $search, ]
+                                    'descend' => true,
+                                    'analyze' => $analyze,
+                                    'exclude' => $exclude,
+                                    'search' => $search, ]
                                 );
                                 $fileList += $files;
                             } else {
@@ -212,7 +222,7 @@ function uploads_userapi_import_get_filelist($args)
                                         'user',
                                         'file_get_metadata',
                                         ['fileLocation' => $dirName,
-                                                                  'analyze'      => $analyze, ]
+                                        'analyze'      => $analyze, ]
                                     );
                                     $fileList["$files[inodeType]:$inode"] = $files;
                                 }
@@ -222,9 +232,9 @@ function uploads_userapi_import_get_filelist($args)
                             break;
                     }
 
-                    if (is_dir($fileLocation. '/' . $inode) && !preg_match('/^([.]{1,2})$/i', $inode)) {
+                    if (is_dir($fileLocation . '/' . $inode) && !preg_match('/^([.]{1,2})$/i', $inode)) {
                     }
-                    if (is_file($fileLocation. '/' . $inode)) {
+                    if (is_file($fileLocation . '/' . $inode)) {
                     }
                 }
             }
@@ -243,7 +253,7 @@ function uploads_userapi_import_get_filelist($args)
         $cacheinfo = ['time' => time(),
                            'list' => $fileList, ];
         $cacheinfo = serialize($cacheinfo);
-        xarModVars::set('uploads', 'file.cachelist.'.$cachekey, $cacheinfo);
+        xarModVars::set('uploads', 'file.cachelist.' . $cachekey, $cacheinfo);
     }
 
     return $fileList;

@@ -25,7 +25,7 @@
  * @return array   A list of associations, including the fileId -> (fileId + modid + itemtype + itemid)
  */
 
-function uploads_userapi_db_get_associations($args)
+function uploads_userapi_db_get_associations(array $args = [], $context = null)
 {
     extract($args);
 

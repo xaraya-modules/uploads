@@ -14,7 +14,7 @@
 
 /**
  * Update the configuration
- * @return bool
+ * @return bool|string|void
  */
 function uploads_admin_updateconfig(array $args = [], $context = null)
 {
@@ -71,6 +71,7 @@ function uploads_admin_updateconfig(array $args = [], $context = null)
     $data['module_settings']->getItem();
     $isvalid = $data['module_settings']->checkInput();
     if (!$isvalid) {
+        $data['context'] ??= $context;
         return xarTpl::module('dynamicdata', 'admin', 'modifyconfig', $data);
     } else {
         $itemid = $data['module_settings']->updateItem();

@@ -76,6 +76,7 @@ function uploads_userapi_showoutput(array $args = [], $context = null)
         }
 
         $data['format'] = $format;
+        $data['context'] ??= $context;
         return xarTpl::module('uploads', 'user', 'attachment-list', $data, null);
     } else {
         // return a raw array for now

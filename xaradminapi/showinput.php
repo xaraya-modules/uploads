@@ -195,6 +195,7 @@ function uploads_adminapi_showinput(array $args = [], $context = null)
     if (!empty($invalid)) {
         $data['invalid'] = $invalid;
     }
+    $data['context'] ??= $context;
     // TODO: different formats ?
     return ($list ?? '') . xarTpl::module('uploads', 'user', 'attach_files', $data, null);
 }

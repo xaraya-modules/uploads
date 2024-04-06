@@ -120,7 +120,6 @@ function uploads_admin_get_files(array $args = [], $context = null)
             $data['authid'] = xarSec::genAuthKey();
             $data['file_maxsize'] = $file_maxsize;
             return $data;
-            break;
     }
     if (isset($storeType)) {
         $args['storeType'] = $storeType;
@@ -132,6 +131,4 @@ function uploads_admin_get_files(array $args = [], $context = null)
         xarController::redirect(xarController::URL('uploads', 'admin', 'get_files'), null, $context);
         return;
     }
-
-    return $data;
 }

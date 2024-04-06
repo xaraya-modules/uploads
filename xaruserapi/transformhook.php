@@ -61,7 +61,7 @@ function & uploads_userapi_transform($body)
                     'user',
                     'attachment-list',
                     ['Attachments' => $list,
-                                                   'style' => 'transform', ]
+                    'style' => 'transform', ]
                 );
                 break;
             case 'ulidd':

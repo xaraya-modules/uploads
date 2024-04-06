@@ -171,6 +171,7 @@ function uploads_user_file_properties(array $args = [], $context = null)
 
             $data['fileInfo'] = $fileInfo;
 
+            $data['context'] ??= $context;
             echo xarTpl::module('uploads', 'user', 'file_properties', $data, null);
             exit();
         } else {

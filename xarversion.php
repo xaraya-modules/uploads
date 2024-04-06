@@ -47,13 +47,15 @@ $modversion['user']         = 0;
 $modversion['class']        = 'Utility';
 $modversion['category']     = 'Global';
 $modversion['dependency']   = [ 999 ];
+//$modversion['namespace']      = 'Xaraya\Modules\Uploads';
+$modversion['twigtemplates']  = true;
 $modversion['dependencyinfo'] = [
-                                    0 => [
-                                            'name' => 'core',
-                                            'version_ge' => '2.0.0',
-                                         ],
-                                    999 => [
-                                            'name' => 'mime',
-                                            'minversion' => '1.1.0',
-                                         ],
-                                ];
+    0 => [
+        'name' => 'Xaraya Core',
+        'version_ge' => '2.4.1',
+    ],
+    999 => [
+        'name' => 'mime',
+        'minversion' => '1.1.0',
+    ],
+];

@@ -53,19 +53,19 @@
                                         <br />
                                         <table width="100%" cellspacing="1" cellpadding="1" border="0">
                                             <tr>
-                                                <xar.loop name="loop_item1['errors']">
-                                                    {% if ((loop_index1 + 1) % 2) %}
+                                                {% for loop_key2, loop_item2 in loop_item1['errors'] %}{% set loop_index2 = loop.index %}
+                                                        {% if ((loop_index2 + 1) % 2) %}
                                                         <td width="65%" class="xar-norm">
                                                             & }}160;
-                                                            {{ loop_item1['errorMesg'] }}
+                                                            {{ loop_item2['errorMesg'] }}
                                                         </td>
                                                     {% else %}
                                                         <td width="65%" class="xar-accent">
                                                             &#160;
-                                                            {{ loop_item1['errorMesg'] }}
+                                                            {{ loop_item2['errorMesg'] }}
                                                         </td>
                                                     {% endif %}                                                
-                                                </xar:loop>
+                                                {% endfor %}
                                             </tr>
                                         </table>
                                     </td>
@@ -104,19 +104,19 @@
                                         <br />
                                         <table width="100%" cellspacing="1" cellpadding="1" border="0">
                                             <tr>
-                                                <xar.loop name="loop_item1['errors']">
-                                                    {% if ((loop_index1 + 1) % 2) %}
+                                                {% for loop_key2, loop_item2 in loop_item1['errors'] %}{% set loop_index2 = loop.index %}
+                                                    {% if ((loop_index2 + 1) % 2) %}
                                                         <td width="65%" class="xar-norm">
                                                             & }}160;
-                                                            {{ loop_item1['errorMesg'] }}
+                                                            {{ loop_item2['errorMesg'] }}
                                                         </td>
                                                     {% else %}
                                                         <td width="65%" class="xar-accent">
                                                             &#160;
-                                                            {{ loop_item1['errorMesg'] }}
+                                                            {{ loop_item2['errorMesg'] }}
                                                         </td>
                                                     {% endif %}                                                
-                                                </xar:loop>
+                                                {% endfor %}
                                             </tr>
                                         </table>
                                     </td>

@@ -2,10 +2,10 @@
 
 {% block showoutput_uploads %}
 {% if format and format == 'textupload' %}
-        {% for loop_key1, loop_item1 in Attachments %}{% set loop_index1 = loop.index %}file:&#160;{{ loop_item1['fileId'] }}&#160;</xar:loop>
+        {% for loop_key1, loop_item1 in Attachments %}{% set loop_index1 = loop.index %}file:&#160;{{ loop_item1['fileId'] }}&#160;{% endfor %}
     {% else %}
         {{ xar_style({module: "uploads", scope: "module", file: "uploads"}) }}
-        <xar:loop name="$attachments">
+        {% for loop_key1, loop_item1 in Attachments %}{% set loop_index1 = loop.index %}
             {% if outputstyle is not null and outputstyle == 'icon' %}
                 <div class="xar-uploads-icon">
                     <a href="{{ loop_item1['fileDownload'] }}" alt="{{ loop_item1['fileName'] }}" title="{{ loop_item1['DownloadLabel'] }}">

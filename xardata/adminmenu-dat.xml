@@ -1,5 +1,6 @@
 <adminmenu>
     <menuitems>
+        <!--
         <menuitem>
             <mask>ManageUploads</mask>
             <includes>
@@ -9,6 +10,7 @@
             <title>Manage files under the uploads or trusted directories</title>
             <label>Browse Files</label>
         </menuitem>
+        -->
         <menuitem>
             <mask>EditUploads</mask>
             <includes>

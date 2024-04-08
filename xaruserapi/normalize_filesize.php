@@ -12,7 +12,10 @@
  * @author Uploads Module Development Team
  */
 
-function uploads_userapi_normalize_filesize(array $args = [], $context = null)
+/**
+ * @param mixed $args with args['fileSize'], integer or null
+ */
+function uploads_userapi_normalize_filesize(mixed $args = [], $context = null)
 {
     if (is_array($args)) {
         extract($args);

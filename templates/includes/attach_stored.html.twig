@@ -15,12 +15,12 @@
                         {% else %}
                             <option value="{{ loop_item1['fileId'] }}">{{ loop_item1['fileHashRealName'] }}</option>
                         {% endif %}
-                    </xar:loop>
+                    {% endfor %}
                 </select>
             {% else %}
                 {# <!-- TODO: consider putting this in an separate template --> #}
                 <select name="{{ id }}_attach_stored[]" id="{{ id }}_attach_stored_id" size="5">
-                    <xar:loop name="$storedList">
+                    {% for loop_key1, loop_item1 in storedList %}{% set loop_index1 = loop.index %}
                         {% if loop_item1['selected'] is not null %}
                             <option value="{{ loop_item1['fileId'] }}" selected="selected">{{ loop_item1['fileHashRealName'] }}</option>
                         {% else %}

@@ -16,7 +16,7 @@
                     
                 </label>
                 <br />
-                {% if filters['inverse'] == TRUE %}
+                {% if filters['inverse'] == true %}
                     <input type="checkbox" name="inverse" id="inverse" value="invert" checked="checked"/>
                 {% else %}
                     <input type="checkbox" name="inverse" id="inverse" value="invert"/>
@@ -116,7 +116,7 @@
             </td>
             </form>
         </tr>
-        {% if xar_coremethod('xarMod', 'isAvailable', 'categories') and xar_coremethod('xarModHooks', 'isHooked', ['categories','uploads',1]) %}
+        {% if xar_coremethod('xarMod', 'isAvailable', 'categories') and xar_coremethod('xarModHooks', 'isHooked', 'categories', 'uploads', 1) %}
         <tr>
             <td colspan="6">
                 {{ include('@uploads/includes/catnavigation.html.twig') }}

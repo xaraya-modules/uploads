@@ -68,7 +68,7 @@
                             </div>
                         </div>
                      </div>
-                    <div class="xar-row">
+                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="file[auto-approve]" class="xar-form-label" title="{{ xar_translate('Auto approve files') }}">
                                 Auto approve files added by:
@@ -78,7 +78,7 @@
                             {% set options = [
                                       {'id': _UPLOADS_APPROVE_NOONE, 'name': xar_translate('No one')},
                                       {'id': _UPLOADS_APPROVE_ADMIN, 'name': xar_translate('Admin')},
-                                      {'id': _UPLOADS_APPROVE_EVERYONE, 'name': xar_translate('Everyone')},
+                                      {'id': _UPLOADS_APPROVE_EVERYONE, 'name': xar_translate('Everyone')}
                                      ] %}
                             {{ xar_data_input({type: "radio", name: "file[auto-approve]", id: "auto-approve", value: file['auto-approve'], options: options}) }}
                             <div class="xar-form-input-wrapper-after">
@@ -87,9 +87,9 @@
                         </div>
                     </div>
                     {% set options = [
-                              {'id': 0, 'name': xar_translate('No')},
-                              {'id': 1, 'name': xar_translate('Yes')},
-                             ] %}
+                        {'id': 0, 'name': xar_translate('No')},
+                        {'id': 1, 'name': xar_translate('Yes')}
+                    ] %}
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="file[delete-confirmation]" class="xar-form-label" title="{{ xar_translate('Confirm deletion of files') }}">
@@ -148,7 +148,7 @@
                                 of the implications behind turning it off.
                             </div>
                         </div>
-                     </div>
+                    </div>
                     <div class="xar-row">
                         <div class="xar-col">
                             <label for="file[allow-duplicate-upload]" class="xar-form-label" title="{{ xar_translate('Reaction to Duplicate Filenames') }}">
@@ -156,13 +156,13 @@
                             </label>
                         </div>
                         <div class="xar-col">
-                            {% set dup_options = [
-                                {'0': xar_translate('No upload allowed')},
-                                {'1': xar_translate('Save as new version')},
-                                {'2': xar_translate('Replace original')},
-                            ] %}
+                            {% set dup_options = {
+                                '0': xar_translate('No upload allowed'),
+                                '1': xar_translate('Save as new version'),
+                                '2': xar_translate('Replace original')
+                            } %}
                             <select name="file[allow-duplicate-upload]" id="file_allow_duplicate_upload">
-                                {% for id, val in dup_options %}
+                            {% for id, val in dup_options %}
                                 {% if file['allow-duplicate-upload'] == id %}
                                     <option value="{{ id }}" selected="selected"> {{ val }} </option>
                                 {% else %}

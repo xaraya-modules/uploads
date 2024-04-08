@@ -9,11 +9,11 @@ Attach a file from the Trusted directory:<br />
         <select name="{{ id }}_attach_trusted[]" id="{{ id }}_attach_trusted_id" multiple="multiple" size="5">
             {% for loop_key1, loop_item1 in fileList %}{% set loop_index1 = loop.index %}
                 <option value="{{ loop_item1['relativePath'] }}">{{ loop_item1['relativePath'] }}</option>
-            </xar:loop>
+            {% endfor %}
         </select>
     {% else %}
         <select name="{{ id }}_attach_trusted[]" id="{{ id }}_attach_trusted_id" size="5">
-            <xar:loop name="$fileList">
+            {% for loop_key1, loop_item1 in fileList %}{% set loop_index1 = loop.index %}
                 <option value="{{ loop_item1['relativePath'] }}">{{ loop_item1['relativePath'] }}</option>
             {% endfor %}
         </select>

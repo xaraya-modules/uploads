@@ -13,7 +13,7 @@
                 {% else %}
                     {% set fileName = '' %}
                 {% endif %}
-                {% set fileLink = 'PropertiesDialog(\&#39;' ~ xar_moduleurl('uploads','user','file_properties', {'fileId': fileId}) ~ '\&#39;); return false;' %}
+                {% set fileLink = 'PropertiesDialog(&#39;' ~ xar_moduleurl('uploads','user','file_properties', {'fileId': fileId}) ~ '&#39;); return false;' %}
                 For File <a style="cursor:pointer;" onclick="{{ fileLink }}">[{{ fileId }}] {{ fileName }}</a>
             </h3>
         {% endif %}

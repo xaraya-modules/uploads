@@ -35,8 +35,11 @@ class DdValueNeedsConversionMethod extends MethodClass
      * @link http://www.xaraya.com/index.php/release/eid/666
      * @author Uploads Module Development Team
      */
-    public function __invoke($value)
+    public function __invoke(array $args = [])
     {
+        // replaced where this was called - needs to be an array too
+        extract($args);
+
         // if the value is empty or it has a value starting with ';'
         // Then it doesn't need to be converted - so return false.
         if (empty($value) || (strlen($value) && ';' == $value[0])) {

@@ -169,7 +169,7 @@ class UploadProperty extends FileUploadProperty
                 if (empty($import)) {
                     // synchronize file associations with empty list
                     if (!empty($moduleid) && !empty($itemid)) {
-                        uploads_sync_associations($moduleid, $itemtype, $itemid);
+                        $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
                     xarVar::setCached('DynamicData.Upload', $name, $this->value);
@@ -212,7 +212,7 @@ class UploadProperty extends FileUploadProperty
                 if (empty($fileList) || !is_array($fileList)) {
                     // synchronize file associations with empty list
                     if (!empty($moduleid) && !empty($itemid)) {
-                        uploads_sync_associations($moduleid, $itemtype, $itemid);
+                        $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
                     xarVar::setCached('DynamicData.Upload', $name, $this->value);
@@ -226,7 +226,7 @@ class UploadProperty extends FileUploadProperty
 
                 // synchronize file associations with file list
                 if (!empty($moduleid) && !empty($itemid)) {
-                    uploads_sync_associations($moduleid, $itemtype, $itemid, $fileList);
+                    $this->sync_associations($moduleid, $itemtype, $itemid, $fileList);
                 }
 
                 return true;
@@ -306,7 +306,7 @@ class UploadProperty extends FileUploadProperty
 
                 // synchronize file associations with store list
                 if (!empty($moduleid) && !empty($itemid)) {
-                    uploads_sync_associations($moduleid, $itemtype, $itemid, $storeList);
+                    $this->sync_associations($moduleid, $itemtype, $itemid, $storeList);
                 }
             } else {
                 // If the user wants, remove the current stored value(s). Otherwise do nothing
@@ -319,6 +319,18 @@ class UploadProperty extends FileUploadProperty
             }
         }
         return true;
+    }
+
+    /**
+     * Utility function to synchronise uploads associations on validation
+     * Given a list of resource IDs, this makes sure that there is an entry in the associations table
+     * for each with the appropriate $itemid, $itemtype, $moduleid
+     *
+     */
+    public function sync_associations($moduleid = 0, $itemtype = 0, $itemid = 0, $keyword_ids = [])
+    {
+        // @todo see keywords association
+        return;
     }
 
     /**

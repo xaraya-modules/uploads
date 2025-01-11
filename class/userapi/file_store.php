@@ -16,7 +16,7 @@ use xarMod;
 use xarSession;
 use xarSecurity;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

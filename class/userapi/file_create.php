@@ -32,12 +32,14 @@ class FileCreateMethod extends MethodClass
      *  will return zero for that file (ie: !== FALSE as opposed to != FALSE).
      *  @author  Carl P. Corliss
      * @access public
-     * @param   string  filename       The name of the file (minus any path information)
-     * @param   string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
-     * @param   string  mime_type      The mime content-type of the file
-     * @param   string  contents       The contents of the new file
+     * @param mixed $args
+     * with
+     *     string  filename       The name of the file (minus any path information)
+     *     string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
+     *     string  mime_type      The mime content-type of the file
+     *     string  contents       The contents of the new file
      *
-     * @return integer The fileId of the newly created file, or ZERO (FALSE) on error
+     * @return integer|void The fileId of the newly created file, or ZERO (FALSE) on error
      */
     public function __invoke(array $args = []) {}
 }

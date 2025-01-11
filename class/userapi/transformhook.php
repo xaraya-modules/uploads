@@ -31,7 +31,7 @@ class TransformhookMethod extends MethodClass
      * @param mixed $args ['extrainfo']
      * @return mixed
      */
-    public function __invoke($args)
+    public function __invoke(array $args = [])
     {
         extract($args);
 

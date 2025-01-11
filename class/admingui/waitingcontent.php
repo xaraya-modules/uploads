@@ -34,7 +34,6 @@ class WaitingcontentMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get count of files in submitted state
-        unset($count_submitted);
         $count_submitted = xarMod::apiFunc(
             'uploads',
             'user',

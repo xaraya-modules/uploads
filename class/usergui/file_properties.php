@@ -20,7 +20,7 @@ use xarModHooks;
 use xarController;
 use xarTpl;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

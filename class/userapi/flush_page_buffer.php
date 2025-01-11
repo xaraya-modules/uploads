@@ -35,7 +35,7 @@ class FlushPageBufferMethod extends MethodClass
      * @link http://www.xaraya.com/index.php/release/eid/666
      * @author Uploads Module Development Team
      */
-    public function __invoke(/*VOID*/)
+    public function __invoke(array $args = [])
     {
         if (ini_get('output_handler') == 'ob_gzhandler' || ini_get('zlib.output_compression') == true) {
             do {

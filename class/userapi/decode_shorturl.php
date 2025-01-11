@@ -14,7 +14,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 
@@ -30,11 +30,10 @@ class DecodeShorturlMethod extends MethodClass
      * them back to xarGetRequestInfo()
      * @author the Example module development team
      * @param mixed $params array containing the different elements of the virtual path
-     * @return array
-     * @return array containing func the function to be called and args the query
+     * @return array|void array containing func the function to be called and args the query
      * string arguments, or empty if it failed
      */
-    public function __invoke($params)
+    public function __invoke(array $params = [])
     {
         // Initialise the argument list we will return
         $args = [];

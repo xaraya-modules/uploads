@@ -20,8 +20,9 @@ use xarModUserVars;
 use xarController;
 use xarSec;
 use xarTpl;
+use DataPropertyMaster;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

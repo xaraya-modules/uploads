@@ -14,8 +14,9 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModHooks;
+use DataObjectFactory;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

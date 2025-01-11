@@ -15,7 +15,7 @@ use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarServer;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 
@@ -51,7 +51,7 @@ class DdConvertValueMethod extends MethodClass
         }
 
         // if conversion isn't needed, then don't do it
-        if (!xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', $value)) {
+        if (!xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', ['value' => $value])) {
             return $value;
         }
 

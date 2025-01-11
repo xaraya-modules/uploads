@@ -173,7 +173,7 @@ class ImportGetFilelistMethod extends MethodClass
                                 $linkLocation = readlink($linkLocation);
                             }
 
-                            if (is_dir($linkLocation) && !preg_match('/([.]{1,2}$/i', $linkLocation)) {
+                            if (is_dir($linkLocation) && !preg_match('/([.]{1,2})$/i', $linkLocation)) {
                                 $type = _INODE_TYPE_DIRECTORY;
                             } elseif (is_file($linkLocation)) {
                                 $type = _INODE_TYPE_FILE;

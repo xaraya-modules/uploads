@@ -20,6 +20,7 @@
  */
 /* Include parent class */
 sys::import('modules.base.xarproperties.fileupload');
+use Xaraya\Modules\Uploads\Defines;
 /**
  * Class to handle file upload properties
  *
@@ -139,7 +140,7 @@ class UploadProperty extends FileUploadProperty
         $data['action'] = $this->getActiveInputMethod($name);
 
         switch ($data['action']) {
-            case _UPLOADS_GET_UPLOAD:
+            case Defines::GET_UPLOAD:
                 if (!xarVar::fetch($name . '_max_file_size', "int::$this->validation_max_file_size", $this->validation_max_file_size)) {
                     return;
                 }
@@ -159,7 +160,7 @@ class UploadProperty extends FileUploadProperty
                     return false;
                 }
                 break;
-            case _UPLOADS_GET_EXTERNAL:
+            case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
                 if (!xarVar::fetch($name . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
@@ -178,7 +179,7 @@ class UploadProperty extends FileUploadProperty
 
                 $data['import'] = $import;
                 break;
-            case _UPLOADS_GET_LOCAL:
+            case Defines::GET_LOCAL:
 
                 if (!xarVar::fetch($name . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList, [], xarVar::NOT_REQUIRED)) {
                     return;
@@ -201,7 +202,7 @@ class UploadProperty extends FileUploadProperty
                     }
                 }
                 break;
-            case _UPLOADS_GET_STORED:
+            case Defines::GET_STORED:
 
                 if (!xarVar::fetch($name . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
                     return;
@@ -369,15 +370,15 @@ class UploadProperty extends FileUploadProperty
         $descend = true;
 
         xarMod::apiLoad('uploads', 'user');
-        $data['getAction']['LOCAL']       = _UPLOADS_GET_LOCAL;
-        $data['getAction']['EXTERNAL']    = _UPLOADS_GET_EXTERNAL;
-        $data['getAction']['UPLOAD']      = _UPLOADS_GET_UPLOAD;
-        $data['getAction']['STORED']      = _UPLOADS_GET_STORED;
-        $data['getAction']['REFRESH']     = _UPLOADS_GET_REFRESH_LOCAL;
+        $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
+        $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
+        $data['getAction']['UPLOAD']      = Defines::GET_UPLOAD;
+        $data['getAction']['STORED']      = Defines::GET_STORED;
+        $data['getAction']['REFRESH']     = Defines::GET_REFRESH_LOCAL;
         //    $data['id']                       = $id;
 
         // Set up for the trusted input method
-        if (in_array(_UPLOADS_GET_LOCAL, $this->initialization_file_input_methods)) {
+        if (in_array(Defines::GET_LOCAL, $this->initialization_file_input_methods)) {
             if (!file_exists($this->initialization_import_directory)) {
                 $msg = xarML('Unable to find trusted directory #(1)', $this->initialization_import_directory);
                 throw new Exception($msg);
@@ -402,7 +403,7 @@ class UploadProperty extends FileUploadProperty
         }
 
         // Set up for the stored input method
-        if (in_array(_UPLOADS_GET_STORED, $this->initialization_file_input_methods)) {
+        if (in_array(Defines::GET_STORED, $this->initialization_file_input_methods)) {
             // if there is an override['upload']['path'], try to use that
             if (!empty($this->initialization_basedirectory)) {
                 if (file_exists($this->initialization_basedirectory)) {
@@ -442,7 +443,7 @@ class UploadProperty extends FileUploadProperty
         }
 
         // Set up for the stored input method
-        if (in_array(_UPLOADS_GET_UPLOAD, $this->initialization_file_input_methods)) {
+        if (in_array(Defines::GET_UPLOAD, $this->initialization_file_input_methods)) {
             if (!empty($this->value)) {
                 $this->dbvalue = $this->value;
             }
@@ -462,8 +463,8 @@ class UploadProperty extends FileUploadProperty
                 $aList = array_filter(explode(';', $this->value));
 
                 if (is_array($aList) && count($aList)) {
-                    $data['inodeType']['DIRECTORY']   = _INODE_TYPE_DIRECTORY;
-                    $data['inodeType']['FILE']        = _INODE_TYPE_FILE;
+                    $data['inodeType']['DIRECTORY']   = Defines::TYPE_DIRECTORY;
+                    $data['inodeType']['FILE']        = Defines::TYPE_FILE;
                     $data['attachments'] = xarMod::apiFunc(
                         'uploads',
                         'user',
@@ -564,10 +565,10 @@ class UploadProperty extends FileUploadProperty
         }
         $typeCheck = 'enum:0';
         if (!empty($this->initialization_file_input_methods)) {
-            $typeCheck .= (in_array(_UPLOADS_GET_LOCAL, $this->initialization_file_input_methods)) ? ':' . _UPLOADS_GET_LOCAL : '';
-            $typeCheck .= (in_array(_UPLOADS_GET_EXTERNAL, $this->initialization_file_input_methods)) ? ':' . _UPLOADS_GET_EXTERNAL : '';
-            $typeCheck .= (in_array(_UPLOADS_GET_UPLOAD, $this->initialization_file_input_methods)) ? ':' . _UPLOADS_GET_UPLOAD : '';
-            $typeCheck .= (in_array(_UPLOADS_GET_STORED, $this->initialization_file_input_methods)) ? ':' . _UPLOADS_GET_STORED : '';
+            $typeCheck .= (in_array(Defines::GET_LOCAL, $this->initialization_file_input_methods)) ? ':' . Defines::GET_LOCAL : '';
+            $typeCheck .= (in_array(Defines::GET_EXTERNAL, $this->initialization_file_input_methods)) ? ':' . Defines::GET_EXTERNAL : '';
+            $typeCheck .= (in_array(Defines::GET_UPLOAD, $this->initialization_file_input_methods)) ? ':' . Defines::GET_UPLOAD : '';
+            $typeCheck .= (in_array(Defines::GET_STORED, $this->initialization_file_input_methods)) ? ':' . Defines::GET_STORED : '';
             $typeCheck .= ':-2'; // clear value
             xarVar::fetch($name . '_active_method', $typeCheck, $activemethod, current($this->initialization_file_input_methods), xarVar::NOT_REQUIRED);
         }

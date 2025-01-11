@@ -19,6 +19,18 @@ sys::import('modules.uploads.class.adminapi');
 
 /**
  * Handle the uploads admin GUI
+ *
+ * @method mixed assoc(array $args)
+ * @method mixed getFiles(array $args)
+ * @method mixed main(array $args)
+ * @method mixed modifyconfig(array $args)
+ * @method mixed newhook(array $args)
+ * @method mixed overview(array $args)
+ * @method mixed privileges(array $args)
+ * @method mixed purgeRejected(array $args)
+ * @method mixed updateconfig(array $args)
+ * @method mixed view(array $args)
+ * @method mixed waitingcontent(array $args)
  * @extends AdminGuiClass<Module>
  */
 class AdminGui extends AdminGuiClass

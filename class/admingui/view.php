@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -28,6 +30,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads admin view function
+ * @extends MethodClass<AdminGui>
  */
 class ViewMethod extends MethodClass
 {
@@ -145,14 +148,14 @@ class ViewMethod extends MethodClass
             }
 
             switch ($action) {
-                case _UPLOADS_STATUS_APPROVED:
-                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'    => _UPLOADS_STATUS_APPROVED]);
+                case Defines::STATUS_APPROVED:
+                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'    => Defines::STATUS_APPROVED]);
                     break;
-                case _UPLOADS_STATUS_SUBMITTED:
-                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'    => _UPLOADS_STATUS_SUBMITTED]);
+                case Defines::STATUS_SUBMITTED:
+                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'    => Defines::STATUS_SUBMITTED]);
                     break;
-                case _UPLOADS_STATUS_REJECTED:
-                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'   => _UPLOADS_STATUS_REJECTED]);
+                case Defines::STATUS_REJECTED:
+                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'   => Defines::STATUS_REJECTED]);
                     if (xarModVars::get('uploads', 'file.auto-purge')) {
                         if (xarModVars::get('uploads', 'file.delete-confirmation')) {
                             return xarMod::guiFunc('uploads', 'admin', 'purge_rejected', ['confirmation' => false, 'authid' => xarSec::genAuthKey('uploads')]);

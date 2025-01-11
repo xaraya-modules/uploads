@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi purge_files function
+ * @extends MethodClass<UserApi>
  */
 class PurgeFilesMethod extends MethodClass
 {
@@ -47,11 +50,11 @@ class PurgeFilesMethod extends MethodClass
         }
 
         foreach ($fileList as $fileName => $fileInfo) {
-            if ($fileInfo['storeType'] & _UPLOADS_STORE_FILESYSTEM) {
+            if ($fileInfo['storeType'] & Defines::STORE_FILESYSTEM) {
                 xarMod::apiFunc('uploads', 'user', 'file_delete', ['fileName' => $fileInfo['fileLocation']]);
             }
 
-            if ($fileInfo['storeType'] & _UPLOADS_STORE_DB_DATA) {
+            if ($fileInfo['storeType'] & Defines::STORE_DB_DATA) {
                 xarMod::apiFunc('uploads', 'user', 'db_delete_file_data', ['fileId' => $fileInfo['fileId']]);
             }
 

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
+
+use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarSec;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads user uploadform function
+ * @extends MethodClass<UserGui>
  */
 class UploadformMethod extends MethodClass
 {

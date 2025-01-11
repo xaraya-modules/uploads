@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi prepare_uploads function
+ * @extends MethodClass<UserApi>
  */
 class PrepareUploadsMethod extends MethodClass
 {
@@ -82,7 +85,7 @@ class PrepareUploadsMethod extends MethodClass
             $fileInfo['fileSize']   = 0;
             $fileInfo['fileName']   = xarML('Missing File!');
             $fileInfo['errors'][0]['errorMesg'] = xarML('Invalid data format for upload ID: [#(1)]', 'upload');
-            $fileInfo['errors'][0]['errorId']  = _UPLOADS_ERROR_BAD_FORMAT;
+            $fileInfo['errors'][0]['errorId']  = Defines::ERROR_BAD_FORMAT;
             return ["$fileInfo[fileName]" => $fileInfo];
         }
 
@@ -106,7 +109,7 @@ class PrepareUploadsMethod extends MethodClass
                 $fileError['errorId']   = $errorObj->getID();
             } else {
                 $fileError['errorMesg'] = 'Unknown Error!';
-                $fileError['errorId']   = '_UPLOADS_ERROR_UNKOWN';
+                $fileError['errorId']   = 'Defines::ERROR_UNKOWN';
             }
             $fileInfo['errors']      = [$fileError];
 
@@ -158,7 +161,7 @@ class PrepareUploadsMethod extends MethodClass
                 // set an error, but don't die - let the caller
                 // do what they want with this.
                 $fileError['errorMesg'] = 'Unable to obfuscate filename!';
-                $fileError['errorId']   = _UPLOADS_ERROR_NO_OBFUSCATE;
+                $fileError['errorId']   = Defines::ERROR_NO_OBFUSCATE;
                 $fileInfo['errors']      = [$fileError];
             } else {
                 $fileInfo['fileDest'] = $savePath . '/' . $obf_fileName;

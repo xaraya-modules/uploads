@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi prepare_imports function
+ * @extends MethodClass<UserApi>
  */
 class PrepareImportsMethod extends MethodClass
 {
@@ -97,7 +100,7 @@ class PrepareImportsMethod extends MethodClass
             $fileInfo['fileSize'] = 0;
 
             $fileInfo['errors'][]['errorMsg'] = xarML('Unknown');
-            $fileInfo['errors'][]['errorId']  = _UPLOADS_ERROR_UNKNOWN;
+            $fileInfo['errors'][]['errorId']  = Defines::ERROR_UNKNOWN;
             return [$fileInfo];
         } else {
             return $imports;

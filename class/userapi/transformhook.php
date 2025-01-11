@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarTpl;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi transformhook function
+ * @extends MethodClass<UserApi>
  */
 class TransformhookMethod extends MethodClass
 {

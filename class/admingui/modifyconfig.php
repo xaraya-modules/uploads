@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -24,6 +26,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads admin modifyconfig function
+ * @extends MethodClass<AdminGui>
  */
 class ModifyconfigMethod extends MethodClass
 {
@@ -67,14 +70,14 @@ class ModifyconfigMethod extends MethodClass
         $data['ddprop']['upload']               = xarModVars::get('uploads', 'dd.fileupload.upload');
         $data['authid']                         = xarSec::genAuthKey();
 
-        $data['approveList']['noone']      = _UPLOADS_APPROVE_NOONE;
-        $data['approveList']['admin']      = _UPLOADS_APPROVE_ADMIN;
-        $data['approveList']['everyone']   = _UPLOADS_APPROVE_EVERYONE;
+        $data['approveList']['noone']      = Defines::APPROVE_NOONE;
+        $data['approveList']['admin']      = Defines::APPROVE_ADMIN;
+        $data['approveList']['everyone']   = Defines::APPROVE_EVERYONE;
 
-        if ($data['file']['auto-approve'] != _UPLOADS_APPROVE_NOONE &&
-            $data['file']['auto-approve'] != _UPLOADS_APPROVE_ADMIN &&
-            $data['file']['auto-approve'] != _UPLOADS_APPROVE_EVERYONE) {
-            $data['file']['auto-approve'] = _UPLOADS_APPROVE_NOONE;
+        if ($data['file']['auto-approve'] != Defines::APPROVE_NOONE &&
+            $data['file']['auto-approve'] != Defines::APPROVE_ADMIN &&
+            $data['file']['auto-approve'] != Defines::APPROVE_EVERYONE) {
+            $data['file']['auto-approve'] = Defines::APPROVE_NOONE;
         }
 
         $hooks = xarModHooks::call(

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
+
+use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads user errors function
+ * @extends MethodClass<UserGui>
  */
 class ErrorsMethod extends MethodClass
 {

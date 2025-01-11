@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi process_filters function
+ * @extends MethodClass<UserApi>
  */
 class ProcessFiltersMethod extends MethodClass
 {
@@ -123,25 +126,25 @@ class ProcessFiltersMethod extends MethodClass
          */
 
         switch ($status) {
-            case _UPLOADS_STATUS_REJECTED:
-                $filter['fileStatus'] = _UPLOADS_STATUS_REJECTED;
-                $statuses[_UPLOADS_STATUS_REJECTED]['selected'] = true;
+            case Defines::STATUS_REJECTED:
+                $filter['fileStatus'] = Defines::STATUS_REJECTED;
+                $statuses[Defines::STATUS_REJECTED]['selected'] = true;
                 break;
-            case _UPLOADS_STATUS_SUBMITTED:
-                $filter['fileStatus'] = _UPLOADS_STATUS_SUBMITTED;
-                $statuses[_UPLOADS_STATUS_SUBMITTED]['selected'] = true;
+            case Defines::STATUS_SUBMITTED:
+                $filter['fileStatus'] = Defines::STATUS_SUBMITTED;
+                $statuses[Defines::STATUS_SUBMITTED]['selected'] = true;
                 break;
-            case _UPLOADS_STATUS_APPROVED:
-                $filter['fileStatus'] = _UPLOADS_STATUS_APPROVED;
-                $statuses[_UPLOADS_STATUS_APPROVED]['selected'] = true;
+            case Defines::STATUS_APPROVED:
+                $filter['fileStatus'] = Defines::STATUS_APPROVED;
+                $statuses[Defines::STATUS_APPROVED]['selected'] = true;
                 break;
             case 0:
                 $filter['fileStatus'] = '';
                 $statuses[0]['selected'] = true;
                 break;
             default:
-                $filter['fileStatus'] = _UPLOADS_STATUS_SUBMITTED;
-                $statuses[_UPLOADS_STATUS_SUBMITTED]['selected'] = true;
+                $filter['fileStatus'] = Defines::STATUS_SUBMITTED;
+                $statuses[Defines::STATUS_SUBMITTED]['selected'] = true;
                 break;
         }
         unset($statuses);

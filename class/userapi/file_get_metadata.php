@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi file_get_metadata function
+ * @extends MethodClass<UserApi>
  */
 class FileGetMetadataMethod extends MethodClass
 {
@@ -50,11 +53,11 @@ class FileGetMetadataMethod extends MethodClass
         if (isset($fileLocation) && !empty($fileLocation) && file_exists($fileLocation)) {
             $file = & $fileLocation;
             if (is_dir($file)) {
-                $type = _INODE_TYPE_DIRECTORY;
+                $type = Defines::TYPE_DIRECTORY;
                 $size = 'N/A';
                 $mime = 'filesystem/directory';
             } elseif (is_file($file)) {
-                $type = _INODE_TYPE_FILE;
+                $type = Defines::TYPE_FILE;
                 $size = filesize($file);
                 if ($analyze) {
                     $mime = xarMod::apiFunc('mime', 'user', 'analyze_file', ['fileName' => $file]);
@@ -62,7 +65,7 @@ class FileGetMetadataMethod extends MethodClass
                     $mime = 'application/octet';
                 }
             } else {
-                $type = _INODE_TYPE_UNKNOWN;
+                $type = Defines::TYPE_UNKNOWN;
                 $size = 0;
                 $mime = 'application/octet';
             }

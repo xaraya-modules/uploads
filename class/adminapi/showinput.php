@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi showinput function
+ * @extends MethodClass<AdminApi>
  */
 class ShowinputMethod extends MethodClass
 {
@@ -98,11 +101,11 @@ class ShowinputMethod extends MethodClass
 
         $descend = true;
 
-        $data['getAction']['LOCAL']       = _UPLOADS_GET_LOCAL;
-        $data['getAction']['EXTERNAL']    = _UPLOADS_GET_EXTERNAL;
-        $data['getAction']['UPLOAD']      = _UPLOADS_GET_UPLOAD;
-        $data['getAction']['STORED']      = _UPLOADS_GET_STORED;
-        $data['getAction']['REFRESH']     = _UPLOADS_GET_REFRESH_LOCAL;
+        $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
+        $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
+        $data['getAction']['UPLOAD']      = Defines::GET_UPLOAD;
+        $data['getAction']['STORED']      = Defines::GET_STORED;
+        $data['getAction']['REFRESH']     = Defines::GET_REFRESH_LOCAL;
         $data['id']                       = $id;
         $data['file_maxsize'] = xarModVars::get('uploads', 'file.maxsize');
         if ($data['methods']['trusted']) {
@@ -177,8 +180,8 @@ class ShowinputMethod extends MethodClass
             $aList = array_filter(explode(';', $value));
 
             if (is_array($aList) && count($aList)) {
-                $data['inodeType']['DIRECTORY']   = _INODE_TYPE_DIRECTORY;
-                $data['inodeType']['FILE']        = _INODE_TYPE_FILE;
+                $data['inodeType']['DIRECTORY']   = Defines::TYPE_DIRECTORY;
+                $data['inodeType']['FILE']        = Defines::TYPE_FILE;
                 $data['Attachments'] = xarMod::apiFunc(
                     'uploads',
                     'user',

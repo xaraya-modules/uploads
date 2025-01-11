@@ -76,9 +76,9 @@
                         </div>
                         <div class="xar-col">
                             {% set options = [
-                                      {'id': _UPLOADS_APPROVE_NOONE, 'name': xar_translate('No one')},
-                                      {'id': _UPLOADS_APPROVE_ADMIN, 'name': xar_translate('Admin')},
-                                      {'id': _UPLOADS_APPROVE_EVERYONE, 'name': xar_translate('Everyone')}
+                                      {'id': constant('Xaraya\\Modules\\Uploads\\Defines::APPROVE_NOONE'), 'name': xar_translate('No one')},
+                                      {'id': constant('Xaraya\\Modules\\Uploads\\Defines::APPROVE_ADMIN'), 'name': xar_translate('Admin')},
+                                      {'id': constant('Xaraya\\Modules\\Uploads\\Defines::APPROVE_EVERYONE'), 'name': xar_translate('Everyone')}
                                      ] %}
                             {{ xar_data_input({type: "radio", name: "file[auto-approve]", id: "auto-approve", value: file['auto-approve'], options: options}) }}
                             <div class="xar-form-input-wrapper-after">

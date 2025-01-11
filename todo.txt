@@ -31,12 +31,12 @@ Low Priority: (won't necessarily get done anytime soon)
 File Attributes (xar_store_type values):
 
 Bit : Attribute Function             : Name
- 0  : MetaData Entry in DB           : _UPLOADS_STORE_DB_ENTRY
- 1  : Contents Stored in FileSystme  : _UPLOADS_STORE_FILESYSTEM
- 2  : Contents Stored in DB          : _UPLOADS_STORE_DB_DATA
- 3  : Contents not Saved             : _UPLOADS_STORE_NO_STORE
- 4  : File Location Trusted          : _UPLOADS_LOCATION_TRUSTED
- 5  : File Location Untrusted        : _UPLOADS_LOCATION_UNTRUSTED
- 6  : File Location Other            : _UPLOADS_LOCATION_OTHER
+ 0  : MetaData Entry in DB           : Defines::STORE_DB_ENTRY
+ 1  : Contents Stored in FileSystme  : Defines::STORE_FILESYSTEM
+ 2  : Contents Stored in DB          : Defines::STORE_DB_DATA
+ 3  : Contents not Saved             : Defines::STORE_NO_STORE
+ 4  : File Location Trusted          : Defines::LOCATION_TRUSTED
+ 5  : File Location Untrusted        : Defines::LOCATION_UNTRUSTED
+ 6  : File Location Other            : Defines::LOCATION_OTHER
 
 

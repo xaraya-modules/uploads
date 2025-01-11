@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarServer;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi dd_convert_value function
+ * @extends MethodClass<AdminApi>
  */
 class DdConvertValueMethod extends MethodClass
 {
@@ -69,7 +72,7 @@ class DdConvertValueMethod extends MethodClass
             xarMod::apiLoad('uploads', 'user');
 
             $args['import'] = 'file://' . $basePath . '/' . $basedir . $value;
-            $args['action'] = _UPLOADS_GET_EXTERNAL;
+            $args['action'] = Defines::GET_EXTERNAL;
             $list = xarMod::apiFunc('uploads', 'user', 'process_files', $args);
             $storeList = [];
             foreach ($list as $file => $fileInfo) {

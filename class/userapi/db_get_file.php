@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarDB;
 use xarMod;
@@ -27,6 +29,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi db_get_file function
+ * @extends MethodClass<UserApi>
  */
 class DbGetFileMethod extends MethodClass
 {
@@ -360,13 +363,13 @@ class DbGetFileMethod extends MethodClass
             $fileInfo['fileHashRealName'] = $fileInfo['fileDirectory'] . '/' . $fileInfo['fileName'];
 
             switch ($fileInfo['fileStatus']) {
-                case _UPLOADS_STATUS_REJECTED:
+                case Defines::STATUS_REJECTED:
                     $fileInfo['fileStatusName'] = xarML('Rejected');
                     break;
-                case _UPLOADS_STATUS_APPROVED:
+                case Defines::STATUS_APPROVED:
                     $fileInfo['fileStatusName'] = xarML('Approved');
                     break;
-                case _UPLOADS_STATUS_SUBMITTED:
+                case Defines::STATUS_SUBMITTED:
                     $fileInfo['fileStatusName'] = xarML('Submitted');
                     break;
                 default:
@@ -386,7 +389,7 @@ class DbGetFileMethod extends MethodClass
 
             $instance = implode(':', $instance);
 
-            if ($fileInfo['fileStatus'] == _UPLOADS_STATUS_APPROVED ||
+            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED ||
                 xarSecurity::check('EditUploads', 0, 'File', $instance)) {
                 $fileList[$fileInfo['fileId']] = $fileInfo;
             }

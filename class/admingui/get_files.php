@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -28,6 +30,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads admin get_files function
+ * @extends MethodClass<AdminGui>
  */
 class GetFilesMethod extends MethodClass
 {
@@ -39,10 +42,10 @@ class GetFilesMethod extends MethodClass
             return;
         }
 
-        $actionList[] = _UPLOADS_GET_UPLOAD;
-        $actionList[] = _UPLOADS_GET_EXTERNAL;
-        $actionList[] = _UPLOADS_GET_LOCAL;
-        $actionList[] = _UPLOADS_GET_REFRESH_LOCAL;
+        $actionList[] = Defines::GET_UPLOAD;
+        $actionList[] = Defines::GET_EXTERNAL;
+        $actionList[] = Defines::GET_LOCAL;
+        $actionList[] = Defines::GET_REFRESH_LOCAL;
         $actionList = 'enum:' . implode(':', $actionList);
 
         // What action are we performing?
@@ -51,7 +54,7 @@ class GetFilesMethod extends MethodClass
         }
 
         // StoreType can -only- be one of FSDB or DB_FULL
-        $storeTypes = _UPLOADS_STORE_FSDB . ':' . _UPLOADS_STORE_DB_FULL;
+        $storeTypes = Defines::STORE_FSDB . ':' . Defines::STORE_DB_FULL;
         if (!xarVar::fetch('storeType', "enum:$storeTypes", $storeType, '', xarVar::NOT_REQUIRED)) {
             return;
         }
@@ -60,20 +63,20 @@ class GetFilesMethod extends MethodClass
         $file_maxsize = xarModVars::get('uploads', 'file.maxsize');
 
         switch ($args['action']) {
-            case _UPLOADS_GET_UPLOAD:
+            case Defines::GET_UPLOAD:
                 $uploads = DataPropertyMaster::getProperty(['name' => 'uploads']);
                 $uploads->initialization_initial_method = $args['action'];
                 $uploads->checkInput('upload');
                 $args['upload'] = $uploads->propertydata;
                 break;
-            case _UPLOADS_GET_EXTERNAL:
+            case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
                 if (!xarVar::fetch('import', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 'NULL', xarVar::NOT_REQUIRED)) {
                     return;
                 }
                 $args['import'] = $import;
                 break;
-            case _UPLOADS_GET_LOCAL:
+            case Defines::GET_LOCAL:
                 if (!xarVar::fetch('fileList', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList)) {
                     return;
                 }
@@ -107,21 +110,21 @@ class GetFilesMethod extends MethodClass
 
                 break;
             default:
-            case _UPLOADS_GET_REFRESH_LOCAL:
+            case Defines::GET_REFRESH_LOCAL:
                 if (!xarVar::fetch('inode', 'regexp:/(?<!\.{2,2}\/)[\w\d]*/', $inode, '', xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
                 $cwd = xarMod::apiFunc('uploads', 'user', 'import_chdir', ['dirName' => $inode ?? null]);
 
-                $data['storeType']['DB_FULL']     = _UPLOADS_STORE_DB_FULL;
-                $data['storeType']['FSDB']        = _UPLOADS_STORE_FSDB;
-                $data['inodeType']['DIRECTORY']   = _INODE_TYPE_DIRECTORY;
-                $data['inodeType']['FILE']        = _INODE_TYPE_FILE;
-                $data['getAction']['LOCAL']       = _UPLOADS_GET_LOCAL;
-                $data['getAction']['EXTERNAL']    = _UPLOADS_GET_EXTERNAL;
-                $data['getAction']['UPLOAD']      = _UPLOADS_GET_UPLOAD;
-                $data['getAction']['REFRESH']     = _UPLOADS_GET_REFRESH_LOCAL;
+                $data['storeType']['DB_FULL']     = Defines::STORE_DB_FULL;
+                $data['storeType']['FSDB']        = Defines::STORE_FSDB;
+                $data['inodeType']['DIRECTORY']   = Defines::TYPE_DIRECTORY;
+                $data['inodeType']['FILE']        = Defines::TYPE_FILE;
+                $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
+                $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
+                $data['getAction']['UPLOAD']      = Defines::GET_UPLOAD;
+                $data['getAction']['REFRESH']     = Defines::GET_REFRESH_LOCAL;
                 $data['local_import_post_url']    = xarController::URL('uploads', 'admin', 'get_files');
                 $data['external_import_post_url'] = xarController::URL('uploads', 'admin', 'get_files');
                 $data['fileList'] = xarMod::apiFunc(

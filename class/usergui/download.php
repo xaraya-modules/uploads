@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -27,6 +29,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads user download function
+ * @extends MethodClass<UserGui>
  */
 class DownloadMethod extends MethodClass
 {
@@ -123,16 +126,16 @@ class DownloadMethod extends MethodClass
             $instance = implode(':', $instance);
 
             // If you are an administrator OR the file is approved, continue
-            if ($fileInfo['fileStatus'] != _UPLOADS_STATUS_APPROVED && !xarSecurity::check('EditUploads', 0, 'File', $instance)) {
+            if ($fileInfo['fileStatus'] != Defines::STATUS_APPROVED && !xarSecurity::check('EditUploads', 0, 'File', $instance)) {
                 return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'no_permission']);
             }
 
             if (xarSecurity::check('ViewUploads', 1, 'File', $instance)) {
-                if ($fileInfo['storeType'] & _UPLOADS_STORE_FILESYSTEM || ($fileInfo['storeType'] == _UPLOADS_STORE_DB_ENTRY)) {
+                if ($fileInfo['storeType'] & Defines::STORE_FILESYSTEM || ($fileInfo['storeType'] == Defines::STORE_DB_ENTRY)) {
                     if (!file_exists($fileInfo['fileLocation'])) {
                         return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
                     }
-                } elseif ($fileInfo['storeType'] & _UPLOADS_STORE_DB_FULL) {
+                } elseif ($fileInfo['storeType'] & Defines::STORE_DB_FULL) {
                     if (!xarMod::apiFunc('uploads', 'user', 'db_count_data', ['fileId' => $fileInfo['fileId']])) {
                         return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
                     }

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
+
+use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarSecurity;
@@ -24,6 +26,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads admin privileges function
+ * @extends MethodClass<AdminGui>
  */
 class PrivilegesMethod extends MethodClass
 {

@@ -19,6 +19,16 @@ sys::import('modules.uploads.class.userapi');
 
 /**
  * Handle the uploads user GUI
+ *
+ * @method mixed displayAttachments(array $args)
+ * @method mixed download(array $args)
+ * @method mixed errors(array $args)
+ * @method mixed fileProperties(array $args)
+ * @method mixed main(array $args)
+ * @method mixed purgeRejected(array $args)
+ * @method mixed saveAttachments(array $args)
+ * @method mixed upload(array $args)
+ * @method mixed uploadform(array $args)
  * @extends UserGuiClass<Module>
  */
 class UserGui extends UserGuiClass

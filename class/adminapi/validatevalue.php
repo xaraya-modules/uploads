@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi validatevalue function
+ * @extends MethodClass<AdminApi>
  */
 class ValidatevalueMethod extends MethodClass
 {
@@ -88,16 +91,16 @@ class ValidatevalueMethod extends MethodClass
         xarMod::apiLoad('uploads', 'user');
 
         if (isset($methods) && count($methods) > 0) {
-            $typeCheck = 'enum:0:' . _UPLOADS_GET_STORED;
-            $typeCheck .= (isset($methods['external']) && $methods['external']) ? ':' . _UPLOADS_GET_EXTERNAL : '';
-            $typeCheck .= (isset($methods['trusted']) && $methods['trusted']) ? ':' . _UPLOADS_GET_LOCAL : '';
-            $typeCheck .= (isset($methods['upload']) && $methods['upload']) ? ':' . _UPLOADS_GET_UPLOAD : '';
+            $typeCheck = 'enum:0:' . Defines::GET_STORED;
+            $typeCheck .= (isset($methods['external']) && $methods['external']) ? ':' . Defines::GET_EXTERNAL : '';
+            $typeCheck .= (isset($methods['trusted']) && $methods['trusted']) ? ':' . Defines::GET_LOCAL : '';
+            $typeCheck .= (isset($methods['upload']) && $methods['upload']) ? ':' . Defines::GET_UPLOAD : '';
             $typeCheck .= ':-2'; // clear value
         } else {
-            $typeCheck = 'enum:0:' . _UPLOADS_GET_STORED;
-            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.external') == true) ? ':' . _UPLOADS_GET_EXTERNAL : '';
-            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.trusted') == true) ? ':' . _UPLOADS_GET_LOCAL : '';
-            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.upload') == true) ? ':' . _UPLOADS_GET_UPLOAD : '';
+            $typeCheck = 'enum:0:' . Defines::GET_STORED;
+            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.external') == true) ? ':' . Defines::GET_EXTERNAL : '';
+            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.trusted') == true) ? ':' . Defines::GET_LOCAL : '';
+            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.upload') == true) ? ':' . Defines::GET_UPLOAD : '';
             $typeCheck .= ':-2'; // clear value
         }
 
@@ -109,7 +112,7 @@ class ValidatevalueMethod extends MethodClass
 
         $args['action']    = $action;
         switch ($action) {
-            case _UPLOADS_GET_UPLOAD:
+            case Defines::GET_UPLOAD:
 
                 $file_maxsize = xarModVars::get('uploads', 'file.maxsize');
                 $file_maxsize = $file_maxsize > 0 ? $file_maxsize : $maxsize;
@@ -125,7 +128,7 @@ class ValidatevalueMethod extends MethodClass
                 $upload         = & $_FILES[$id . '_attach_upload'];
                 $args['upload'] = & $_FILES[$id . '_attach_upload'];
                 break;
-            case _UPLOADS_GET_EXTERNAL:
+            case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
                 if (!xarVar::fetch($id . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
@@ -142,7 +145,7 @@ class ValidatevalueMethod extends MethodClass
 
                 $args['import'] = $import;
                 break;
-            case _UPLOADS_GET_LOCAL:
+            case Defines::GET_LOCAL:
 
                 if (!xarVar::fetch($id . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList)) {
                     return;
@@ -164,7 +167,7 @@ class ValidatevalueMethod extends MethodClass
                     }
                 }
                 break;
-            case _UPLOADS_GET_STORED:
+            case Defines::GET_STORED:
 
                 if (!xarVar::fetch($id . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
                     return;

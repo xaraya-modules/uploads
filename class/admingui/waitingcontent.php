@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
+
+use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads admin waitingcontent function
+ * @extends MethodClass<AdminGui>
  */
 class WaitingcontentMethod extends MethodClass
 {

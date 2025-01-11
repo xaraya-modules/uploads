@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSession;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi file_store function
+ * @extends MethodClass<UserApi>
  */
 class FileStoreMethod extends MethodClass
 {
@@ -50,10 +53,10 @@ class FileStoreMethod extends MethodClass
 
         $instance = implode(':', $instance);
 
-        if ((isset($fileInfo['fileStatus']) && $fileInfo['fileStatus'] == _UPLOADS_STATUS_APPROVED) ||
+        if ((isset($fileInfo['fileStatus']) && $fileInfo['fileStatus'] == Defines::STATUS_APPROVED) ||
              xarSecurity::check('AddUploads', 1, 'File', $instance)) {
             if (!isset($storeType)) {
-                $storeType = _UPLOADS_STORE_FSDB;
+                $storeType = Defines::STORE_FSDB;
             }
 
             if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2) {
@@ -79,12 +82,12 @@ class FileStoreMethod extends MethodClass
             }
 
             // If this is just a file dump, return the dump
-            if ($storeType & _UPLOADS_STORE_TEXT) {
+            if ($storeType & Defines::STORE_TEXT) {
                 $fileInfo['fileData'] = xarMod::apiFunc('uploads', 'user', 'file_dump', $fileInfo);
             }
             // If the store db_entry bit is set, then go ahead
             // and set up the database meta information for the file
-            if ($storeType & _UPLOADS_STORE_DB_ENTRY) {
+            if ($storeType & Defines::STORE_DB_ENTRY) {
                 $fileInfo['store_type'] = $storeType;
 
                 if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2 &&
@@ -102,7 +105,7 @@ class FileStoreMethod extends MethodClass
                 }
             }
 
-            if ($storeType & _UPLOADS_STORE_FILESYSTEM) {
+            if ($storeType & Defines::STORE_FILESYSTEM) {
                 if ($fileInfo['fileSrc'] != $fileInfo['fileDest']) {
                     $result = xarMod::apiFunc('uploads', 'user', 'file_move', $fileInfo);
                 } else {
@@ -129,7 +132,7 @@ class FileStoreMethod extends MethodClass
                 }
             }
 
-            if ($storeType & _UPLOADS_STORE_DB_DATA) {
+            if ($storeType & Defines::STORE_DB_DATA) {
                 if (!xarMod::apiFunc('uploads', 'user', 'file_dump', $fileInfo)) {
                     // If we couldn't add the files contents to the database,
                     // then remove the file metadata as well

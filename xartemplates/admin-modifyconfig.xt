@@ -76,9 +76,9 @@
                         <div class="xar-col">
                             <xar:set name="options">
                                 array(
-                                      array('id' => _UPLOADS_APPROVE_NOONE, 'name' => xarML('No one')),
-                                      array('id' => _UPLOADS_APPROVE_ADMIN, 'name' => xarML('Admin')),
-                                      array('id' => _UPLOADS_APPROVE_EVERYONE, 'name' => xarML('Everyone')),
+                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_NOONE, 'name' => xarML('No one')),
+                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_ADMIN, 'name' => xarML('Admin')),
+                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_EVERYONE, 'name' => xarML('Everyone')),
                                      )
                             </xar:set>
                             <xar:data-input type="radio" name="file[auto-approve]" id="auto-approve" value="$file['auto-approve']" options="$options"/>

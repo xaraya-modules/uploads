@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
+
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi dd_configure function
+ * @extends MethodClass<AdminApi>
  */
 class DdConfigureMethod extends MethodClass
 {

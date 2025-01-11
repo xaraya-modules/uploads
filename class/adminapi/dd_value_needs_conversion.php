@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
+
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use sys;
 use BadParameterException;
@@ -19,6 +21,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi dd_value_needs_conversion function
+ * @extends MethodClass<AdminApi>
  */
 class DdValueNeedsConversionMethod extends MethodClass
 {

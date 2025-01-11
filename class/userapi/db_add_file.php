@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSession;
 use xarModVars;
@@ -25,6 +27,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi db_add_file function
+ * @extends MethodClass<UserApi>
  */
 class DbAddFileMethod extends MethodClass
 {
@@ -76,11 +79,11 @@ class DbAddFileMethod extends MethodClass
         if (!isset($fileStatus)) {
             $autoApprove = xarModVars::get('uploads', 'file.auto-approve');
 
-            if ($autoApprove == _UPLOADS_APPROVE_EVERYONE ||
-               ($autoApprove == _UPLOADS_APPROVE_ADMIN && xarSecurity::check('AdminUploads', 0))) {
-                $fileStatus = _UPLOADS_STATUS_APPROVED;
+            if ($autoApprove == Defines::APPROVE_EVERYONE ||
+               ($autoApprove == Defines::APPROVE_ADMIN && xarSecurity::check('AdminUploads', 0))) {
+                $fileStatus = Defines::STATUS_APPROVED;
             } else {
-                $fileStatus = _UPLOADS_STATUS_SUBMITTED;
+                $fileStatus = Defines::STATUS_SUBMITTED;
             }
         }
 
@@ -99,7 +102,7 @@ class DbAddFileMethod extends MethodClass
         }
 
         if (!isset($store_type)) {
-            $store_type = _UPLOADS_STORE_FILESYSTEM;
+            $store_type = Defines::STORE_FILESYSTEM;
         }
 
         if (!isset($fileType)) {

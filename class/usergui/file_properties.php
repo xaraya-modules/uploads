@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -26,6 +28,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads user file_properties function
+ * @extends MethodClass<UserGui>
  */
 class FilePropertiesMethod extends MethodClass
 {
@@ -108,7 +111,7 @@ class FilePropertiesMethod extends MethodClass
                 }
             }
 
-            if ($fileInfo['fileStatus'] == _UPLOADS_STATUS_APPROVED || xarSecurity::check('ViewUploads', 1, 'File', $instance)) {
+            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED || xarSecurity::check('ViewUploads', 1, 'File', $instance)) {
                 // we don't want the theme to show up, so
                 // get rid of everything in the buffer
                 ob_end_clean();
@@ -116,12 +119,12 @@ class FilePropertiesMethod extends MethodClass
                 $storeType  = ['long' => '', 'short' => $fileInfo['storeType']];
                 $storeType['long'] = 'Database File Entry';
 
-                if (_UPLOADS_STORE_FILESYSTEM & $fileInfo['storeType']) {
+                if (Defines::STORE_FILESYSTEM & $fileInfo['storeType']) {
                     if (!empty($storeType['long'])) {
                         $storeType['long'] .= ' / ';
                     }
                     $storeType['long'] .= 'File System Store';
-                } elseif (_UPLOADS_STORE_DB_DATA & $fileInfo['storeType']) {
+                } elseif (Defines::STORE_DB_DATA & $fileInfo['storeType']) {
                     if (!empty($storeType['long'])) {
                         $storeType['long'] .= ' / ';
                     }

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarController;
 use xarModVars;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi validate_upload function
+ * @extends MethodClass<UserApi>
  */
 class ValidateUploadMethod extends MethodClass
 {

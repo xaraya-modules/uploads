@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -23,6 +25,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi process_files function
+ * @extends MethodClass<UserApi>
  */
 class ProcessFilesMethod extends MethodClass
 {
@@ -41,8 +44,8 @@ class ProcessFilesMethod extends MethodClass
 
         // If not store type defined, default to DB ENTRY AND FILESYSTEM STORE
         if (!isset($storeType)) {
-            // this is the same as _UPLOADS_STORE_DB_ENTRY OR'd with _UPLOADS_STORE_FILESYSTEM
-            $storeType = _UPLOADS_STORE_FSDB;
+            // this is the same as Defines::STORE_DB_ENTRY OR'd with Defines::STORE_FILESYSTEM
+            $storeType = Defines::STORE_FSDB;
         }
 
         // If there is an override['upload']['path'], try to use that
@@ -71,7 +74,7 @@ class ProcessFilesMethod extends MethodClass
         }
 
         switch ($action) {
-            case _UPLOADS_GET_UPLOAD:
+            case Defines::GET_UPLOAD:
                 if (!isset($upload) || empty($upload)) {
                     $msg = xarML('Missing parameter [#(1)] to API function [#(2)] in module [#(3)].', 'upload', 'process_files', 'uploads');
                     throw new Exception($msg);
@@ -102,7 +105,7 @@ class ProcessFilesMethod extends MethodClass
                 foreach ($uploadarray as $upload) {
                     if (isset($upload['name']) && !empty($upload['name'])) {
                         // make sure we look in the right directory :-)
-                        if ($storeType & _UPLOADS_STORE_FILESYSTEM) {
+                        if ($storeType & Defines::STORE_FILESYSTEM) {
                             $dirfilter = $upload_directory . '/%';
                         } else {
                             $dirfilter = null;
@@ -118,7 +121,7 @@ class ProcessFilesMethod extends MethodClass
                                 // specify the error message
                                 $file['errors'] = [];
                                 $file['errors'][] = ['errorMesg' => xarML('Filename already exists'),
-                                    'errorId'   => _UPLOADS_ERROR_BAD_FORMAT, ];
+                                    'errorId'   => Defines::ERROR_BAD_FORMAT, ];
                                 // set the fileId to null for templates etc.
                                 $file['fileId'] = null;
                                 // add the existing file to the list and break off
@@ -149,9 +152,9 @@ class ProcessFilesMethod extends MethodClass
                     }
                 }
                 break;
-            case _UPLOADS_GET_LOCAL:
+            case Defines::GET_LOCAL:
 
-                $storeType = _UPLOADS_STORE_DB_ENTRY;
+                $storeType = Defines::STORE_DB_ENTRY;
 
                 if (isset($getAll) && !empty($getAll)) {
                     // current working directory for the user, set by import_chdir() when using the get_files() GUI
@@ -162,7 +165,7 @@ class ProcessFilesMethod extends MethodClass
                     $list = [];
                     // file list coming from validatevalue() or the get_files() GUI
                     foreach ($fileList as $location => $fileInfo) {
-                        if ($fileInfo['inodeType'] == _INODE_TYPE_DIRECTORY) {
+                        if ($fileInfo['inodeType'] == Defines::TYPE_DIRECTORY) {
                             $list += xarMod::apiFunc(
                                 'uploads',
                                 'user',
@@ -177,12 +180,12 @@ class ProcessFilesMethod extends MethodClass
 
                     // files in the trusted directory are automatically approved
                     foreach ($fileList as $key => $fileInfo) {
-                        $fileList[$key]['fileStatus'] = _UPLOADS_STATUS_APPROVED;
+                        $fileList[$key]['fileStatus'] = Defines::STATUS_APPROVED;
                     }
                     unset($list);
                 }
                 break;
-            case _UPLOADS_GET_EXTERNAL:
+            case Defines::GET_EXTERNAL:
 
                 if (!isset($import)) {
                     $msg = xarML('Missing parameter [#(1)] to API function [#(2)] in module [#(3)].', 'import', 'process_files', 'uploads');
@@ -221,7 +224,7 @@ class ProcessFilesMethod extends MethodClass
                     case 'file':
                         // If we'ere using the file scheme then just store a db entry only
                         // as there is really no sense in moving the file around
-                        $storeType = _UPLOADS_STORE_DB_ENTRY;
+                        $storeType = Defines::STORE_DB_ENTRY;
                         $fileList = xarMod::apiFunc(
                             'uploads',
                             'user',

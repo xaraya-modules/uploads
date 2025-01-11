@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
+
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModHooks;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi delete_associations function
+ * @extends MethodClass<AdminApi>
  */
 class DeleteAssociationsMethod extends MethodClass
 {

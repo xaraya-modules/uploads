@@ -23,6 +23,8 @@
 // Purpose of file:  Initialisation functions for uploads
 // ----------------------------------------------------------------------
 
+use Xaraya\Modules\Uploads\Defines;
+
 /**
  * initialise the module
  */
@@ -54,7 +56,7 @@ function uploads_init()
     xarModVars::set('uploads', 'dd.fileupload.external', true);
     xarModVars::set('uploads', 'dd.fileupload.upload', true);
     xarModVars::set('uploads', 'dd.fileupload.trusted', true);
-    xarModVars::set('uploads', 'file.auto-approve', _UPLOADS_APPROVE_ADMIN);
+    xarModVars::set('uploads', 'file.auto-approve', Defines::APPROVE_ADMIN);
 
     $data['filters']['inverse']                     = false;
     $data['filters']['mimetypes'][0]['typeId']      = 0;
@@ -63,12 +65,12 @@ function uploads_init()
     $data['filters']['subtypes'][0]['subtypeName']  = xarML('All');
     $data['filters']['status'][0]['statusId']       = 0;
     $data['filters']['status'][0]['statusName']     = xarML('All');
-    $data['filters']['status'][_UPLOADS_STATUS_SUBMITTED]['statusId']    = _UPLOADS_STATUS_SUBMITTED;
-    $data['filters']['status'][_UPLOADS_STATUS_SUBMITTED]['statusName']  = 'Submitted';
-    $data['filters']['status'][_UPLOADS_STATUS_APPROVED]['statusId']     = _UPLOADS_STATUS_APPROVED;
-    $data['filters']['status'][_UPLOADS_STATUS_APPROVED]['statusName']   = 'Approved';
-    $data['filters']['status'][_UPLOADS_STATUS_REJECTED]['statusId']     = _UPLOADS_STATUS_REJECTED;
-    $data['filters']['status'][_UPLOADS_STATUS_REJECTED]['statusName']   = 'Rejected';
+    $data['filters']['status'][Defines::STATUS_SUBMITTED]['statusId']    = Defines::STATUS_SUBMITTED;
+    $data['filters']['status'][Defines::STATUS_SUBMITTED]['statusName']  = 'Submitted';
+    $data['filters']['status'][Defines::STATUS_APPROVED]['statusId']     = Defines::STATUS_APPROVED;
+    $data['filters']['status'][Defines::STATUS_APPROVED]['statusName']   = 'Approved';
+    $data['filters']['status'][Defines::STATUS_REJECTED]['statusId']     = Defines::STATUS_REJECTED;
+    $data['filters']['status'][Defines::STATUS_REJECTED]['statusName']   = 'Rejected';
     $filter['fileType']     = '%';
     $filter['fileStatus']   = '';
 

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -25,6 +27,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads admin purge_rejected function
+ * @extends MethodClass<AdminGui>
  */
 class PurgeRejectedMethod extends MethodClass
 {
@@ -56,7 +59,7 @@ class PurgeRejectedMethod extends MethodClass
                 'uploads',
                 'user',
                 'db_get_file',
-                ['fileStatus' => _UPLOADS_STATUS_REJECTED]
+                ['fileStatus' => Defines::STATUS_REJECTED]
             );
 
             if (empty($fileList)) {
@@ -74,7 +77,7 @@ class PurgeRejectedMethod extends MethodClass
                 'uploads',
                 'user',
                 'db_get_file',
-                ['fileStatus' => _UPLOADS_STATUS_REJECTED]
+                ['fileStatus' => Defines::STATUS_REJECTED]
             );
             if (empty($fileList)) {
                 $data['fileList']   = [];

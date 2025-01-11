@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarDB;
 use xarUser;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi db_get_users function
+ * @extends MethodClass<UserApi>
  */
 class DbGetUsersMethod extends MethodClass
 {

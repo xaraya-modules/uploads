@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarController;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi import_get_filelist function
+ * @extends MethodClass<UserApi>
  */
 class ImportGetFilelistMethod extends MethodClass
 {
@@ -109,9 +112,9 @@ class ImportGetFilelistMethod extends MethodClass
         }
 
         if (is_file($fileLocation)) {
-            $type = _INODE_TYPE_FILE;
+            $type = Defines::TYPE_FILE;
         } elseif (is_dir($fileLocation)) {
-            $type = _INODE_TYPE_DIRECTORY;
+            $type = Defines::TYPE_DIRECTORY;
         } elseif (is_link($fileLocation)) {
             $linkLocation = readlink($fileLocation);
 
@@ -122,9 +125,9 @@ class ImportGetFilelistMethod extends MethodClass
             $fileLocation = $linkLocation;
 
             if (is_dir($linkLocation)) {
-                $type = _INODE_TYPE_FILE;
+                $type = Defines::TYPE_FILE;
             } elseif (is_file($linkLocation)) {
-                $type = _INODE_TYPE_DIRECTORY;
+                $type = Defines::TYPE_DIRECTORY;
             } else {
                 $type = -1;
             }
@@ -133,7 +136,7 @@ class ImportGetFilelistMethod extends MethodClass
         }
 
         switch ($type) {
-            case _INODE_TYPE_FILE:
+            case Defines::TYPE_FILE:
                 if ($onlyNew) {
                     $file = xarMod::apiFunc(
                         'uploads',
@@ -159,13 +162,13 @@ class ImportGetFilelistMethod extends MethodClass
                             );
                 }
                 break;
-            case _INODE_TYPE_DIRECTORY:
+            case Defines::TYPE_DIRECTORY:
                 if ($fp = opendir($fileLocation)) {
                     while (false !== ($inode = readdir($fp))) {
                         if (is_dir($fileLocation . '/' . $inode) && !preg_match('/^([.]{1,2})$/i', $inode)) {
-                            $type = _INODE_TYPE_DIRECTORY;
+                            $type = Defines::TYPE_DIRECTORY;
                         } elseif (is_file($fileLocation . '/' . $inode)) {
-                            $type = _INODE_TYPE_FILE;
+                            $type = Defines::TYPE_FILE;
                         } elseif (is_link($fileLocation . '/' . $inode)) {
                             $linkLocation = readlink($fileLocation . '/' . $inode);
 
@@ -174,9 +177,9 @@ class ImportGetFilelistMethod extends MethodClass
                             }
 
                             if (is_dir($linkLocation) && !preg_match('/([.]{1,2})$/i', $linkLocation)) {
-                                $type = _INODE_TYPE_DIRECTORY;
+                                $type = Defines::TYPE_DIRECTORY;
                             } elseif (is_file($linkLocation)) {
-                                $type = _INODE_TYPE_FILE;
+                                $type = Defines::TYPE_FILE;
                             } else {
                                 $type = -1;
                             }
@@ -186,7 +189,7 @@ class ImportGetFilelistMethod extends MethodClass
 
 
                         switch ($type) {
-                            case _INODE_TYPE_FILE:
+                            case Defines::TYPE_FILE:
                                 $fileName = $fileLocation . '/' . $inode;
 
                                 if ($onlyNew) {
@@ -213,7 +216,7 @@ class ImportGetFilelistMethod extends MethodClass
                                     $fileList["$file[inodeType]:$fileName"] = $file;
                                 }
                                 break;
-                            case _INODE_TYPE_DIRECTORY:
+                            case Defines::TYPE_DIRECTORY:
                                 $dirName = "$fileLocation/$inode";
                                 if ($descend) {
                                     $files = xarMod::apiFunc(

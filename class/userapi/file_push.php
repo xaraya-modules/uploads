@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi file_push function
+ * @extends MethodClass<UserApi>
  */
 class FilePushMethod extends MethodClass
 {
@@ -80,7 +83,7 @@ class FilePushMethod extends MethodClass
                 'uploads'
             );
             throw new Exception($msg);
-        } elseif ($storeType & _UPLOADS_STORE_DB_DATA) {
+        } elseif ($storeType & Defines::STORE_DB_DATA) {
             if (!isset($fileId)) {
                 $msg = xarML(
                     'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
@@ -108,7 +111,7 @@ class FilePushMethod extends MethodClass
         $pageBuffer = xarMod::apiFunc('uploads', 'user', 'flush_page_buffer');
 
 
-        if ($storeType & _UPLOADS_STORE_FILESYSTEM || ($storeType == _UPLOADS_STORE_DB_ENTRY)) {
+        if ($storeType & Defines::STORE_FILESYSTEM || ($storeType == Defines::STORE_DB_ENTRY)) {
             // Start buffering for the file
             ob_start();
 
@@ -141,7 +144,7 @@ class FilePushMethod extends MethodClass
             // TODO: evaluate registering shutdown functions to take care of
             //       ending Xaraya in a safe manner
             $finished = true;
-        } elseif ($storeType & _UPLOADS_STORE_DB_DATA) {
+        } elseif ($storeType & Defines::STORE_DB_DATA) {
             // Start buffering for the file
             ob_start();
 

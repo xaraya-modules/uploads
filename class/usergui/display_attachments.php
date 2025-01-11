@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
+
+use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -24,6 +26,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads user display_attachments function
+ * @extends MethodClass<UserGui>
  */
 class DisplayAttachmentsMethod extends MethodClass
 {

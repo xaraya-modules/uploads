@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
+use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi import_external_file function
+ * @extends MethodClass<UserApi>
  */
 class ImportExternalFileMethod extends MethodClass
 {
@@ -63,7 +66,7 @@ class ImportExternalFileMethod extends MethodClass
 
         $list = [];
         foreach ($fileList as $location => $fileInfo) {
-            if ($fileInfo['inodeType'] == _INODE_TYPE_DIRECTORY) {
+            if ($fileInfo['inodeType'] == Defines::TYPE_DIRECTORY) {
                 $list += xarMod::apiFunc(
                     'uploads',
                     'user',

@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
-
 use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModHooks;
@@ -32,22 +32,26 @@ class RescanAssociationsMethod extends MethodClass
 
     /**
      * Re-scan all file associations (possibly for a specific module, itemtype and itemid)
-     *  @author  mikespub
+     * @author  mikespub
      * @access public
-     *
-     * @param   integer modid     The id of module we are going to rescan
-     * @param   integer itemtype  The item type within the defined module
-     * @param   integer itemid    The id of the item types item
-     * @param   integer fileId    The id of the file we are going to rescan
+     * @param array<mixed> $args
+     * @var integer $modid     The id of module we are going to rescan
+     * @var integer $itemtype  The item type within the defined module
+     * @var integer $itemid    The id of the item types item
+     * @var integer $fileId    The id of the file we are going to rescan
      * @return mixed TRUE on success, void with exception on error
      */
     public function __invoke(array $args = [])
     {
         // FIXME: don't use this as such in the uploads_guimods version, because you'd
         //        loose information about the categories and direct file associations
+        $adminapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
 
         // 1. delete any existing associations for these arguments
-        if (!xarMod::apiFunc('uploads', 'user', 'db_delete_association', $args)) {
+        if (!$userapi->dbDeleteAssociation($args)) {
             return;
         }
 
@@ -135,15 +139,12 @@ class RescanAssociationsMethod extends MethodClass
                         }
                         foreach ($matches[2] as $file) {
                             // Note: we may have more than one association between item and file here
-                            xarMod::apiFunc(
-                                'uploads',
-                                'user',
-                                'db_add_association',
-                                ['modid'    => $modid,
-                                    'itemtype' => $itemtype,
-                                    'itemid'   => $itemid,
-                                    'fileId'   => $file, ]
-                            );
+                            $userapi->dbAddAssociation([
+                                'modid'    => $modid,
+                                'itemtype' => $itemtype,
+                                'itemid'   => $itemid,
+                                'fileId'   => $file,
+                            ]);
                         }
                     } else {
                         // get the file id's directly from the value
@@ -153,15 +154,12 @@ class RescanAssociationsMethod extends MethodClass
                                 continue;
                             }
                             // Note: we may have more than one association between item and file here
-                            xarMod::apiFunc(
-                                'uploads',
-                                'user',
-                                'db_add_association',
-                                ['modid'    => $modid,
-                                    'itemtype' => $itemtype,
-                                    'itemid'   => $itemid,
-                                    'fileId'   => $file, ]
-                            );
+                            $userapi->dbAddAssociation([
+                                'modid'    => $modid,
+                                'itemtype' => $itemtype,
+                                'itemid'   => $itemid,
+                                'fileId'   => $file,
+                            ]);
                         }
                     }
                 }
@@ -217,15 +215,12 @@ class RescanAssociationsMethod extends MethodClass
                         }
                         foreach ($matches[2] as $file) {
                             // Note: we may have more than one association between item and file here
-                            xarMod::apiFunc(
-                                'uploads',
-                                'user',
-                                'db_add_association',
-                                ['modid'    => $artmodid,
-                                    'itemtype' => $pubtypeid,
-                                    'itemid'   => $article['aid'],
-                                    'fileId'   => $file, ]
-                            );
+                            $userapi->dbAddAssociation([
+                                'modid'    => $artmodid,
+                                'itemtype' => $pubtypeid,
+                                'itemid'   => $article['aid'],
+                                'fileId'   => $file,
+                            ]);
                         }
                     } else {
                         // get the file id's directly from the value
@@ -235,15 +230,12 @@ class RescanAssociationsMethod extends MethodClass
                                 continue;
                             }
                             // Note: we may have more than one association between item and file here
-                            xarMod::apiFunc(
-                                'uploads',
-                                'user',
-                                'db_add_association',
-                                ['modid'    => $artmodid,
-                                    'itemtype' => $pubtypeid,
-                                    'itemid'   => $article['aid'],
-                                    'fileId'   => $file, ]
-                            );
+                            $userapi->dbAddAssociation([
+                                'modid'    => $artmodid,
+                                'itemtype' => $pubtypeid,
+                                'itemid'   => $article['aid'],
+                                'fileId'   => $file,
+                            ]);
                         }
                     }
                 }

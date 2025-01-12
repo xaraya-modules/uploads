@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\AdminApi;
-
 
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
@@ -32,10 +31,8 @@ class UpdatehookMethod extends MethodClass
      * update file associations for an item - hook for ('item','update','API')
      * Note: this will only be called if uploads is hooked to that module (e.g.
      * not for Upload properties)
-     * @param mixed $args ['objectid'] ID of the object
-     * @param mixed $args ['extrainfo'] extra information
-     * @return bool
-     * @return true on success, false on failure
+     * @param array<mixed> $args
+     * @return bool true on success, false on failure
      */
     public function __invoke(array $args = [])
     {

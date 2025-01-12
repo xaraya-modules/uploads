@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -36,7 +35,8 @@ class DbGetFileDataMethod extends MethodClass
      * @author Carl P. Corliss
      * @author Micheal Cortez
      * @access public
-     * @param int fileId     The ID of the file we are are retrieving
+     * @param array<mixed> $args
+     * @var int $fileId     The ID of the file we are are retrieving
      * @return array|void All the (4K) blocks stored for this file
      */
     public function __invoke(array $args = [])

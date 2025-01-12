@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -32,9 +31,10 @@ class ImportChdirMethod extends MethodClass
 
     /**
      * Change to the specified directory within the local imports sandbox directory
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   string     dirName  The name of the directory (within the import sandbox) to change to
+     * @param array<mixed> $args
+     * @var string $dirName  The name of the directory (within the import sandbox) to change to
      * @return string           The complete path to the new Current Working Directory within the sandbox
      */
     public function __invoke(array $args = [])
@@ -51,7 +51,9 @@ class ImportChdirMethod extends MethodClass
         } else {
             $cwd = sys::root() . "/" . xarModUserVars::get('uploads', 'path.imports-cwd');
         }
-        $importDir = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'imports_directory']);
+        $userapi = $this->getParent();
+
+        $importDir = $userapi->dbGetDir(['directory' => 'imports_directory']);
 
         if (!empty($dirName)) {
             if ($dirName == '...') {

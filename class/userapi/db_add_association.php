@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -30,12 +29,13 @@ class DbAddAssociationMethod extends MethodClass
 
     /**
      * Create an assocation between a (stored) file and a module/itemtype/item
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   integer fileId    The id of the file we are going to associate with an item
-     * @param   integer modid     The id of module this file is associated with
-     * @param   integer itemtype  The item type within the defined module
-     * @param   integer itemid    The id of the item types item
+     * @param array<mixed> $args
+     *     integer fileId    The id of the file we are going to associate with an item
+     *     integer modid     The id of module this file is associated with
+     *     integer itemtype  The item type within the defined module
+     *     integer itemid    The id of the item types item
      *
      * @return integer The id of the file that was associated, FALSE with exception on error
      */

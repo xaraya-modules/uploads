@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSession;
@@ -43,8 +44,12 @@ class FileStoreMethod extends MethodClass
             );
             throw new Exception($msg);
         }
+        $userapi = $this->getParent();
 
-        $typeInfo = xarMod::apiFunc('mime', 'user', 'get_rev_mimetype', ['mimeType' => $fileInfo['fileType']]);
+        /** @var MimeApi $mimeapi */
+        $mimeapi = $userapi->getMimeAPI();
+
+        $typeInfo = $mimeapi->getRevMimetype(['mimeType' => $fileInfo['fileType']]);
         $instance = [];
         $instance[0] = $typeInfo['typeId'];
         $instance[1] = $typeInfo['subtypeId'];
@@ -64,13 +69,10 @@ class FileStoreMethod extends MethodClass
             } else {
                 // first, make sure the file isn't already stored in the db/filesystem
                 // if it is, then don't add it.
-                $fInfo = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'db_get_file',
-                    ['fileLocation' => $fileInfo['fileLocation'],
-                        'fileSize' => $fileInfo['fileSize'], ]
-                );
+                $fInfo = $userapi->dbGetFile([
+                    'fileLocation' => $fileInfo['fileLocation'],
+                    'fileSize' => $fileInfo['fileSize'],
+                ]);
 
                 // If we already have the file, then return the info we have on it
                 if (is_array($fInfo) && count($fInfo)) {
@@ -83,7 +85,7 @@ class FileStoreMethod extends MethodClass
 
             // If this is just a file dump, return the dump
             if ($storeType & Defines::STORE_TEXT) {
-                $fileInfo['fileData'] = xarMod::apiFunc('uploads', 'user', 'file_dump', $fileInfo);
+                $fileInfo['fileData'] = $userapi->fileDump($fileInfo);
             }
             // If the store db_entry bit is set, then go ahead
             // and set up the database meta information for the file
@@ -93,11 +95,11 @@ class FileStoreMethod extends MethodClass
                 if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2 &&
                     !empty($fileInfo['fileId'])) {
                     // we *want* to overwrite a duplicate here
-                    xarMod::apiFunc('uploads', 'user', 'db_modify_file', $fileInfo);
+                    $userapi->dbModifyFile($fileInfo);
 
                     $fileId = $fileInfo['fileId'];
                 } else {
-                    $fileId = xarMod::apiFunc('uploads', 'user', 'db_add_file', $fileInfo);
+                    $fileId = $userapi->dbAddFile($fileInfo);
 
                     if ($fileId) {
                         $fileInfo['fileId'] = $fileId;
@@ -107,7 +109,7 @@ class FileStoreMethod extends MethodClass
 
             if ($storeType & Defines::STORE_FILESYSTEM) {
                 if ($fileInfo['fileSrc'] != $fileInfo['fileDest']) {
-                    $result = xarMod::apiFunc('uploads', 'user', 'file_move', $fileInfo);
+                    $result = $userapi->fileMove($fileInfo);
                 } else {
                     $result = true;
                 }
@@ -119,7 +121,7 @@ class FileStoreMethod extends MethodClass
                     // the database entry (if there is one) so that we don't have
                     // a corrupted file entry
                     if (isset($fileId) && !empty($fileId)) {
-                        xarMod::apiFunc('uploads', 'user', 'db_delete_file', ['fileId' => $fileId]);
+                        $userapi->dbDeleteFile(['fileId' => $fileId]);
 
                         // Don't forget to remove the fileId from fileInfo
                         // because it's non existant now ;-)
@@ -133,16 +135,16 @@ class FileStoreMethod extends MethodClass
             }
 
             if ($storeType & Defines::STORE_DB_DATA) {
-                if (!xarMod::apiFunc('uploads', 'user', 'file_dump', $fileInfo)) {
+                if (!$userapi->fileDump($fileInfo)) {
                     // If we couldn't add the files contents to the database,
                     // then remove the file metadata as well
                     if (isset($fileId) && !empty($fileId)) {
-                        xarMod::apiFunc('uploads', 'user', 'db_delete_file', ['fileId' => $fileId]);
+                        $userapi->dbDeleteFile(['fileId' => $fileId]);
                     }
                 } else {
                     // if it was successfully added, then change the stored fileLocation
                     // to DATABASE instead of uploads/blahblahblah
-                    xarMod::apiFunc('uploads', 'user', 'db_modify_file', ['fileId' => $fileId, 'fileLocation' => xarML('DATABASE')]);
+                    $userapi->dbModifyFile(['fileId' => $fileId, 'fileLocation' => xarML('DATABASE')]);
                 }
             }
         }

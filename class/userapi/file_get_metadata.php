@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -31,12 +32,13 @@ class FileGetMetadataMethod extends MethodClass
 
     /**
      * Retrieves metadata on a file from the filesystem
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   string   fileLocation  The location of the file on in the filesystem
-     * @param   boolean  normalize     Whether or not to
-     * @param   boolean  analyze       Whether or not to
-     * @return array                  array containing the inodeType, fileSize, fileType, fileLocation, fileName
+     * @param array<mixed> $args
+     * @var string $fileLocation  The location of the file on in the filesystem
+     * @var boolean $normalize     Whether or not to
+     * @var boolean $analyze       Whether or not to
+     * @return array|bool|void         array containing the inodeType, fileSize, fileType, fileLocation, fileName
      */
     public function __invoke(array $args = [])
     {
@@ -49,6 +51,7 @@ class FileGetMetadataMethod extends MethodClass
         if (!isset($analyze)) {
             $analyze = true;
         }
+        $userapi = $this->getParent();
 
         if (isset($fileLocation) && !empty($fileLocation) && file_exists($fileLocation)) {
             $file = & $fileLocation;
@@ -60,7 +63,10 @@ class FileGetMetadataMethod extends MethodClass
                 $type = Defines::TYPE_FILE;
                 $size = filesize($file);
                 if ($analyze) {
-                    $mime = xarMod::apiFunc('mime', 'user', 'analyze_file', ['fileName' => $file]);
+                    /** @var MimeApi $mimeapi */
+                    $mimeapi = $userapi->getMimeAPI();
+
+                    $mime = $mimeapi->analyzeFile(['fileName' => $file]);
                 } else {
                     $mime = 'application/octet';
                 }
@@ -73,7 +79,7 @@ class FileGetMetadataMethod extends MethodClass
             $name = basename($file);
 
             if ($normalize) {
-                $size = xarMod::apiFunc('uploads', 'user', 'normalize_filesize', $size);
+                $size = $userapi->normalizeFilesize(['fileSize' => $size]);
             }
 
             // CHECKME: use 'imports' name like in db_get_file() ?

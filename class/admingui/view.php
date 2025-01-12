@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -38,17 +39,18 @@ class ViewMethod extends MethodClass
 
     /**
      * The view function for the site admin
-     * @param int mimetype
-     * @param int subtype
-     * @param int status
-     * @param bool inverse
-     * @param int fileId
-     * @param string fileDo
-     * @param int action
-     * @param int startnum
-     * @param int numitems
-     * @param string sort
-     * @param string catid
+     * @param array<mixed> $args
+     * @var int $mimetype
+     * @var int $subtype
+     * @var int $status
+     * @var bool $inverse
+     * @var int $fileId
+     * @var string $fileDo
+     * @var int $action
+     * @var int $startnum
+     * @var int $numitems
+     * @var string $sort
+     * @var string $catid
      * @return array|void
      */
     public function __invoke(array $args = [])
@@ -95,6 +97,10 @@ class ViewMethod extends MethodClass
         if (!xarVar::fetch('catid', 'str:1:', $catid, null, xarVar::DONT_SET)) {
             return;
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         /**
          *  Determine the filter settings to use for this view
@@ -115,7 +121,7 @@ class ViewMethod extends MethodClass
             $filters['inverse']  = $inverse;
             $filters['catid']    = $catid;
 
-            $options  =  xarMod::apiFunc('uploads', 'user', 'process_filters', $filters);
+            $options  =  $userapi->processFilters($filters);
             $data     = $options['data'];
             $filter   = $options['filter'];
             unset($options);
@@ -149,13 +155,13 @@ class ViewMethod extends MethodClass
 
             switch ($action) {
                 case Defines::STATUS_APPROVED:
-                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'    => Defines::STATUS_APPROVED]);
+                    $userapi->dbChangeStatus($args + ['newStatus'    => Defines::STATUS_APPROVED]);
                     break;
                 case Defines::STATUS_SUBMITTED:
-                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'    => Defines::STATUS_SUBMITTED]);
+                    $userapi->dbChangeStatus($args + ['newStatus'    => Defines::STATUS_SUBMITTED]);
                     break;
                 case Defines::STATUS_REJECTED:
-                    xarMod::apiFunc('uploads', 'user', 'db_change_status', $args + ['newStatus'   => Defines::STATUS_REJECTED]);
+                    $userapi->dbChangeStatus($args + ['newStatus'   => Defines::STATUS_REJECTED]);
                     if (xarModVars::get('uploads', 'file.auto-purge')) {
                         if (xarModVars::get('uploads', 'file.delete-confirmation')) {
                             return xarMod::guiFunc('uploads', 'admin', 'purge_rejected', ['confirmation' => false, 'authid' => xarSec::genAuthKey('uploads')]);
@@ -184,29 +190,26 @@ class ViewMethod extends MethodClass
             $filter['startnum'] = $startnum;
             $filter['numitems'] = $numitems;
             $filter['sort']     = $sort;
-            $items = xarMod::apiFunc('uploads', 'user', 'db_getall_files', $filter);
+            $items = $userapi->dbGetallFiles($filter);
         } else {
             $filter['startnum'] = $startnum;
             $filter['numitems'] = $numitems;
             $filter['sort']     = $sort;
-            $items = xarMod::apiFunc('uploads', 'user', 'db_get_file', $filter);
+            $items = $userapi->dbGetFile($filter);
         }
-        $countitems = xarMod::apiFunc('uploads', 'user', 'db_count', $filter);
+        $countitems = $userapi->dbCount($filter);
 
         if (!empty($items)) {
-            $data['numassoc'] = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_count_associations',
-                ['fileId' => array_keys($items)]
-            );
+            $data['numassoc'] = $userapi->dbCountAssociations([
+                'fileId' => array_keys($items),
+            ]);
         }
 
         if (xarSecurity::check('EditUploads', 0)) {
-            $data['diskUsage']['stored_size_filtered'] = xarMod::apiFunc('uploads', 'user', 'db_diskusage', $filter);
-            $data['diskUsage']['stored_size_total']    = xarMod::apiFunc('uploads', 'user', 'db_diskusage');
+            $data['diskUsage']['stored_size_filtered'] = $userapi->dbDiskusage($filter);
+            $data['diskUsage']['stored_size_total']    = $userapi->dbDiskusage();
 
-            $data['uploadsdir'] = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+            $data['uploadsdir'] = $userapi->dbGetDir(['directory' => 'uploads_directory']);
             if (is_dir($data['uploadsdir'])) {
                 $data['diskUsage']['device_free']  = disk_free_space($data['uploadsdir']);
                 $data['diskUsage']['device_total'] = disk_total_space($data['uploadsdir']);
@@ -217,11 +220,11 @@ class ViewMethod extends MethodClass
             $data['diskUsage']['device_used']  = $data['diskUsage']['device_total'] - $data['diskUsage']['device_free'];
 
             foreach ($data['diskUsage'] as $key => $value) {
-                $data['diskUsage'][$key] = xarMod::apiFunc('uploads', 'user', 'normalize_filesize', $value);
+                $data['diskUsage'][$key] = $userapi->normalizeFilesize(['fileSize' => $value]);
             }
 
             $data['diskUsage']['numfiles_filtered']   = $countitems;
-            $data['diskUsage']['numfiles_total']      = xarMod::apiFunc('uploads', 'user', 'db_count');
+            $data['diskUsage']['numfiles_total']      = $userapi->dbCount();
         }
         // now we check to see if the user has enough access to view
         // each particular file - if not, we just silently remove it

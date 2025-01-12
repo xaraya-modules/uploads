@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -30,7 +29,8 @@ class DbGetDirMethod extends MethodClass
 
     /**
      * Retrieve a directory path
-     * @param string directory designation
+     * @param array<mixed> $args
+     * @var string $directory designation
      * @return string relative path of the directory
      */
     public function __invoke(array $args = [])

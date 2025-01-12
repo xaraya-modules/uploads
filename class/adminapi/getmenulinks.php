@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\AdminApi;
-
 
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
@@ -30,8 +29,7 @@ class GetmenulinksMethod extends MethodClass
 
     /**
      * utility function pass individual menu items to the main menu
-     * @return array
-     * @return array containing the menulinks for the main menu items.
+     * @return array array containing the menulinks for the main menu items.
      */
     public function __invoke(array $args = [])
     {

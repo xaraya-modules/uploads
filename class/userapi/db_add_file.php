@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarSession;
 use xarModVars;
@@ -36,15 +37,16 @@ class DbAddFileMethod extends MethodClass
     /**
      * Adds a file (fileEntry) entry to the database. This entry just contains metadata
      *  about the file and not the actual DATA (contents) of the file.
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   integer userId         The id of the user whom submitted the file
-     * @param   string  fileName       The name of the file (minus any path information)
-     * @param   string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
-     * @param   string  fileType       The mime content-type of the file
-     * @param   integer fileStatus     The status of the file (APPROVED, SUBMITTED, READABLE, REJECTED)
-     * @param   integer store_type     The manner in which the file is to be stored (filesystem, database)
-     * @param   array   extrainfo      Extra information to be stored for this file (e.g. modified, width, height, ...)
+     * @param array<mixed> $args
+     *     integer userId         The id of the user whom submitted the file
+     *     string  fileName       The name of the file (minus any path information)
+     *     string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
+     *     string  fileType       The mime content-type of the file
+     *     integer fileStatus     The status of the file (APPROVED, SUBMITTED, READABLE, REJECTED)
+     *     integer store_type     The manner in which the file is to be stored (filesystem, database)
+     *     array   extrainfo      Extra information to be stored for this file (e.g. modified, width, height, ...)
      *
      * @return integer The id of the fileEntry that was added, or FALSE on error
      */
@@ -104,9 +106,13 @@ class DbAddFileMethod extends MethodClass
         if (!isset($store_type)) {
             $store_type = Defines::STORE_FILESYSTEM;
         }
+        $userapi = $this->getParent();
 
         if (!isset($fileType)) {
-            $fileType = xarMod::apiFunc('mime', 'user', 'analyze_file', ['fileName' => $fileLocation, 'altFileName' => $fileName]);
+            /** @var MimeApi $mimeapi */
+            $mimeapi = $userapi->getMimeAPI();
+
+            $fileType = $mimeapi->analyzeFile(['fileName' => $fileLocation, 'altFileName' => $fileName]);
             if (empty($fileType)) {
                 $fileType = 'application/octet-stream';
             }

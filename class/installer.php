@@ -5,7 +5,7 @@
  *
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -14,6 +14,7 @@
 namespace Xaraya\Modules\Uploads;
 
 use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\InstallerClass;
 use xarMod;
 use xarServer;
@@ -109,7 +110,11 @@ class Installer extends InstallerClass
         $filter['fileStatus']   = '';
 
         $mimetypes = & $data['filters']['mimetypes'];
-        $mimetypes += xarMod::apiFunc('mime', 'user', 'getall_types');
+
+        /** @var MimeApi $mimeapi */
+        $mimeapi = xarMod::getAPI('mime');
+
+        $mimetypes += $mimeapi->getallTypes();
 
         xarModVars::set('uploads', 'view.filter', serialize(['data' => $data,'filter' => $filter]));
         unset($mimetypes);
@@ -230,9 +235,11 @@ class Installer extends InstallerClass
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '1.1.0':
-
+                // fall through
+            case '2.6.0':
+                // fall through
             default:
-                return true;
+                break;
         }
 
         return true;

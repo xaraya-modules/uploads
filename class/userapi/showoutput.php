@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
-
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarTpl;
@@ -31,8 +31,9 @@ class ShowoutputMethod extends MethodClass
 
     /**
      * show output for uploads module (used in DD properties)
-     * @param string $value The current value(s)
-     * @param string $format Format specifying 'fileupload', 'textupload' or 'upload'
+     * @param array<mixed> $args
+     * @var string $value The current value(s)
+     * @var string $format Format specifying 'fileupload', 'textupload' or 'upload'
      * @return string containing the uploads output
      */
     public function __invoke(array $args = [])
@@ -48,12 +49,17 @@ class ShowoutputMethod extends MethodClass
             $multiple = false;
         }
 
+        $userapi = $this->getParent();
+
         $data = [];
+
+        /** @var AdminApi $adminapi */
+        $adminapi = $userapi->getModule()->getAdminAPI();
 
         // Check to see if an old value is present. Old values just file names
         // and do not start with a semicolon (our delimiter)
-        if (xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', ['value' => $value])) {
-            $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' => $value]);
+        if ($adminapi->ddValueNeedsConversion(['value' => $value])) {
+            $newValue = $adminapi->ddConvertValue(['value' => $value]);
 
             // if we were unable to convert the value, then go ahead and and return
             // an empty string instead of processing the value and bombing out
@@ -77,7 +83,7 @@ class ShowoutputMethod extends MethodClass
         $value = array_filter($value);
 
         if (empty($value)) {
-            return [];
+            return '';
         }
 
 
@@ -86,7 +92,7 @@ class ShowoutputMethod extends MethodClass
 
         if (isset($style) && $style = 'icon') {
             if (is_array($value) && count($value)) {
-                $data['Attachments'] = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $value]);
+                $data['Attachments'] = $userapi->dbGetFile(['fileId' => $value]);
             } else {
                 $data['Attachments'] = '';
             }
@@ -96,7 +102,7 @@ class ShowoutputMethod extends MethodClass
             return xarTpl::module('uploads', 'user', 'attachment-list', $data, null);
         } else {
             // return a raw array for now
-            return xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $value]);
+            return $userapi->dbGetFile(['fileId' => $value]);
         }
     }
 }

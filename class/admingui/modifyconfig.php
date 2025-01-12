@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -93,9 +94,13 @@ class ModifyconfigMethod extends MethodClass
         } else {
             $data['hooks'] = $hooks;
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         // Check the validaty of directories
-        $location = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+        $location = $userapi->dbGetDir(['directory' => 'uploads_directory']);
         $data['uploads_directory_message'] = "";
         if (!file_exists($location) || !is_dir($location)) {
             $data['uploads_directory_message'] = xarML('Not a valid directory');
@@ -103,7 +108,7 @@ class ModifyconfigMethod extends MethodClass
             $data['uploads_directory_message'] = xarML('Not a writable directory');
         }
 
-        $location = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'imports_directory']);
+        $location = $userapi->dbGetDir(['directory' => 'imports_directory']);
         $data['imports_directory_message'] = "";
         if (!file_exists($location) || !is_dir($location)) {
             $data['imports_directory_message'] = xarML('Not a valid directory');

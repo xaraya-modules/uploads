@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -32,10 +31,11 @@ class DbCountAssociationsMethod extends MethodClass
      * Retrieve the total count associations for a particular file/module/itemtype/item combination
      * @author Carl P. Corliss
      * @access public
-     * @param mixed fileId    The id of the file, or an array of fileId's
-     * @param int modid     The id of module this file is associated with
-     * @param int itemtype  The item type within the defined module
-     * @param int itemid    The id of the item types item
+     * @param array<mixed> $args
+     *     mixed fileId    The id of the file, or an array of fileId's
+     *     int modid     The id of module this file is associated with
+     *     int itemtype  The item type within the defined module
+     *     int itemid    The id of the item types item
      * @return mixed The total number of associations for particular file/module/itemtype/item combination
      * or an array of fileId's and their number of associations
      */

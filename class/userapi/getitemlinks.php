@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -32,10 +31,10 @@ class GetitemlinksMethod extends MethodClass
 
     /**
      * utility function to pass individual item links to whoever
-     * @param mixed $args ['itemtype'] item type (optional)
-     * @param mixed $args ['itemids'] array of item ids to get
-     * @return array
-     * @return array containing the itemlink(s) for the item(s).
+     * @param array<mixed> $args
+     * @var mixed $itemtype item type (optional)
+     * @var mixed $itemids array of item ids to get
+     * @return array array containing the itemlink(s) for the item(s).
      */
     public function __invoke(array $args = [])
     {
@@ -43,8 +42,10 @@ class GetitemlinksMethod extends MethodClass
 
         $itemlinks = [];
 
+        $userapi = $this->getParent();
+
         // get cids for security check in getall
-        $fileList = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $itemids]);
+        $fileList = $userapi->dbGetFile(['fileId' => $itemids]);
 
         if (!isset($fileList) || empty($fileList)) {
             return $itemlinks;

@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -31,6 +30,7 @@ class DecodeShorturlMethod extends MethodClass
     /**
      * extract function and arguments from short URLs for this module, and pass
      * them back to xarGetRequestInfo()
+     * @todo fix signature
      * @author the Example module development team
      * @param mixed $params array containing the different elements of the virtual path
      * @return array|void array containing func the function to be called and args the query
@@ -53,7 +53,9 @@ class DecodeShorturlMethod extends MethodClass
             // something that starts with a number must be for the display function
             // Note : make sure your encoding/decoding is consistent ! :-)
             $fileId = $matches[1];
-            $fileExists = xarMod::apiFunc('uploads', 'user', 'db_count', ['fileId' => $fileId]);
+
+            $userapi = $this->getParent();
+            $fileExists = $userapi->dbCount(['fileId' => $fileId]);
 
             if (!$fileExists) {
                 $msg = xarML('Unable to display - file \'#(1)\' does not exist!', $params[1]);

@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -31,7 +30,8 @@ class TransformhookMethod extends MethodClass
 
     /**
      * Primarily used by Articles as a transform hook to turn "upload tags" into various display formats
-     * @param mixed $args ['extrainfo']
+     * @param array<mixed> $args
+     * @var array|string $extrainfo
      * @return mixed
      */
     public function __invoke(array $args = [])
@@ -42,16 +42,16 @@ class TransformhookMethod extends MethodClass
             if (isset($extrainfo['transform']) && is_array($extrainfo['transform'])) {
                 foreach ($extrainfo['transform'] as $key) {
                     if (isset($extrainfo[$key])) {
-                        $extrainfo[$key] = & $this->transform($extrainfo[$key]);
+                        $extrainfo[$key] = $this->transform($extrainfo[$key]);
                     }
                 }
                 return $extrainfo;
             }
             foreach ($extrainfo as $key => $text) {
-                $result[] = & $this->transform($text);
+                $result[] = $this->transform($text);
             }
         } else {
-            $result = & $this->transform($extrainfo);
+            $result = $this->transform($extrainfo);
         }
         return $result;
     }
@@ -62,6 +62,8 @@ class TransformhookMethod extends MethodClass
      */
     public function transform($body)
     {
+        $userapi = $this->getParent();
+
         while (preg_match('/#(ulid|file|ulidd|ulfn|fileURL|fileIcon|fileName|fileLinkedIcon):([^#]+)#/i', $body, $matches)) {
             $replacement = null;
             array_shift($matches);
@@ -71,7 +73,7 @@ class TransformhookMethod extends MethodClass
                     // DEPRECATED
                 case 'file':
                     //$replacement = "index.php?module=uploads&func=download&fileId=$id";
-                    $list = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $id]);
+                    $list = $userapi->dbGetFile(['fileId' => $id]);
                     $replacement = xarTpl::module(
                         'uploads',
                         'user',
@@ -83,16 +85,13 @@ class TransformhookMethod extends MethodClass
                 case 'ulidd':
                     // DEPRECATED
                     //$replacement = "index.php?module=uploads&func=download&fileId=$id";
-                    $replacement = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'showoutput',
-                        ['value' => $id]
-                    );
+                    $replacement = $userapi->showoutput([
+                        'value' => $id,
+                    ]);
                     break;
                 case 'ulfn': // ULFN is DEPRECATED
                 case 'fileLinkedIcon':
-                    $list = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $id]);
+                    $list = $userapi->dbGetFile(['fileId' => $id]);
                     $replacement = xarTpl::module(
                         'uploads',
                         'user',
@@ -101,17 +100,17 @@ class TransformhookMethod extends MethodClass
                     );
                     break;
                 case 'fileIcon':
-                    $file = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $id]);
+                    $file = $userapi->dbGetFile(['fileId' => $id]);
                     $file = end($file);
                     $replacement = $file['mimeImage'];
                     break;
                 case 'fileURL':
-                    $file = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $id]);
+                    $file = $userapi->dbGetFile(['fileId' => $id]);
                     $file = end($file);
                     $replacement = $file['fileDownload'];
                     break;
                 case 'fileName':
-                    $file = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $id]);
+                    $file = $userapi->dbGetFile(['fileId' => $id]);
                     $file = end($file);
                     $replacement = $file['fileName'];
                     break;

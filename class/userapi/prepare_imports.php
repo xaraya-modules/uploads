@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -30,15 +30,10 @@ class PrepareImportsMethod extends MethodClass
     /** functions imported by bermuda_cleanup */
 
     /**
-     * Uploads Module
-     * @package modules
-     * @subpackage uploads module
-     * @category Third Party Xaraya Module
-     * @version 1.1.0
-     * @copyright see the html/credits.html file in this Xaraya release
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     * @link http://www.xaraya.com/index.php/release/eid/666
-     * @author Uploads Module Development Team
+     * Summary of __invoke
+     * @param array<mixed> $args
+     * @throws \Exception
+     * @return mixed
      */
     public function __invoke(array $args = [])
     {
@@ -53,9 +48,10 @@ class PrepareImportsMethod extends MethodClass
             );
             throw new Exception($msg);
         }
+        $userapi = $this->getParent();
 
         if (!isset($import_directory)) {
-            $import = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'imports_directory']);
+            $import = $userapi->dbGetDir(['directory' => 'imports_directory']);
         }
 
         if (!isset($import_obfuscate)) {
@@ -74,14 +70,12 @@ class PrepareImportsMethod extends MethodClass
             }
         }
 
-        $imports = xarMod::apiFunc(
-            'uploads',
-            'user',
-            'import_get_filelist',
-            ['fileLocation'  => $importFrom,
-                'descend'       => $descend, ]
-        );
+        $imports = $userapi->importGetFilelist([
+            'fileLocation'  => $importFrom,
+            'descend'       => $descend,
+        ]);
         if ($imports) {
+            // @todo what's this about then, and where can we find it?
             $imports = xarMod::apiFunc(
                 'uploads',
                 'user',

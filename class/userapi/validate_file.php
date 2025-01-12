@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -30,9 +29,10 @@ class ValidateFileMethod extends MethodClass
     /**
      * Check an uploaded file for valid mime-type, and any errors that might
      *  have been encountered during the upload
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access private
-     * @param   array   fileInfo               An array containing (fileName, fileType, fileSrc, fileSize, error):
+     * @param array<mixed> $args
+     * @var array $fileInfo               An array containing (fileName, fileType, fileSrc, fileSize, error):
      *                  fileInfo['fileName']   The (original) name of the file (minus any path information)
      *                  fileInfo['fileType']   The mime content-type of the file
      *                  fileInfo['fileSrc']    The temporary file name (complete path) of the file

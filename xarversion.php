@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Uploads Module
  *
  * @package modules
  * @subpackage uploads module
  * @category Third Party Xaraya Module
- * @version 1.1.0
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this Xaraya release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link http://www.xaraya.com/index.php/release/eid/666
@@ -32,7 +33,7 @@
 
 $modversion['name']         = 'uploads';
 $modversion['id']           = '666';
-$modversion['version']      = '1.1.0'; // long jump to current uploads_guimods version
+$modversion['version']      = '2.6.0'; // long jump to current mime version
 $modversion['displayname']  = xarML('Uploads');
 $modversion['description']  = 'Upload/Download File Handler';
 $modversion['credits']      = 'docs/credits.txt';
@@ -47,7 +48,7 @@ $modversion['user']         = 0;
 $modversion['class']        = 'Utility';
 $modversion['category']     = 'Global';
 $modversion['dependency']   = [ 999 ];
-//$modversion['namespace']      = 'Xaraya\Modules\Uploads';
+$modversion['namespace']    = 'Xaraya\Modules\Uploads';
 $modversion['twigtemplates']  = true;
 $modversion['dependencyinfo'] = [
     0 => [
@@ -56,6 +57,6 @@ $modversion['dependencyinfo'] = [
     ],
     999 => [
         'name' => 'mime',
-        'minversion' => '1.1.0',
+        'minversion' => '2.6.0',
     ],
 ];

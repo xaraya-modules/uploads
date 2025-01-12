@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -32,10 +31,11 @@ class DbListAssociationsMethod extends MethodClass
      * Retrieve a list of (item - file) associations for a particular module/itemtype combination
      * @author Carl P. Corliss
      * @access public
-     * @param int modid     The id of module this file is associated with
-     * @param int itemtype  The item type within the defined module
-     * @param int itemid    The id of the item types item
-     * @param int fileId    The id of the file we are going to associate with an item
+     * @param array<mixed> $args
+     * @var int $modid     The id of module this file is associated with
+     * @var int $itemtype  The item type within the defined module
+     * @var int $itemid    The id of the item types item
+     * @var int $fileId    The id of the file we are going to associate with an item
      * @return array A list of associations, including the itemid -> fileId
      */
     public function __invoke(array $args = [])

@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\AdminApi;
-
 
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
@@ -30,7 +29,7 @@ class CheckAssociationsMethod extends MethodClass
 
     /**
      * Check if files defined in associations still exist
-     *  @author  mikespub
+     * @author  mikespub
      * @access public
      *
      * @return mixed list of associations with missing files on success, void with exception on error

@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -52,33 +53,32 @@ class PurgeRejectedMethod extends MethodClass
         if (!xarSec::confirmAuthKey()) {
             return;
         }
+        $admingui = $this->getParent();
 
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         if ((isset($confirmation) && $confirmation) || !xarModVars::get('uploads', 'file.delete-confirmation')) {
-            $fileList = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_get_file',
-                ['fileStatus' => Defines::STATUS_REJECTED]
-            );
+            $fileList = $userapi->dbGetFile([
+                'fileStatus' => Defines::STATUS_REJECTED,
+            ]);
 
             if (empty($fileList)) {
                 xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $this->getContext());
                 return;
             } else {
-                $result = xarMod::apiFunc('uploads', 'user', 'purge_files', ['fileList' => $fileList]);
+                $result = $userapi->purgeFiles([
+                    'fileList' => $fileList,
+                ]);
                 if (!$result) {
                     $msg = xarML('Unable to purge rejected files!');
                     throw new Exception($msg);
                 }
             }
         } else {
-            $fileList = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_get_file',
-                ['fileStatus' => Defines::STATUS_REJECTED]
-            );
+            $fileList = $userapi->dbGetFile([
+                'fileStatus' => Defines::STATUS_REJECTED,
+            ]);
             if (empty($fileList)) {
                 $data['fileList']   = [];
             } else {

@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserApi;
 
-
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -32,11 +32,12 @@ class ImportExternalHttpMethod extends MethodClass
 
     /**
      * Retrieves an external file using the http scheme
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   array  uri         the array containing the broken down url information
-     * @param   boolean obfuscate  whether or not to obfuscate the filename
-     * @param   string  savePath   Complete path to directory in which we want to save this file
+     * @param array<mixed> $args
+     * @var array $uri         the array containing the broken down url information
+     * @var boolean $obfuscate  whether or not to obfuscate the filename
+     * @var string $savePath   Complete path to directory in which we want to save this file
      * @return array|void          FALSE on error, otherwise an array containing the fileInformation
      */
     public function __invoke(array $args = [])
@@ -55,9 +56,10 @@ class ImportExternalHttpMethod extends MethodClass
         } else {
             $obfuscate_fileName = xarModVars::get('uploads', 'file.obfuscate-on-upload');
         }
+        $userapi = $this->getParent();
 
         if (!isset($savePath)) {
-            $savePath = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+            $savePath = $userapi->dbGetDir(['directory' => 'uploads_directory']);
         }
 
         // if no port, use the default port (21)
@@ -146,12 +148,11 @@ class ImportExternalHttpMethod extends MethodClass
                 if (is_resource($tmpId)) {
                     @fclose($tmpId);
                 }
-                $fileInfo['fileType'] = xarMod::apiFunc(
-                    'mime',
-                    'user',
-                    'analyze_file',
-                    ['fileName' => $fileInfo['fileLocation']]
-                );
+
+                /** @var MimeApi $mimeapi */
+                $mimeapi = $userapi->getMimeAPI();
+
+                $fileInfo['fileType'] = $mimeapi->analyzeFile(['fileName' => $fileInfo['fileLocation']]);
 
                 $fileInfo['fileSize'] = filesize($tmpName);
             }
@@ -171,12 +172,9 @@ class ImportExternalHttpMethod extends MethodClass
         $savePath = preg_replace('/\/$/', '', $savePath);
 
         if ($obfuscate_fileName) {
-            $obf_fileName = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'file_obfuscate_name',
-                ['fileName' => $fileInfo['fileName']]
-            );
+            $obf_fileName = $userapi->fileObfuscateName([
+                'fileName' => $fileInfo['fileName'],
+            ]);
             $fileInfo['fileDest'] = $savePath . '/' . $obf_fileName;
         } else {
             // if we're not obfuscating it,

@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -31,15 +32,9 @@ class ProcessFiltersMethod extends MethodClass
     /** functions imported by bermuda_cleanup */
 
     /**
-     * Uploads Module
-     * @package modules
-     * @subpackage uploads module
-     * @category Third Party Xaraya Module
-     * @version 1.1.0
-     * @copyright see the html/credits.html file in this Xaraya release
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     * @link http://www.xaraya.com/index.php/release/eid/666
-     * @author Uploads Module Development Team
+     * Summary of __invoke
+     * @param array<mixed> $args
+     * @return array
      */
     public function __invoke(array $args = [])
     {
@@ -51,6 +46,10 @@ class ProcessFiltersMethod extends MethodClass
         if (!isset($storeOptions)) {
             $storeOptions = true;
         }
+        $userapi = $this->getParent();
+
+        /** @var MimeApi $mimeapi */
+        $mimeapi = $userapi->getMimeAPI();
 
         $options   =  unserialize(xarModVars::get('uploads', 'view.filter'));
 
@@ -68,7 +67,7 @@ class ProcessFiltersMethod extends MethodClass
          *  Grab the mimetypes and setup the selected one
          */
         if (isset($mimetype) && $mimetype > 0) {
-            $selected_mimetype = xarMod::apiFunc('mime', 'user', 'get_type', ['typeId' => $mimetype]);
+            $selected_mimetype = $mimeapi->getType(['typeId' => $mimetype]);
         }
 
         // if selected mimetype isn't set, empty or has an array count of
@@ -84,12 +83,12 @@ class ProcessFiltersMethod extends MethodClass
          */
         if (isset($selected_mimetype)) {
             if (isset($subtype) && $subtype > 0) {
-                $selected_subtype = xarMod::apiFunc('mime', 'user', 'get_subtype', ['subtypeId' => $subtype]);
+                $selected_subtype = $mimeapi->getSubtype(['subtypeId' => $subtype]);
             }
 
             // add the rest of the types to the array
             // array returns is in form of: array[typeId]{[subtypeId], [subtypeName]}
-            $subtypes = $subtypes + xarMod::apiFunc('mime', 'user', 'getall_subtypes', ['typeId' => $selected_mimetype['typeId']]);
+            $subtypes = $subtypes + $mimeapi->getallSubtypes(['typeId' => $selected_mimetype['typeId']]);
 
             // if selected subtype isn't set, empty or has an array count of
             // zero, then we set

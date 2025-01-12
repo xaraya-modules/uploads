@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -33,11 +32,12 @@ class DbAddFileDataMethod extends MethodClass
      * So a file's data could potentially be contained amongst many records. This is done to
      * ensure that we are able to actually save the whole file in the db.
      * @author Carl P. Corliss
-     *  @access  public
-     *  @param   integer fileId     The ID of the file this data belongs to
-     *  @param   string  fileData   A line of data from the file to be stored (no greater than 65535 bytes)
+     * @access  public
+     * @param array<mixed> $args
+     *     integer fileId     The ID of the file this data belongs to
+     *     string  fileData   A line of data from the file to be stored (no greater than 65535 bytes)
      *
-     *  @return integer The id of the fileData that was added, or FALSE on error
+     * @return integer The id of the fileData that was added, or FALSE on error
      */
     public function __invoke(array $args = [])
     {

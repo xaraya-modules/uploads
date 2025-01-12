@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -33,13 +33,14 @@ class FilePushMethod extends MethodClass
      * Pushes a file to the client browser
      * Note: on success, the calling GUI function should exit()
      * @author Carl P. Corliss
-     *  @access   public
-     *  @param    string    fileName        The name of the file
-     *  @param    string    fileLocation    The full path to the file
-     *  @param    string    fileType        The mimetype of the file
-     *  @param    long int  fileSize        The size of the file (in bytes)
-     *  @param    int       storeType       The type of storage of the file
-     *  @return  boolean                    This function will return true upon succes and, returns False and throws an exception otherwise
+     * @access   public
+     * @param array<mixed> $args
+     *     string    fileName        The name of the file
+     *     string    fileLocation    The full path to the file
+     *     string    fileType        The mimetype of the file
+     *     int       fileSize        The size of the file (in bytes)
+     *     int       storeType       The type of storage of the file
+     * @return  boolean                    This function will return true upon succes and, returns False and throws an exception otherwise
      */
     public function __invoke(array $args = [])
     {
@@ -107,8 +108,9 @@ class FilePushMethod extends MethodClass
         // Close the buffer, saving it's current contents for possible future use
         // then restart the buffer to store the file
         $finished = false;
+        $userapi = $this->getParent();
 
-        $pageBuffer = xarMod::apiFunc('uploads', 'user', 'flush_page_buffer');
+        $pageBuffer = $userapi->flushPageBuffer();
 
 
         if ($storeType & Defines::STORE_FILESYSTEM || ($storeType == Defines::STORE_DB_ENTRY)) {
@@ -151,7 +153,7 @@ class FilePushMethod extends MethodClass
             // FIXME: <rabbitt> if we happen to be pushing a really big file, this
             //        method of grabbing it from the database and pushing will consume
             //        WAY too much memory. Think of an alternate method
-            $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $fileId]);
+            $data = $userapi->dbGetFileData(['fileId' => $fileId]);
             echo implode('', $data);
 
             // Headers -can- be sent after the actual data

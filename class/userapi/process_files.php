@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -47,6 +47,7 @@ class ProcessFilesMethod extends MethodClass
             // this is the same as Defines::STORE_DB_ENTRY OR'd with Defines::STORE_FILESYSTEM
             $storeType = Defines::STORE_FSDB;
         }
+        $userapi = $this->getParent();
 
         // If there is an override['upload']['path'], try to use that
         if (!empty($override['upload']['path'])) {
@@ -59,11 +60,11 @@ class ProcessFilesMethod extends MethodClass
                     @touch($upload_directory . '/index.html');
                 } else {
                     // CHECKME: fall back to common uploads directory, or fail ?
-                    $upload_directory = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+                    $upload_directory = $userapi->dbGetDir(['directory' => 'uploads_directory']);
                 }
             }
         } else {
-            $upload_directory = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+            $upload_directory = $userapi->dbGetDir(['directory' => 'uploads_directory']);
         }
 
         // Check for override of upload obfuscation and set accordingly
@@ -111,7 +112,7 @@ class ProcessFilesMethod extends MethodClass
                             $dirfilter = null;
                         }
                         // Note: we don't check on fileSize here (it wasn't taken into account before)
-                        $fileTest = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileName' => $upload['name'],
+                        $fileTest = $userapi->dbGetFile(['fileName' => $upload['name'],
                             // make sure we look in the right directory :-)
                             'fileLocation' => $dirfilter, ]);
                         if (count($fileTest)) {
@@ -141,14 +142,11 @@ class ProcessFilesMethod extends MethodClass
                             }
                         }
 
-                        $fileList = array_merge($fileList, xarMod::apiFunc(
-                            'uploads',
-                            'user',
-                            'prepare_uploads',
-                            ['savePath'  => $upload_directory,
-                                'obfuscate' => $upload_obfuscate,
-                                'fileInfo'  => $upload, ]
-                        ));
+                        $fileList = array_merge($fileList, $userapi->prepareUploads([
+                            'savePath'  => $upload_directory,
+                            'obfuscate' => $upload_obfuscate,
+                            'fileInfo'  => $upload,
+                        ]));
                     }
                 }
                 break;
@@ -160,18 +158,16 @@ class ProcessFilesMethod extends MethodClass
                     // current working directory for the user, set by import_chdir() when using the get_files() GUI
                     $cwd = xarModUserVars::get('uploads', 'path.imports-cwd');
 
-                    $fileList = xarMod::apiFunc('uploads', 'user', 'import_get_filelist', ['fileLocation' => $cwd, 'descend' => true]);
+                    $fileList = $userapi->importGetFilelist(['fileLocation' => $cwd, 'descend' => true]);
                 } else {
                     $list = [];
                     // file list coming from validatevalue() or the get_files() GUI
                     foreach ($fileList as $location => $fileInfo) {
                         if ($fileInfo['inodeType'] == Defines::TYPE_DIRECTORY) {
-                            $list += xarMod::apiFunc(
-                                'uploads',
-                                'user',
-                                'import_get_filelist',
-                                ['fileLocation' => $location, 'descend' => true]
-                            );
+                            $list += $userapi->importGetFilelist([
+                                'fileLocation' => $location,
+                                'descend' => true,
+                            ]);
                             unset($fileList[$location]);
                         }
                     }
@@ -201,36 +197,27 @@ class ProcessFilesMethod extends MethodClass
 
                 switch ($uri['scheme']) {
                     case 'ftp':
-                        $fileList = xarMod::apiFunc(
-                            'uploads',
-                            'user',
-                            'import_external_ftp',
-                            ['savePath'  => $upload_directory,
-                                'obfuscate' => $upload_obfuscate,
-                                'uri'       => $uri, ]
-                        );
+                        $fileList = $userapi->importExternalFtp([
+                            'savePath'  => $upload_directory,
+                            'obfuscate' => $upload_obfuscate,
+                            'uri'       => $uri,
+                        ]);
                         break;
                     case 'https':
                     case 'http':
-                        $fileList = xarMod::apiFunc(
-                            'uploads',
-                            'user',
-                            'import_external_http',
-                            ['savePath'  => $upload_directory,
-                                'obfuscate' => $upload_obfuscate,
-                                'uri'       => $uri, ]
-                        );
+                        $fileList = $userapi->importExternalHttp([
+                            'savePath'  => $upload_directory,
+                            'obfuscate' => $upload_obfuscate,
+                            'uri'       => $uri,
+                        ]);
                         break;
                     case 'file':
                         // If we'ere using the file scheme then just store a db entry only
                         // as there is really no sense in moving the file around
                         $storeType = Defines::STORE_DB_ENTRY;
-                        $fileList = xarMod::apiFunc(
-                            'uploads',
-                            'user',
-                            'import_external_file',
-                            ['uri'       => $uri]
-                        );
+                        $fileList = $userapi->importExternalFile([
+                            'uri'       => $uri,
+                        ]);
                         break;
                     case 'gopher':
                     case 'wais':
@@ -255,13 +242,10 @@ class ProcessFilesMethod extends MethodClass
                 $storeList[] = $fileInfo;
                 continue;
             }
-            $storeList[] = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'file_store',
-                ['fileInfo'  => $fileInfo,
-                    'storeType' => $storeType, ]
-            );
+            $storeList[] = $userapi->fileStore([
+                'fileInfo'  => $fileInfo,
+                'storeType' => $storeType,
+            ]);
         }
         return $storeList;
     }

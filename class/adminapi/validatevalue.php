@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -32,18 +33,18 @@ class ValidatevalueMethod extends MethodClass
 
     /**
      * validate input values for uploads module (used in DD properties)
-     * @param mixed $args ['id'] string id of the upload field(s)
-     * @param mixed $args ['value'] string the current value(s)
-     * @param mixed $args ['format'] string format specifying 'fileupload', 'textupload' or 'upload' (future ?)
-     * @param mixed $args ['multiple'] boolean allow multiple uploads or not
-     * @param mixed $args ['maxsize'] integer maximum size for upload files
-     * @param mixed $args ['methods'] array allowed methods 'trusted', 'external', 'stored' and/or 'upload'
-     * @param mixed $args ['override'] array optional override values for import/upload path/obfuscate (cfr. process_files)
-     * @param mixed $args ['moduleid'] integer optional module id for keeping file associations
-     * @param mixed $args ['itemtype'] integer optional item type for keeping file associations
-     * @param mixed $args ['itemid'] integer optional item id for keeping file associations
-     * @return array
-     * @return array of (result, value) with result true, false or NULL (= error)
+     * @param array<mixed> $args
+     * @var string $id string id of the upload field(s)
+     * @var string $value string the current value(s)
+     * @var string $format string format specifying 'fileupload', 'textupload' or 'upload' (future ?)
+     * @var boolean $multiple boolean allow multiple uploads or not
+     * @var integer $maxsize integer maximum size for upload files
+     * @var array $methods array allowed methods 'trusted', 'external', 'stored' and/or 'upload'
+     * @var array $override array optional override values for import/upload path/obfuscate (cfr. process_files)
+     * @var integer $moduleid integer optional module id for keeping file associations
+     * @var integer $itemtype integer optional item type for keeping file associations
+     * @var integer $itemid integer optional item id for keeping file associations
+     * @return array|bool|void array of (result, value) with result true, false or NULL (= error)
      */
     public function __invoke(array $args = [])
     {
@@ -71,11 +72,12 @@ class ValidatevalueMethod extends MethodClass
         if (empty($itemtype)) {
             $itemtype = 0;
         }
+        $adminapi = $this->getParent();
 
         // Check to see if an old value is present. Old values just file names
         // and do not start with a semicolon (our delimiter)
-        if (xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', ['value' => $value])) {
-            $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' => $value]);
+        if ($adminapi->ddValueNeedsConversion(['value' => $value])) {
+            $newValue = $adminapi->ddConvertValue(['value' => $value]);
 
             // if we were unable to convert the value, then go ahead and and return
             // an empty string instead of processing the value and bombing out
@@ -89,6 +91,9 @@ class ValidatevalueMethod extends MethodClass
         }
 
         xarMod::apiLoad('uploads', 'user');
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
 
         if (isset($methods) && count($methods) > 0) {
             $typeCheck = 'enum:0:' . Defines::GET_STORED;
@@ -138,7 +143,7 @@ class ValidatevalueMethod extends MethodClass
                 if (empty($import)) {
                     // synchronize file associations with empty list
                     if (!empty($moduleid) && !empty($itemid)) {
-                        $this->sync_associations($moduleid, $itemtype, $itemid);
+                        $userapi->syncAssociations($moduleid, $itemtype, $itemid);
                     }
                     return [true,null];
                 }
@@ -156,12 +161,7 @@ class ValidatevalueMethod extends MethodClass
                 $importDir = sys::root() . "/" . xarModVars::get('uploads', 'imports_directory');
                 foreach ($fileList as $file) {
                     $file = str_replace('/trusted', $importDir, $file);
-                    $args['fileList']["$file"] = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'file_get_metadata',
-                        ['fileLocation' => "$file"]
-                    );
+                    $args['fileList']["$file"] = $userapi->fileGetMetadata(['fileLocation' => "$file"]);
                     if (isset($args['fileList']["$file"]['fileSize']['long'])) {
                         $args['fileList']["$file"]['fileSize'] = $args['fileList']["$file"]['fileSize']['long'];
                     }
@@ -179,7 +179,7 @@ class ValidatevalueMethod extends MethodClass
                 if (empty($fileList) || !is_array($fileList)) {
                     // synchronize file associations with empty list
                     if (!empty($moduleid) && !empty($itemid)) {
-                        $this->sync_associations($moduleid, $itemtype, $itemid);
+                        $userapi->syncAssociations($moduleid, $itemtype, $itemid);
                     }
                     return [true,null];
                 }
@@ -191,18 +191,15 @@ class ValidatevalueMethod extends MethodClass
 
                 // synchronize file associations with file list
                 if (!empty($moduleid) && !empty($itemid)) {
-                    $this->sync_associations($moduleid, $itemtype, $itemid, $fileList);
+                    $userapi->syncAssociations($moduleid, $itemtype, $itemid, $fileList);
                 }
 
                 return [true,$value];
-                break;
             case '-1':
                 return [true,$value];
-                break;
             case '-2':
                 // clear stored value
                 return [true, null];
-                break;
             default:
                 if (isset($value)) {
                     if (strlen($value) && $value[0] == ';') {
@@ -216,7 +213,6 @@ class ValidatevalueMethod extends MethodClass
                     // So let's keep things that way :-)
                     return [true,null];
                 }
-                break;
         }
 
         if (!empty($action)) {
@@ -224,7 +220,7 @@ class ValidatevalueMethod extends MethodClass
                 $args['storeType'] = $storeType;
             }
 
-            $list = xarMod::apiFunc('uploads', 'user', 'process_files', $args);
+            $list = $userapi->processFiles($args);
             $storeList = [];
             foreach ($list as $file => $fileInfo) {
                 if (!isset($fileInfo['errors'])) {
@@ -242,7 +238,7 @@ class ValidatevalueMethod extends MethodClass
 
                 // synchronize file associations with store list
                 if (!empty($moduleid) && !empty($itemid)) {
-                    $this->sync_associations($moduleid, $itemtype, $itemid, $storeList);
+                    $userapi->syncAssociations($moduleid, $itemtype, $itemid, $storeList);
                 }
             } else {
                 return [false,null];
@@ -252,71 +248,5 @@ class ValidatevalueMethod extends MethodClass
         }
 
         return [true,$value];
-    }
-
-    /**
-     * Utility function to synchronise file associations on validation
-     * (for create/update of DD extra fields + update of DD objects and articles)
-     */
-    protected function sync_associations($moduleid = 0, $itemtype = 0, $itemid = 0, $filelist = [])
-    {
-        // see if we have anything to work with
-        if (empty($moduleid) || empty($itemid)) {
-            return;
-        }
-
-        // (try to) check if we're previewing or not
-        xarVar::fetch('preview', 'isset', $preview, false, xarVar::NOT_REQUIRED);
-        if (!empty($preview)) {
-            return;
-        }
-
-        // get the current file associations for this module items
-        $assoc = xarMod::apiFunc(
-            'uploads',
-            'user',
-            'db_get_associations',
-            ['modid'    => $moduleid,
-                'itemtype' => $itemtype,
-                'itemid'   => $itemid, ]
-        );
-
-        // see what we need to add or delete
-        if (!empty($assoc) && count($assoc) > 0) {
-            $add = array_diff($filelist, array_keys($assoc));
-            $del = array_diff(array_keys($assoc), $filelist);
-        } else {
-            $add = $filelist;
-            $del = [];
-        }
-
-        foreach ($add as $id) {
-            if (empty($id)) {
-                continue;
-            }
-            xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_add_association',
-                ['fileId'   => $id,
-                    'modid'    => $moduleid,
-                    'itemtype' => $itemtype,
-                    'itemid'   => $itemid, ]
-            );
-        }
-        foreach ($del as $id) {
-            if (empty($id)) {
-                continue;
-            }
-            xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_delete_association',
-                ['fileId'   => $id,
-                    'modid'    => $moduleid,
-                    'itemtype' => $itemtype,
-                    'itemid'   => $itemid, ]
-            );
-        }
     }
 }

@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -41,10 +42,11 @@ class PrepareUploadsMethod extends MethodClass
      *  Any file that has errors will have it noted in the same structure with error number and message in:
      *      * errors[]['errorMesg']
      *      * errors[]['errorId']
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   boolean obfuscate            whether or not to obfuscate the filename
-     * @param   string  savePath             Complete path to directory in which we want to save this file
+     * @param array<mixed> $args
+     * @var boolean $obfuscate            whether or not to obfuscate the filename
+     * @var string $savePath             Complete path to directory in which we want to save this file
      * @return boolean|array                      TRUE on success, FALSE on failure
      */
     public function __invoke(array $args = [])
@@ -70,9 +72,10 @@ class PrepareUploadsMethod extends MethodClass
         } else {
             $obfuscate_fileName = xarModVars::get('uploads', 'file.obfuscate-on-upload');
         }
+        $userapi = $this->getParent();
 
         if (!isset($savePath)) {
-            $savePath = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+            $savePath = $userapi->dbGetDir(['directory' => 'uploads_directory']);
         }
 
         // If we don't have the right data structure, then we can't do much
@@ -102,7 +105,7 @@ class PrepareUploadsMethod extends MethodClass
         // Check to see if we're importing and, if not, check the file and ensure that it
         // meets any requirements we might have for it. If it doesn't pass the tests,
         // then return FALSE
-        if (!xarMod::apiFunc('uploads', 'user', 'validate_upload', ['fileInfo' => $fileInfo])) {
+        if (!$userapi->validateUpload(['fileInfo' => $fileInfo])) {
 
             if (is_object($errorObj)) {
                 $fileError['errorMesg'] = $errorObj->getShort();
@@ -127,14 +130,14 @@ class PrepareUploadsMethod extends MethodClass
         unset($fileInfo['type']);
         unset($fileInfo['error']);
 
-        // FIXME: do this after the file has been moved
-        $fileInfo['fileType']   = xarMod::apiFunc(
-            'mime',
-            'user',
-            'analyze_file',
-            ['fileName' => $fileInfo['fileSrc'], 'altFileName' => $fileInfo['fileName']]
-        );
+        /** @var MimeApi $mimeapi */
+        $mimeapi = $userapi->getMimeAPI();
 
+        // FIXME: do this after the file has been moved
+        $fileInfo['fileType'] = $mimeapi->analyzeFile([
+            'fileName' => $fileInfo['fileSrc'],
+            'altFileName' => $fileInfo['fileName'],
+        ]);
 
         // If duplicate and we have a file location, overwrite existing file here (cfr. process_files)
         if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2 &&
@@ -149,12 +152,9 @@ class PrepareUploadsMethod extends MethodClass
 
             // Check to see if we need to obfuscate the filename
         } elseif ($obfuscate_fileName) {
-            $obf_fileName = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'file_obfuscate_name',
-                ['fileName' => $fileInfo['fileName']]
-            );
+            $obf_fileName = $userapi->fileObfuscateName([
+                'fileName' => $fileInfo['fileName'],
+            ]);
 
             if (empty($obf_fileName) || false === $obf_fileName) {
                 // If the filename was unable to be obfuscated,

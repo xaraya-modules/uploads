@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -35,14 +34,15 @@ class ValidateUploadMethod extends MethodClass
      *  functionality anyhow - which won't be available until the hooks system has been revamped.
      * .....
      * @author Carl P. Corliss
-     *  @access  public
-     *  @param   array   fileInfo               An array containing (fileName, fileType, fileSrc, fileSize, error):
+     * @access  public
+     * @param array<mixed> $args
+     * @var array $fileInfo               An array containing (fileName, fileType, fileSrc, fileSize, error):
      *                   fileInfo['fileName']   The (original) name of the file (minus any path information)
      *                   fileInfo['fileType']   The mime content-type of the file
      *                   fileInfo['fileSrc']    The temporary file name (complete path) of the file
      *                   fileInfo['error']      Number representing any errors that were encountered during the upload (>= PHP 4.2.0)
      *                   fileInfo['fileSize']   The size of the file (in bytes)
-     *  @return boolean                      TRUE if checks pass, FALSE otherwise
+     * @return boolean                      TRUE if checks pass, FALSE otherwise
      */
     public function __invoke(array $args = [])
     {

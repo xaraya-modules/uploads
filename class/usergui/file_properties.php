@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserGui;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -57,8 +58,12 @@ class FilePropertiesMethod extends MethodClass
             );
             throw new Exception($msg);
         }
+        $usergui = $this->getParent();
 
-        $fileInfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+        /** @var UserApi $userapi */
+        $userapi = $usergui->getAPI();
+
+        $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
         if (empty($fileInfo) || !count($fileInfo)) {
             $data['fileInfo']   = [];
             $data['error']      = xarML('File not found!');
@@ -90,7 +95,7 @@ class FilePropertiesMethod extends MethodClass
                     $args['fileId'] = $fileId;
                     $args['fileName'] = trim($fileName);
 
-                    if (!xarMod::apiFunc('uploads', 'user', 'db_modify_file', $args)) {
+                    if (!$userapi->dbModifyFile($args)) {
                         $msg = xarML(
                             'Unable to change filename for file: #(1) with file Id #(2)',
                             $fileInfo['fileName'],
@@ -134,7 +139,7 @@ class FilePropertiesMethod extends MethodClass
                 $fileInfo['storeType'] = $storeType;
                 unset($storeType);
 
-                $fileInfo['size'] = xarMod::apiFunc('uploads', 'user', 'normalize_filesize', ['fileSize' => $fileInfo['fileSize']]);
+                $fileInfo['size'] = $userapi->normalizeFilesize(['fileSize' => $fileInfo['fileSize']]);
 
                 if (mb_ereg('^image', $fileInfo['fileType'])) {
                     // let the images module handle it
@@ -175,12 +180,9 @@ class FilePropertiesMethod extends MethodClass
                     }
                 }
 
-                $fileInfo['numassoc'] = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'db_count_associations',
-                    ['fileId' => $fileId]
-                );
+                $fileInfo['numassoc'] = $userapi->dbCountAssociations([
+                    'fileId' => $fileId,
+                ]);
 
                 $data['fileInfo'] = $fileInfo;
 

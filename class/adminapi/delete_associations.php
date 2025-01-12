@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
-
 use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModHooks;
@@ -34,13 +34,13 @@ class DeleteAssociationsMethod extends MethodClass
      * Delete all file associations for a specific module, itemtype [and itemid] [and fileId]
      * Caution : this tries to remove the file references in the module items too
      * @author mikespub
-     *  @access  public
-     *
-     *  @param   integer modid     The id of module we are going to rescan
-     *  @param   integer itemtype  The item type within the defined module
-     *  @param   integer itemid    The id of the item types item
-     *  @param   integer fileId    The id of the file we are going to rescan
-     *  @return  mixed TRUE on success, void with exception on error
+     * @access  public
+     * @param array<mixed> $args
+     * @var integer $modid     The id of module we are going to rescan
+     * @var integer $itemtype  The item type within the defined module
+     * @var integer $itemid    The id of the item types item
+     * @var integer $fileId    The id of the file we are going to rescan
+     * @return  mixed TRUE on success, void with exception on error
      */
     public function __invoke(array $args = [])
     {
@@ -264,9 +264,13 @@ class DeleteAssociationsMethod extends MethodClass
                 }
             }
         }
+        $adminapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
 
         // 1. delete any existing associations for these arguments
-        if (!xarMod::apiFunc('uploads', 'user', 'db_delete_association', $args)) {
+        if (!$userapi->dbDeleteAssociation($args)) {
             return;
         }
 

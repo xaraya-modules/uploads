@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -30,10 +30,11 @@ class ImportExternalFileMethod extends MethodClass
 
     /**
      * Retrieves an external file using the File scheme
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   array  uri     the array containing the broken down url information
-     * @return array          FALSE on error, otherwise an array containing the fileInformation
+     * @param array<mixed> $args
+     * @var array $uri     the array containing the broken down url information
+     * @return array|bool|void          FALSE on error, otherwise an array containing the fileInformation
      */
     public function __invoke(array $args = [])
     {
@@ -51,14 +52,12 @@ class ImportExternalFileMethod extends MethodClass
         } else {
             $descend = false;
         }
+        $userapi = $this->getParent();
 
-        $fileList = xarMod::apiFunc(
-            'uploads',
-            'user',
-            'import_get_filelist',
-            ['fileLocation' => $uri['path'],
-                'descend' => $descend, ]
-        );
+        $fileList = $userapi->importGetFilelist([
+            'fileLocation' => $uri['path'],
+            'descend' => $descend,
+        ]);
 
         if (empty($fileList) || (is_array($fileList) && !count($fileList))) {
             return [];
@@ -67,12 +66,10 @@ class ImportExternalFileMethod extends MethodClass
         $list = [];
         foreach ($fileList as $location => $fileInfo) {
             if ($fileInfo['inodeType'] == Defines::TYPE_DIRECTORY) {
-                $list += xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'import_get_filelist',
-                    ['fileLocation' => $location, 'descend' => true]
-                );
+                $list += $userapi->importGetFilelist([
+                    'fileLocation' => $location,
+                    'descend' => true,
+                ]);
                 unset($fileList[$location]);
             }
         }

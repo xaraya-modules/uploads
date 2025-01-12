@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -33,10 +32,9 @@ class FileCreateMethod extends MethodClass
      *  file_entry table after creations. Note: you must test specifically
      *  for false if you are creating a ZERO BYTE file, as this function
      *  will return zero for that file (ie: !== FALSE as opposed to != FALSE).
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param mixed $args
-     * with
+     * @param array<mixed> $args
      *     string  filename       The name of the file (minus any path information)
      *     string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
      *     string  mime_type      The mime content-type of the file

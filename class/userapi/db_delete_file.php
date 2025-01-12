@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -34,9 +33,10 @@ class DbDeleteFileMethod extends MethodClass
      *  that we might have in store. The actual DATA (contents) of the file (ie., the file
      *  itself) are removed via either file_delete() or db_delete_fileData() depending on
      *  how the DATA is stored.
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   integer file_id    The id of the file we are deleting
+     * @param array<mixed> $args
+     * @var integer $file_id    The id of the file we are deleting
      *
      * @return integer The number of affected rows on success, or FALSE on error
      */

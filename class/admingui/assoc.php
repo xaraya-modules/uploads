@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,9 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
-
 use Xaraya\Modules\Uploads\AdminGui;
+use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -72,23 +73,24 @@ class AssocMethod extends MethodClass
         if (!empty($modid) && empty($itemtype)) {
             $itemtype = 0;
         }
+        $admingui = $this->getParent();
+
+        /** @var AdminApi $adminapi */
+        $adminapi = $admingui->getModule()->getAdminAPI();
 
         if (!empty($action)) {
             if ($action == 'rescan') {
-                $result = xarMod::apiFunc(
-                    'uploads',
-                    'admin',
-                    'rescan_associations',
-                    ['modid' => $modid,
-                        'itemtype' => $itemtype,
-                        'itemid' => $itemid,
-                        'fileId' => $fileId, ]
-                );
+                $result = $adminapi->rescanAssociations([
+                    'modid' => $modid,
+                    'itemtype' => $itemtype,
+                    'itemid' => $itemid,
+                    'fileId' => $fileId,
+                ]);
                 if (!$result) {
                     return;
                 }
             } elseif ($action == 'missing') {
-                $missing = xarMod::apiFunc('uploads', 'admin', 'check_associations');
+                $missing = $adminapi->checkAssociations();
                 if (!isset($missing)) {
                     return;
                 }
@@ -101,15 +103,12 @@ class AssocMethod extends MethodClass
                     if (!xarSec::confirmAuthKey()) {
                         return;
                     }
-                    $result = xarMod::apiFunc(
-                        'uploads',
-                        'admin',
-                        'delete_associations',
-                        ['modid' => $modid,
-                            'itemtype' => $itemtype,
-                            'itemid' => $itemid,
-                            'fileId' => $fileId, ]
-                    );
+                    $result = $adminapi->deleteAssociations([
+                        'modid' => $modid,
+                        'itemtype' => $itemtype,
+                        'itemid' => $itemid,
+                        'fileId' => $fileId,
+                    ]);
                     if (!$result) {
                         return;
                     }
@@ -118,6 +117,9 @@ class AssocMethod extends MethodClass
                 }
             }
         }
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         $data = [];
         $data['modid'] = $modid;
@@ -128,12 +130,9 @@ class AssocMethod extends MethodClass
             $data['missing'] = $missing;
         }
 
-        $modlist = xarMod::apiFunc(
-            'uploads',
-            'user',
-            'db_group_associations',
-            ['fileId' => $fileId]
-        );
+        $modlist = $userapi->dbGroupAssociations([
+            'fileId' => $fileId,
+        ]);
 
         if (empty($modid)) {
             $data['moditems'] = [];
@@ -210,12 +209,9 @@ class AssocMethod extends MethodClass
                     'fileId' => $fileId, ]
             );
             if (!empty($fileId)) {
-                $data['fileinfo'] = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'db_get_file',
-                    ['fileId' => $fileId]
-                );
+                $data['fileinfo'] = $userapi->dbGetFile([
+                    'fileId' => $fileId,
+                ]);
             }
         } else {
             $modinfo = xarMod::getInfo($modid);
@@ -255,13 +251,14 @@ class AssocMethod extends MethodClass
             if (empty($numstats)) {
                 $numstats = 100;
             }
-            /*
-                    if (!empty($fileId)) {
-                        $data['numlinks'] = xarMod::apiFunc('uploads','user','db_count_associations',
-                                                          array('modid' => $modid,
-                                                                'itemtype' => $itemtype,
-                                                                'fileId' => $fileId));
-                    }
+            /**
+            if (!empty($fileId)) {
+                $data['numlinks'] = $userapi->dbCountAssociations([
+                    'modid' => $modid,
+                    'itemtype' => $itemtype,
+                    'fileId' => $fileId,
+                ]);
+            }
             */
             if ($numstats < $data['numlinks']) {
                 sys::import('modules.base.class.pager');
@@ -283,18 +280,15 @@ class AssocMethod extends MethodClass
             } else {
                 $data['pager'] = '';
             }
-            $getitems = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_list_associations',
-                ['modid' => $modid,
-                    'itemtype' => $itemtype,
-                    'itemid' => $itemid,
-                    'numitems' => $numstats,
-                    'startnum' => $startnum,
-                    'sort' => $sort,
-                    'fileId' => $fileId, ]
-            );
+            $getitems = $userapi->dbListAssociations([
+                'modid' => $modid,
+                'itemtype' => $itemtype,
+                'itemid' => $itemid,
+                'numitems' => $numstats,
+                'startnum' => $startnum,
+                'sort' => $sort,
+                'fileId' => $fileId,
+            ]);
             //$showtitle = xarModVars::get('uploads','showtitle');
             $showtitle = true;
             if (!empty($getitems) && !empty($showtitle)) {
@@ -353,12 +347,9 @@ class AssocMethod extends MethodClass
             unset($getitems);
             unset($itemlinks);
             if (!empty($seenfileid)) {
-                $data['fileinfo'] = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'db_get_file',
-                    ['fileId' => array_keys($seenfileid)]
-                );
+                $data['fileinfo'] = $userapi->dbGetFile([
+                    'fileId' => array_keys($seenfileid),
+                ]);
             } else {
                 $data['fileinfo'] = [];
             }

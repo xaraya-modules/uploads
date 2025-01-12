@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -35,14 +34,15 @@ class DbDiskusageMethod extends MethodClass
      * @author Carl P. Corliss
      * @author Micheal Cortez
      * @access public
-     * @param int fileId      (Optional) grab file with the specified file id(s)
-     * @param string fileName    (Optional) grab file(s) with the specified file name
-     * @param int fileStatus  (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
-     * @param int userId      (Optional) grab files uploaded by a particular user
-     * @param int store_type  (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
-     * @param int fileType    (Optional) grab files with the specified mime type
-     * @param string catid       (Optional) grab file(s) in the specified categories
-     * @return int The total amount of diskspace used by the current set of selected files
+     * @param array<mixed> $args
+     * @var int $fileId      (Optional) grab file with the specified file id(s)
+     * @var string $fileName    (Optional) grab file(s) with the specified file name
+     * @var int $fileStatus  (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
+     * @var int $userId      (Optional) grab files uploaded by a particular user
+     * @var int $store_type  (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
+     * @var int $fileType    (Optional) grab files with the specified mime type
+     * @var string $catid       (Optional) grab file(s) in the specified categories
+     * @return int|void The total amount of diskspace used by the current set of selected files
      */
     public function __invoke(array $args = [])
     {

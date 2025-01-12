@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -31,17 +30,18 @@ class DbModifyFileMethod extends MethodClass
 
     /**
      * Modifies a file's metadata stored in the database
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   integer fileId    The id of the file we are modifying
-     * @param   integer userId    (optional) The id of the user whom submitted the file
-     * @param   string  filename   (optional) The name of the file (minus any path information)
-     * @param   string  fileLocation   (optional) The complete path to the file including the filename (obfuscated if so chosen)
-     * @param   integer status     (optional) The status of the file (APPROVED, SUBMITTED, READABLE, REJECTED)
-     * @param   string  fileType  (optional) The mime content-type of the file
-     * @param   string  fileSize  (optional) The size of the file
-     * @param   integer store_type (optional) The manner in which the file is to be stored (filesystem, database)
-     * @param   array   extrainfo  (optional) Extra information to be stored for this file (e.g. modified, width, height, ...)
+     * @param array<mixed> $args
+     * @var integer $fileId    The id of the file we are modifying
+     * @var integer $userId    (optional) The id of the user whom submitted the file
+     * @var string $filename   (optional) The name of the file (minus any path information)
+     * @var string $fileLocation   (optional) The complete path to the file including the filename (obfuscated if so chosen)
+     * @var integer $status     (optional) The status of the file (APPROVED, SUBMITTED, READABLE, REJECTED)
+     * @var string $fileType  (optional) The mime content-type of the file
+     * @var string $fileSize  (optional) The size of the file
+     * @var integer $store_type (optional) The manner in which the file is to be stored (filesystem, database)
+     * @var array $extrainfo  (optional) Extra information to be stored for this file (e.g. modified, width, height, ...)
      *
      * @return integer The number of affected rows on success, or FALSE on error
      */

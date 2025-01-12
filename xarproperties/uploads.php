@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Uploads Module
  *
  * @package modules
  * @subpackage uploads module
  * @category Third Party Xaraya Module
- * @version 1.1.0
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this Xaraya release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link http://www.xaraya.com/index.php/release/eid/666
@@ -20,7 +21,10 @@
  */
 /* Include parent class */
 sys::import('modules.base.xarproperties.fileupload');
+sys::import('modules.uploads.class.defines');
 use Xaraya\Modules\Uploads\Defines;
+use Xaraya\Modules\Uploads\UserApi;
+
 /**
  * Class to handle file upload properties
  *
@@ -94,6 +98,17 @@ class UploadProperty extends FileUploadProperty
         // Save the value in a separate var that won't be changed with this->value
     }
 
+    /**
+     * Summary of getUserApi
+     * @return UserApi
+     */
+    public function getUserApi()
+    {
+        /** @var UserApi $userapi */
+        $userapi = xarMod::getAPI('uploads');
+        return $userapi;
+    }
+
     public function checkInput($name = '', $value = null)
     {
         //        if (isset($this->fieldname)) $name = $this->fieldname;
@@ -137,6 +152,8 @@ class UploadProperty extends FileUploadProperty
 
         xarMod::apiLoad('uploads', 'user');
 
+        $userapi = $this->getUserApi();
+
         $data['action'] = $this->getActiveInputMethod($name);
 
         switch ($data['action']) {
@@ -170,6 +187,7 @@ class UploadProperty extends FileUploadProperty
                 if (empty($import)) {
                     // synchronize file associations with empty list
                     if (!empty($moduleid) && !empty($itemid)) {
+                        $itemtype = $this->objectref?->itemtype ?? 0;
                         $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
@@ -191,12 +209,9 @@ class UploadProperty extends FileUploadProperty
                 $data['fileList'] = [];
                 foreach ($fileList as $file) {
                     $file = str_replace('/trusted', $importDir, $file);
-                    $data['fileList']["$file"] = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'file_get_metadata',
-                        ['fileLocation' => "$file"]
-                    );
+                    $data['fileList']["$file"] = $userapi->fileGetMetadata([
+                        'fileLocation' => "$file",
+                    ]);
                     if (isset($data['fileList']["$file"]['fileSize']['long'])) {
                         $data['fileList']["$file"]['fileSize'] = $data['fileList']["$file"]['fileSize']['long'];
                     }
@@ -213,6 +228,7 @@ class UploadProperty extends FileUploadProperty
                 if (empty($fileList) || !is_array($fileList)) {
                     // synchronize file associations with empty list
                     if (!empty($moduleid) && !empty($itemid)) {
+                        $itemtype = $this->objectref?->itemtype ?? 0;
                         $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
@@ -227,20 +243,18 @@ class UploadProperty extends FileUploadProperty
 
                 // synchronize file associations with file list
                 if (!empty($moduleid) && !empty($itemid)) {
+                    $itemtype = $this->objectref?->itemtype ?? 0;
                     $this->sync_associations($moduleid, $itemtype, $itemid, $fileList);
                 }
 
                 return true;
-                break;
             case '-1':
                 return true;
-                break;
             case '-2':
                 // clear stored value
                 $this->value = '';
                 xarVar::setCached('DynamicData.Upload', $name, $this->value);
                 return true;
-                break;
             default:
                 if (isset($value)) {
                     if (strlen($value) && $value[0] == ';') {
@@ -256,7 +270,6 @@ class UploadProperty extends FileUploadProperty
                     $this->value = null;
                     return true;
                 }
-                break;
         }
 
         //        if(!$this->createValue($data))return false;
@@ -277,12 +290,13 @@ class UploadProperty extends FileUploadProperty
         $data = $this->propertydata;
         if (!empty($data['action'])) {
             //            if (isset($storeType)) $data['storeType'] = $storeType;
+            $userapi = $this->getUserApi();
 
             // This is where the actual saves happen
             $data['override']['upload']['path'] = $this->initialization_basedirectory;
             // Check for duplicates. This should actually happen in the validateValue method
             $data['allow_duplicate'] = $this->validation_allow_duplicates;
-            $list = xarMod::apiFunc('uploads', 'user', 'process_files', $data);
+            $list = $userapi->processFiles($data);
 
             $storeList = [];
             $storeListData = [];
@@ -307,6 +321,7 @@ class UploadProperty extends FileUploadProperty
 
                 // synchronize file associations with store list
                 if (!empty($moduleid) && !empty($itemid)) {
+                    $itemtype = $this->objectref?->itemtype ?? 0;
                     $this->sync_associations($moduleid, $itemtype, $itemid, $storeList);
                 }
             } else {
@@ -326,12 +341,12 @@ class UploadProperty extends FileUploadProperty
      * Utility function to synchronise uploads associations on validation
      * Given a list of resource IDs, this makes sure that there is an entry in the associations table
      * for each with the appropriate $itemid, $itemtype, $moduleid
-     *
+     * @see Xaraya\Modules\Uploads\UserApi::syncAssociations()
      */
-    public function sync_associations($moduleid = 0, $itemtype = 0, $itemid = 0, $keyword_ids = [])
+    public function sync_associations($moduleid = 0, $itemtype = 0, $itemid = 0, $filelist = [])
     {
-        // @todo see keywords association
-        return;
+        $userapi = $this->getUserApi();
+        $userapi->syncAssociations($moduleid, $itemtype, $itemid, $filelist);
     }
 
     /**
@@ -370,6 +385,9 @@ class UploadProperty extends FileUploadProperty
         $descend = true;
 
         xarMod::apiLoad('uploads', 'user');
+
+        $userapi = $this->getUserApi();
+
         $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
         $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
         $data['getAction']['UPLOAD']      = Defines::GET_UPLOAD;
@@ -387,33 +405,29 @@ class UploadProperty extends FileUploadProperty
 
             // CHECKME: use 'imports' name like in db_get_file() ?
             // Note: for relativePath, the (main) import directory is replaced by /trusted in file_get_metadata()
-            $data['fileList']     = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'import_get_filelist',
-                ['fileLocation' => $this->initialization_import_directory,
-                                                        'descend'      => $descend,
-                                                        // no need to analyze the mime type here
-                                                        'analyze'      => false,
-                                                        // cache the results if configured
-                                                        'cacheExpire'  => $cacheExpire, ]
-            );
+            $data['fileList']     = $userapi->importGetFilelist([
+                'fileLocation' => $this->initialization_import_directory,
+                'descend'      => $descend,
+                // no need to analyze the mime type here
+                'analyze'      => false,
+                // cache the results if configured
+                'cacheExpire'  => $cacheExpire,
+            ]);
         } else {
             $data['fileList']     = [];
         }
 
         // Set up for the stored input method
         if (in_array(Defines::GET_STORED, $this->initialization_file_input_methods)) {
+            $userapi = $this->getUserApi();
+
             // if there is an override['upload']['path'], try to use that
             if (!empty($this->initialization_basedirectory)) {
                 if (file_exists($this->initialization_basedirectory)) {
-                    $data['storedList']   = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'db_get_file',
-                        // find all files located under that upload directory
-                        ['fileLocation' => $this->initialization_basedirectory . '/%']
-                    );
+                    // find all files located under that upload directory
+                    $data['storedList']   = $userapi->dbGetFile([
+                        'fileLocation' => $this->initialization_basedirectory . '/%',
+                    ]);
                 } else {
                     // Note: the parent directory must already exist
                     $result = @mkdir($this->initialization_basedirectory);
@@ -424,13 +438,13 @@ class UploadProperty extends FileUploadProperty
                         $data['storedList']   = [];
                     } else {
                         // CHECKME: fall back to common uploads directory, or fail here ?
-                        //  $data['storedList']   = xarMod::apiFunc('uploads', 'user', 'db_getall_files');
+                        //  $data['storedList']   = $userapi->dbGetallFiles();
                         $msg = xarML('Unable to create an upload directory #(1)', $this->initialization_basedirectory);
                         throw new Exception($msg);
                     }
                 }
             } else {
-                $data['storedList']   = xarMod::apiFunc('uploads', 'user', 'db_getall_files');
+                $data['storedList']   = $userapi->dbGetallFiles();
             }
         } else {
             $data['storedList']   = [];
@@ -465,18 +479,15 @@ class UploadProperty extends FileUploadProperty
                 if (is_array($aList) && count($aList)) {
                     $data['inodeType']['DIRECTORY']   = Defines::TYPE_DIRECTORY;
                     $data['inodeType']['FILE']        = Defines::TYPE_FILE;
-                    $data['attachments'] = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'db_get_file',
-                        ['fileId' => $aList]
-                    );
-                    $list = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'showoutput',
-                        ['value' => $this->value, 'style' => 'icon', 'multiple' => $this->validation_max_length]
-                    );
+                    $data['attachments'] = $userapi->dbGetFile([
+                        'fileId' => $aList,
+                    ]);
+                    // @todo what is happening with this?
+                    $list = $userapi->showoutput([
+                        'value' => $this->value,
+                        'style' => 'icon',
+                        'multiple' => $this->validation_max_length,
+                    ]);
 
                     foreach ($aList as $fileId) {
                         if (!empty($data['storedList'][$fileId])) {
@@ -531,13 +542,15 @@ class UploadProperty extends FileUploadProperty
         $data['value'] = array_filter($data['value']);
 
         if (is_array($data['value']) && count($data['value'])) {
-            $data['attachments'] = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $data['value']]);
+            $userapi = $this->getUserApi();
+
+            $data['attachments'] = $userapi->dbGetFile(['fileId' => $data['value']]);
             if (empty($data['attachments'])) {
                 // We probably have just a single file name
                 $data['attachments'][] = ['fileDownload' => $this->initialization_basedirectory . "/" . $data['value'][0],
-                                             'fileName' => $data['value'][0],
-                                             'DownloadLabel' => $data['value'][0],
-                                             ];
+                    'fileName' => $data['value'][0],
+                    'DownloadLabel' => $data['value'][0],
+                ];
             }
         } else {
             if (empty($data['value'])) {
@@ -545,9 +558,9 @@ class UploadProperty extends FileUploadProperty
             } else {
                 // We probably have just a single file name
                 $data['attachments'][] = ['fileDownload' => $this->initialization_basedirectory . "/" . $data['value'][0],
-                                             'fileName' => $data['value'][0],
-                                             'DownloadLabel' => $data['value'][0],
-                                             ];
+                    'fileName' => $data['value'][0],
+                    'DownloadLabel' => $data['value'][0],
+                ];
             }
         }
 

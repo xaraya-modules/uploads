@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserGui;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -36,15 +37,9 @@ class DownloadMethod extends MethodClass
     /** functions imported by bermuda_cleanup */
 
     /**
-     * Uploads Module
-     * @package modules
-     * @subpackage uploads module
-     * @category Third Party Xaraya Module
-     * @version 1.1.0
-     * @copyright see the html/credits.html file in this Xaraya release
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     * @link http://www.xaraya.com/index.php/release/eid/666
-     * @author Uploads Module Development Team
+     * Summary of __invoke
+     * @param array<mixed> $args
+     * @return bool|string|void
      */
     public function __invoke(array $args = [])
     {
@@ -58,8 +53,12 @@ class DownloadMethod extends MethodClass
         if (!xarVar::fetch('fileId', 'int:1:', $fileId, 0, xarVar::NOT_REQUIRED)) {
             return;
         }
+        $usergui = $this->getParent();
 
-        $fileInfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+        /** @var UserApi $userapi */
+        $userapi = $usergui->getAPI();
+
+        $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
 
         if (empty($fileName) && (empty($fileInfo) || !count($fileInfo))) {
             xarController::redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif', null, $this->getContext());
@@ -70,7 +69,7 @@ class DownloadMethod extends MethodClass
             $fileInfo = xarSession::getVar($fileName);
 
             try {
-                $result = xarMod::apiFunc('uploads', 'user', 'file_push', $fileInfo);
+                $result = $userapi->filePush($fileInfo);
             } catch (Exception $e) {
                 return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
             }
@@ -136,12 +135,12 @@ class DownloadMethod extends MethodClass
                         return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
                     }
                 } elseif ($fileInfo['storeType'] & Defines::STORE_DB_FULL) {
-                    if (!xarMod::apiFunc('uploads', 'user', 'db_count_data', ['fileId' => $fileInfo['fileId']])) {
+                    if (!$userapi->dbCountData(['fileId' => $fileInfo['fileId']])) {
                         return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
                     }
                 }
 
-                $result = xarMod::apiFunc('uploads', 'user', 'file_push', $fileInfo);
+                $result = $userapi->filePush($fileInfo);
 
                 /*
                 if (!$result) {

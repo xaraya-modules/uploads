@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
-
 use Xaraya\Modules\Uploads\UserGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -34,12 +34,12 @@ class DisplayAttachmentsMethod extends MethodClass
 
     /**
      * display rating for a specific item, and request rating
-     * @param mixed $args ['objectid'] ID of the item this rating is for
-     * @param mixed $args ['extrainfo'] URL to return to if user chooses to rate
-     * @param mixed $args ['style'] style to display this rating in (optional)
-     * @param mixed $args ['itemtype'] item type
-     * @return \output
-     * @return \output with rating information
+     * @param array<mixed> $args
+     * @var mixed $objectid ID of the item this rating is for
+     * @var mixed $extrainfo URL to return to if user chooses to rate
+     * @var mixed $style style to display this rating in (optional)
+     * @var mixed $itemtype item type
+     * @return string|void output with rating information
      */
     public function __invoke(array $args = [])
     {
@@ -84,8 +84,13 @@ class DisplayAttachmentsMethod extends MethodClass
         // user decides to add / remove attachments for this item
         xarModUserVars::set('uploads', 'save.attachment-info', serialize($args));
 
+        $usergui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $usergui->getAPI();
+
         // Run API function
-        $associations = xarMod::apiFunc('uploads', 'user', 'db_get_associations', $args);
+        $associations = $userapi->dbGetAssociations($args);
 
         if (!empty($associations)) {
             $fileIds = [];
@@ -93,7 +98,7 @@ class DisplayAttachmentsMethod extends MethodClass
                 $fileIds[] = $assoc['fileId'];
             }
 
-            $Attachments = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileIds]);
+            $Attachments = $userapi->dbGetFile(['fileId' => $fileIds]);
         } else {
             $Attachments = [];
         }

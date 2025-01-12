@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,9 @@
 
 namespace Xaraya\Modules\Uploads\AdminGui;
 
-
 use Xaraya\Modules\Uploads\AdminGui;
+use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarSecurity;
@@ -34,8 +35,8 @@ class PrivilegesMethod extends MethodClass
 
     /**
      * Manage definition of instances for privileges (unfinished)
-     * @param
-     * @return array
+     * @param array<mixed> $args
+     * @return array|bool|void
      */
     public function __invoke(array $args = [])
     {
@@ -112,12 +113,19 @@ class PrivilegesMethod extends MethodClass
                 return;
             }
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         // Check to see if subtype is set, if not assume 'All'
         if (empty($subtype) || $subtype == 'All' || !is_numeric($subtype)) {
             $subtype = 0;
         } else {
-            $subtypeInfo = xarMod::apiFunc('mime', 'user', 'get_subtype', ['subtypeId' => $subtype]);
+            /** @var MimeApi $mimeapi */
+            $mimeapi = $userapi->getMimeAPI();
+
+            $subtypeInfo = $mimeapi->getSubtype(['subtypeId' => $subtype]);
 
             if (empty($subtypeInfo) || $subtypeInfo['typeId'] != $mimetype) {
                 $subtype = 0;
@@ -152,7 +160,7 @@ class PrivilegesMethod extends MethodClass
         }
 
         if (empty($userId) || $userId == 'All' || !is_numeric($userId)) {
-            if (!strcasecmp('myself', $userName)) {
+            if (!strcasecmp('myself', $userId ?? '')) {
                 $userId = 'myself';
             } else {
                 $userId = 0;
@@ -180,7 +188,7 @@ class PrivilegesMethod extends MethodClass
         if (empty($fileId) || $fileId == 'All' || !is_numeric($fileId)) {
             $fileId = 0;
         } else {
-            $fileInfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+            $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
 
             if (isset($fileInfo[$fileId])) {
                 $fileTypeInfo = & $fileInfo[$fileId]['fileTypeInfo'];
@@ -229,7 +237,7 @@ class PrivilegesMethod extends MethodClass
         }
 
         $filters['storeOptions'] = false;
-        $options            = xarMod::apiFunc('uploads', 'user', 'process_filters', $filters);
+        $options            = $userapi->processFilters($filters);
         unset($filters);
 
         $filter             = $options['filter'];
@@ -240,14 +248,11 @@ class PrivilegesMethod extends MethodClass
 
         // Count how many items there are based on
         // the currently selected privilege settings
-        $numitems = xarMod::apiFunc('uploads', 'user', 'db_count', $filter);
+        $numitems = $userapi->dbCount($filter);
 
-        $userNameList += xarMod::apiFunc(
-            'uploads',
-            'user',
-            'db_get_users',
-            ['mimeType' => $filter['fileType']]
-        );
+        $userNameList += $userapi->dbGetUsers([
+            'mimeType' => $filter['fileType'],
+        ]);
 
         // Set up default 'All' option for users
         $userNameList[0]['userId'] = 0;
@@ -263,7 +268,7 @@ class PrivilegesMethod extends MethodClass
         unset($filter['userId']);
         unset($filter['fileId']);
 
-        $fileList = xarMod::apiFunc('uploads', 'user', 'db_get_file', $filter);
+        $fileList = $userapi->dbGetFile($filter);
         $fileList[0]['fileId'] = 0;
         $fileList[0]['fileName'] = xarML('All');
         $fileList[0]['fileLocation'] = $fileList[0]['fileName'];

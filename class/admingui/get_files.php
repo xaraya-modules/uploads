@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarSecurity;
@@ -58,9 +59,13 @@ class GetFilesMethod extends MethodClass
         if (!xarVar::fetch('storeType', "enum:$storeTypes", $storeType, '', xarVar::NOT_REQUIRED)) {
             return;
         }
+        $admingui = $this->getParent();
 
         // now make sure someone hasn't tried to change our maxsize on us ;-)
         $file_maxsize = xarModVars::get('uploads', 'file.maxsize');
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         switch ($args['action']) {
             case Defines::GET_UPLOAD:
@@ -99,12 +104,9 @@ class GetFilesMethod extends MethodClass
 
                 $cwd = xarModUserVars::get('uploads', 'path.imports-cwd');
                 foreach ($fileList as $file) {
-                    $args['fileList']["$cwd/$file"] = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'file_get_metadata',
-                        ['fileLocation' => "$cwd/$file"]
-                    );
+                    $args['fileList']["$cwd/$file"] = $userapi->fileGetMetadata([
+                        'fileLocation' => "$cwd/$file",
+                    ]);
                 }
                 $args['getAll'] = $file_all;
 
@@ -115,7 +117,7 @@ class GetFilesMethod extends MethodClass
                     return;
                 }
 
-                $cwd = xarMod::apiFunc('uploads', 'user', 'import_chdir', ['dirName' => $inode ?? null]);
+                $cwd = $userapi->importChdir(['dirName' => $inode ?? null]);
 
                 $data['storeType']['DB_FULL']     = Defines::STORE_DB_FULL;
                 $data['storeType']['FSDB']        = Defines::STORE_FSDB;
@@ -127,12 +129,10 @@ class GetFilesMethod extends MethodClass
                 $data['getAction']['REFRESH']     = Defines::GET_REFRESH_LOCAL;
                 $data['local_import_post_url']    = xarController::URL('uploads', 'admin', 'get_files');
                 $data['external_import_post_url'] = xarController::URL('uploads', 'admin', 'get_files');
-                $data['fileList'] = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'import_get_filelist',
-                    ['fileLocation' => $cwd, 'onlyNew' => true]
-                );
+                $data['fileList'] = $userapi->importGetFilelist([
+                    'fileLocation' => $cwd,
+                    'onlyNew' => true,
+                ]);
 
                 $data['curDir'] = str_replace(xarModVars::get('uploads', 'imports_directory'), '', $cwd);
                 $data['noPrevDir'] = (xarModVars::get('uploads', 'imports_directory') == $cwd) ? true : false;
@@ -145,7 +145,7 @@ class GetFilesMethod extends MethodClass
         if (isset($storeType)) {
             $args['storeType'] = $storeType;
         }
-        $list = xarMod::apiFunc('uploads', 'user', 'process_files', $args);
+        $list = $userapi->processFiles($args);
         if (is_array($list) && count($list)) {
             return xarTpl::module('uploads', 'admin', 'addfile-status', ['fileList' => $list], null);
         } else {

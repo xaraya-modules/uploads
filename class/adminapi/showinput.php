@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -32,15 +33,15 @@ class ShowinputMethod extends MethodClass
 
     /**
      * show input fields for uploads module (used in DD properties)
-     * @param mixed $args ['id'] string id of the upload field(s)
-     * @param mixed $args ['value'] string the current value(s)
-     * @param mixed $args ['format'] string format specifying 'fileupload', 'textupload' or 'upload' (future ?)
-     * @param mixed $args ['multiple'] boolean allow multiple uploads or not
-     * @param mixed $args ['methods'] array of allowed methods 'trusted', 'external', 'stored' and/or 'upload'
-     * @param mixed $args ['override'] array optional override values for import/upload path/obfuscate (cfr. process_files)
-     * @param mixed $args ['invalid'] string invalid error message
-     * @return string
-     * @return string containing the input fields
+     * @param array<mixed> $args
+     * @var string $id string id of the upload field(s)
+     * @var string $value string the current value(s)
+     * @var string $format string format specifying 'fileupload', 'textupload' or 'upload' (future ?)
+     * @var bool $multiple boolean allow multiple uploads or not
+     * @var array $methods array of allowed methods 'trusted', 'external', 'stored' and/or 'upload'
+     * @var array $override array optional override values for import/upload path/obfuscate (cfr. process_files)
+     * @var string $invalid string invalid error message
+     * @return string string containing the input fields
      */
     public function __invoke(array $args = [])
     {
@@ -62,11 +63,12 @@ class ShowinputMethod extends MethodClass
         if (empty($methods)) {
             $methods = null;
         }
+        $adminapi = $this->getParent();
 
         // Check to see if an old value is present. Old values just file names
         // and do not start with a semicolon (our delimiter)
-        if (xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', ['value' => $value])) {
-            $newValue = xarMod::apiFunc('uploads', 'admin', 'dd_convert_value', ['value' => $value]);
+        if ($adminapi->ddValueNeedsConversion(['value' => $value])) {
+            $newValue = $adminapi->ddConvertValue(['value' => $value]);
 
             // if we were unable to convert the value, then go ahead and and return
             // an empty string instead of processing the value and bombing out
@@ -101,6 +103,11 @@ class ShowinputMethod extends MethodClass
 
         $descend = true;
 
+        $adminapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
+
         $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
         $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
         $data['getAction']['UPLOAD']      = Defines::GET_UPLOAD;
@@ -124,17 +131,14 @@ class ShowinputMethod extends MethodClass
 
             // CHECKME: use 'imports' name like in db_get_file() ?
             // Note: for relativePath, the (main) import directory is replaced by /trusted in file_get_metadata()
-            $data['fileList']     = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'import_get_filelist',
-                ['fileLocation' => $trusted_dir,
-                    'descend'      => $descend,
-                    // no need to analyze the mime type here
-                    'analyze'      => false,
-                    // cache the results if configured
-                    'cacheExpire'  => $cacheExpire, ]
-            );
+            $data['fileList']   = $userapi->importGetFilelist([
+                'fileLocation' => $trusted_dir,
+                'descend'      => $descend,
+                // no need to analyze the mime type here
+                'analyze'      => false,
+                // cache the results if configured
+                'cacheExpire'  => $cacheExpire,
+            ]);
         } else {
             $data['fileList']     = [];
         }
@@ -143,13 +147,10 @@ class ShowinputMethod extends MethodClass
             if (!empty($override['upload']['path'])) {
                 $upload_directory = $override['upload']['path'];
                 if (file_exists($upload_directory)) {
-                    $data['storedList']   = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'db_get_file',
-                        // find all files located under that upload directory
-                        ['fileLocation' => $upload_directory . '/%']
-                    );
+                    // find all files located under that upload directory
+                    $data['storedList'] = $userapi->dbGetFile([
+                        'fileLocation' => $upload_directory . '/%',
+                    ]);
                 } else {
                     // Note: the parent directory must already exist
                     $result = @mkdir($upload_directory);
@@ -160,12 +161,12 @@ class ShowinputMethod extends MethodClass
                         $data['storedList']   = [];
                     } else {
                         // CHECKME: fall back to common uploads directory, or fail here ?
-                        //  $data['storedList']   = xarMod::apiFunc('uploads', 'user', 'db_getall_files');
+                        //  $data['storedList']   = $userapi->dbGetallFiles();
                         return xarML('Unable to create upload directory #(1)', $upload_directory);
                     }
                 }
             } else {
-                $data['storedList']   = xarMod::apiFunc('uploads', 'user', 'db_getall_files');
+                $data['storedList']   = $userapi->dbGetallFiles();
             }
         } else {
             $data['storedList']   = [];
@@ -182,18 +183,14 @@ class ShowinputMethod extends MethodClass
             if (is_array($aList) && count($aList)) {
                 $data['inodeType']['DIRECTORY']   = Defines::TYPE_DIRECTORY;
                 $data['inodeType']['FILE']        = Defines::TYPE_FILE;
-                $data['Attachments'] = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'db_get_file',
-                    ['fileId' => $aList]
-                );
-                $list = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'showoutput',
-                    ['value' => $value, 'style' => 'icon', 'multiple' => $multiple]
-                );
+                $data['Attachments'] = $userapi->dbGetFile([
+                    'fileId' => $aList,
+                ]);
+                $list = $userapi->showoutput([
+                    'value' => $value,
+                    'style' => 'icon',
+                    'multiple' => $multiple,
+                ]);
 
                 foreach ($aList as $fileId) {
                     if (!empty($data['storedList'][$fileId])) {

@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -35,17 +34,18 @@ class DbCountMethod extends MethodClass
      * @author Carl P. Corliss
      * @author Micheal Cortez
      * @access public
-     * @param mixed fileId       (Optional) grab file(s) with the specified file id(s)
-     * @param string fileName     (Optional) grab file(s) with the specified file name
-     * @param int fileType     (Optional) grab files with the specified mime type
-     * @param int fileStatus   (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
-     * @param string fileLocation (Optional) grab file(s) with the specified file location
-     * @param string fileHash     (Optional) grab file(s) with the specified file hash
-     * @param int userId       (Optional) grab files uploaded by a particular user
-     * @param int store_type   (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
-     * @param bool inverse      (Optional) inverse the selection
-     * @param string catid        (Optional) grab file(s) in the specified categories
-     * @return array All of the metadata stored for the particular file
+     * @param array<mixed> $args
+     *     mixed fileId       (Optional) grab file(s) with the specified file id(s)
+     *     string fileName     (Optional) grab file(s) with the specified file name
+     *     int fileType     (Optional) grab files with the specified mime type
+     *     int fileStatus   (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
+     *     string fileLocation (Optional) grab file(s) with the specified file location
+     *     string fileHash     (Optional) grab file(s) with the specified file hash
+     *     int userId       (Optional) grab files uploaded by a particular user
+     *     int store_type   (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
+     *     bool inverse      (Optional) inverse the selection
+     *     string catid        (Optional) grab file(s) in the specified categories
+     * @return array|bool|void All of the metadata stored for the particular file
      */
     public function __invoke(array $args = [])
     {
@@ -160,7 +160,7 @@ class DbCountMethod extends MethodClass
 
         // if no record found, return an empty array
         if ($result->EOF) {
-            return (int) 0;
+            return [];
         }
 
         $row = $result->GetRowAssoc(false);

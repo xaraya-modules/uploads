@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarServer;
@@ -30,15 +31,10 @@ class DdConvertValueMethod extends MethodClass
     /** functions imported by bermuda_cleanup */
 
     /**
-     * Uploads Module
-     * @package modules
-     * @subpackage uploads module
-     * @category Third Party Xaraya Module
-     * @version 1.1.0
-     * @copyright see the html/credits.html file in this Xaraya release
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     * @link http://www.xaraya.com/index.php/release/eid/666
-     * @author Uploads Module Development Team
+     * Summary of __invoke
+     * @param array<mixed> $args
+     * @throws \Exception
+     * @return mixed
      */
     public function __invoke(array $args = [])
     {
@@ -47,6 +43,7 @@ class DdConvertValueMethod extends MethodClass
         if (!isset($value)) {
             return null;
         }
+        $adminapi = $this->getParent();
 
         if (!isset($basedir)) {
             // try something here in hopes that it works.
@@ -54,7 +51,7 @@ class DdConvertValueMethod extends MethodClass
         }
 
         // if conversion isn't needed, then don't do it
-        if (!xarMod::apiFunc('uploads', 'admin', 'dd_value_needs_conversion', ['value' => $value])) {
+        if (!$adminapi->ddValueNeedsConversion(['value' => $value])) {
             return $value;
         }
 
@@ -71,9 +68,12 @@ class DdConvertValueMethod extends MethodClass
         if (file_exists($basedir . $value) && !is_file($basedir . $value)) {
             xarMod::apiLoad('uploads', 'user');
 
+            /** @var UserApi $userapi */
+            $userapi = $adminapi->getAPI();
+
             $args['import'] = 'file://' . $basePath . '/' . $basedir . $value;
             $args['action'] = Defines::GET_EXTERNAL;
-            $list = xarMod::apiFunc('uploads', 'user', 'process_files', $args);
+            $list = $userapi->processFiles($args);
             $storeList = [];
             foreach ($list as $file => $fileInfo) {
                 if (!isset($fileInfo['errors'])) {

@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -30,7 +29,7 @@ class DbChangeStatusMethod extends MethodClass
 
     /**
      * Change the status on a file, or group of files based on the file id(s) or filetype
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
      *
      * @return integer The number of affected rows on success, or FALSE on error

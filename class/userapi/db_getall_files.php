@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarDB;
 use xarMod;
@@ -40,10 +41,11 @@ class DbGetallFilesMethod extends MethodClass
      * @author Carl P. Corliss
      * @author Micheal Cortez
      * @access public
-     * @param int numitems     (Optional) number of files to get
-     * @param int startnum     (Optional) starting file number
-     * @param string sort         (Optional) sort order ('id','name','type','size','user','status','location',...)
-     * @return array All of the metadata stored for all files
+     * @param array<mixed> $args
+     * @var int $numitems     (Optional) number of files to get
+     * @var int $startnum     (Optional) starting file number
+     * @var string $sort         (Optional) sort order ('id','name','type','size','user','status','location',...)
+     * @return array|bool|void All of the metadata stored for all files
      */
     public function __invoke(array $args = [])
     {
@@ -149,9 +151,10 @@ class DbGetallFilesMethod extends MethodClass
         if ($result->EOF) {
             return [];
         }
+        $userapi = $this->getParent();
 
-        $importDir = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'imports_directory']);
-        $uploadDir = xarMod::apiFunc('uploads', 'user', 'db_get_dir', ['directory' => 'uploads_directory']);
+        $importDir = $userapi->dbGetDir(['directory' => 'imports_directory']);
+        $uploadDir = $userapi->dbGetDir(['directory' => 'uploads_directory']);
 
         // remove the '/' at the end of the path
         $importDir = str_replace('/$', '', $importDir);
@@ -164,6 +167,9 @@ class DbGetallFilesMethod extends MethodClass
         } else {
             $base_directory = './';
         }
+
+        /** @var MimeApi $mimeapi */
+        $mimeapi = $userapi->getMimeAPI();
 
         $revcache = [];
         $imgcache = [];
@@ -184,12 +190,12 @@ class DbGetallFilesMethod extends MethodClass
             $fileInfo['fileStatus']    = $row['xar_status'];
             $fileInfo['fileType']      = $row['xar_mime_type'];
             if (!isset($revcache[$fileInfo['fileType']])) {
-                $revcache[$fileInfo['fileType']] = xarMod::apiFunc('mime', 'user', 'get_rev_mimetype', ['mimeType' => $fileInfo['fileType']]);
+                $revcache[$fileInfo['fileType']] = $mimeapi->getRevMimetype(['mimeType' => $fileInfo['fileType']]);
             }
             $fileInfo['fileTypeInfo']  = $revcache[$fileInfo['fileType']];
             $fileInfo['storeType']     = $row['xar_store_type'];
             if (!isset($imgcache[$fileInfo['fileType']])) {
-                $imgcache[$fileInfo['fileType']] = xarMod::apiFunc('mime', 'user', 'get_mime_image', ['mimeType' => $fileInfo['fileType']]);
+                $imgcache[$fileInfo['fileType']] = $mimeapi->getMimeImage(['mimeType' => $fileInfo['fileType']]);
             }
             $fileInfo['mimeImage']     = $imgcache[$fileInfo['fileType']];
             $fileInfo['fileDownload']  = xarController::URL('uploads', 'user', 'download', ['fileId' => $fileInfo['fileId']]);

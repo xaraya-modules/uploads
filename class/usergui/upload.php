@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\UserGui;
 
-
 use Xaraya\Modules\Uploads\UserGui;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -33,7 +33,8 @@ class UploadMethod extends MethodClass
 
     /**
      * Import a file
-     * @param string importFrom
+     * @param array<mixed> $args
+     * @var string $importFrom
      * @return mixed
      */
     public function __invoke(array $args = [])
@@ -41,15 +42,16 @@ class UploadMethod extends MethodClass
         if (!xarSecurity::check('AddUploads')) {
             return;
         }
+        $usergui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $usergui->getAPI();
 
         xarVar::fetch('importFrom', 'str:1:', $importFrom, null, xarVar::NOT_REQUIRED);
 
-        $list = xarMod::apiFunc(
-            'uploads',
-            'user',
-            'process_files',
-            ['importFrom' => $importFrom]
-        );
+        $list = $userapi->processFiles([
+            'importFrom' => $importFrom,
+        ]);
 
         if (is_array($list) && count($list)) {
             return ['fileList' => $list];

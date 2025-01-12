@@ -3,14 +3,13 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
 **/
 
 namespace Xaraya\Modules\Uploads\UserApi;
-
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -31,9 +30,8 @@ class EncodeShorturlMethod extends MethodClass
     /**
      * return the path for a short URL to xarController::URL for this module
      * @author the Example module development team
-     * @param mixed $args the function and arguments passed to xarController::URL
-     * @return string
-     * @return \path to be added to index.php for a short URL, or empty if failed
+     * @param array<mixed> $args the function and arguments passed to xarController::URL
+     * @return string|void path to be added to index.php for a short URL, or empty if failed
      */
     public function __invoke(array $args = [])
     {
@@ -49,14 +47,16 @@ class EncodeShorturlMethod extends MethodClass
         if (!isset($fileId) || empty($fileId)) {
             return;
         } else {
-            $fileName = xarMod::apiFunc('uploads', 'user', 'db_get_filename', ['fileId' => $fileId]);
+            $userapi = $this->getParent();
+            $fileName = $userapi->dbGetFilename(['fileId' => $fileId]);
 
             if (!isset($fileName) || empty($fileName)) {
                 // fileId is nonexistant...
                 return;
             }
 
-            $ext = end(explode('.', $fileName));
+            $parts = explode('.', $fileName);
+            $ext = end($parts);
             $fileName = "$fileId.$ext";
         }
 

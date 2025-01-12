@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -32,18 +32,18 @@ class ImportGetFilelistMethod extends MethodClass
 
     /**
      * Get a list of files with metadata from some import directory or link
-     *  @author  Carl P. Corliss
+     * @author  Carl P. Corliss
      * @access public
-     * @param   string   fileLocation   The starting directory
-     * @param   boolean  descend        Go through all sub-directories too
-     * @param   boolean  onlyNew        Only return files that aren't imported yet
-     * @param   string   search         Search for a particular filename pattern
-     * @param   string   exclude        Exclude a particular filename pattern
-     * @param   integer  cacheExpire    Cache the result for a number of seconds (e.g. for DD Upload)
-     * @param   boolean  analyze        Analyze each file for mime type (default TRUE)
+     * @param array<mixed> $args
+     * @var string $fileLocation   The starting directory
+     * @var boolean $descend        Go through all sub-directories too
+     * @var boolean $onlyNew        Only return files that aren't imported yet
+     * @var string $search         Search for a particular filename pattern
+     * @var string $exclude        Exclude a particular filename pattern
+     * @var integer $cacheExpire    Cache the result for a number of seconds (e.g. for DD Upload)
+     * @var boolean $analyze        Analyze each file for mime type (default TRUE)
      *
-     * @return array
-     * @return array|string of file information
+     * @return array|string array|string of file information
      */
     public function __invoke(array $args = [])
     {
@@ -134,16 +134,14 @@ class ImportGetFilelistMethod extends MethodClass
         } else {
             $type = -1;
         }
+        $userapi = $this->getParent();
 
         switch ($type) {
             case Defines::TYPE_FILE:
                 if ($onlyNew) {
-                    $file = xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'db_get_file',
-                        ['fileLocation' => $fileLocation]
-                    );
+                    $file = $userapi->dbGetFile([
+                        'fileLocation' => $fileLocation,
+                    ]);
                     if (count($file)) {
                         break;
                     }
@@ -153,13 +151,10 @@ class ImportGetFilelistMethod extends MethodClass
                 if ((isset($search) && preg_match("/$search/", $fileName)) &&
                     (!isset($exclude) || !preg_match("/$exclude/", $fileName))) {
                     $fileList["$type:$fileName"] =
-                            xarMod::apiFunc(
-                                'uploads',
-                                'user',
-                                'file_get_metadata',
-                                ['fileLocation' => $fileLocation,
-                                    'analyze'      => $analyze, ]
-                            );
+                            $userapi->fileGetMetadata([
+                                'fileLocation' => $fileLocation,
+                                'analyze'      => $analyze,
+                            ]);
                 }
                 break;
             case Defines::TYPE_DIRECTORY:
@@ -193,12 +188,9 @@ class ImportGetFilelistMethod extends MethodClass
                                 $fileName = $fileLocation . '/' . $inode;
 
                                 if ($onlyNew) {
-                                    $file = xarMod::apiFunc(
-                                        'uploads',
-                                        'user',
-                                        'db_get_file',
-                                        ['fileLocation' => $fileName]
-                                    );
+                                    $file = $userapi->dbGetFile([
+                                        'fileLocation' => $fileName,
+                                    ]);
                                     if (count($file)) {
                                         continue;
                                     }
@@ -206,40 +198,31 @@ class ImportGetFilelistMethod extends MethodClass
 
                                 if ((!isset($search) || preg_match("/$search/", $fileName)) &&
                                     (!isset($exclude) || !preg_match("/$exclude/", $fileName))) {
-                                    $file = xarMod::apiFunc(
-                                        'uploads',
-                                        'user',
-                                        'file_get_metadata',
-                                        ['fileLocation' => $fileName,
-                                            'analyze'      => $analyze, ]
-                                    );
+                                    $file = $userapi->fileGetMetadata([
+                                        'fileLocation' => $fileName,
+                                        'analyze'      => $analyze,
+                                    ]);
                                     $fileList["$file[inodeType]:$fileName"] = $file;
                                 }
                                 break;
                             case Defines::TYPE_DIRECTORY:
                                 $dirName = "$fileLocation/$inode";
                                 if ($descend) {
-                                    $files = xarMod::apiFunc(
-                                        'uploads',
-                                        'user',
-                                        'import_get_filelist',
-                                        ['fileLocation' => $dirName,
-                                            'descend' => true,
-                                            'analyze' => $analyze,
-                                            'exclude' => $exclude,
-                                            'search' => $search, ]
-                                    );
+                                    $files = $userapi->importGetFilelist([
+                                        'fileLocation' => $dirName,
+                                        'descend' => true,
+                                        'analyze' => $analyze,
+                                        'exclude' => $exclude,
+                                        'search' => $search,
+                                    ]);
                                     $fileList += $files;
                                 } else {
                                     if ((!isset($search) || preg_match("/$search/", $dirName)) &&
                                         (!isset($exclude) || !preg_match("/$exclude/", $dirName))) {
-                                        $files = xarMod::apiFunc(
-                                            'uploads',
-                                            'user',
-                                            'file_get_metadata',
-                                            ['fileLocation' => $dirName,
-                                                'analyze'      => $analyze, ]
-                                        );
+                                        $files = $userapi->fileGetMetadata([
+                                            'fileLocation' => $dirName,
+                                            'analyze'      => $analyze,
+                                        ]);
                                         $fileList["$files[inodeType]:$inode"] = $files;
                                     }
                                 }

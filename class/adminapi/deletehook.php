@@ -3,7 +3,7 @@
 /**
  * @package modules\uploads
  * @category Xaraya Web Applications Framework
- * @version 2.5.7
+ * @version 2.6.0
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Uploads\AdminApi;
 
-
 use Xaraya\Modules\Uploads\AdminApi;
+use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -32,8 +32,9 @@ class DeletehookMethod extends MethodClass
      * delete file associations for an item - hook for ('item','delete','API')
      * Note: this will only be called if uploads is hooked to that module (e.g.
      * not for Upload properties)
-     * @param mixed $args ['objectid'] ID of the object
-     * @param mixed $args ['extrainfo'] extra information
+     * @param array<mixed> $args
+     * @var mixed $objectid ID of the object
+     * @var mixed $extrainfo extra information
      * @return array
      */
     public function __invoke(array $args = [])
@@ -71,15 +72,16 @@ class DeletehookMethod extends MethodClass
         } else {
             $itemtype = 0;
         }
+        $adminapi = $this->getParent();
 
-        if (!xarMod::apiFunc(
-            'uploads',
-            'admin',
-            'db_delete_association',
-            ['itemid' => $objectid,
-                'itemtype' => $itemtype,
-                'modid' => $modid, ]
-        )) {
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
+
+        if (!$userapi->dbDeleteAssociation([
+            'itemid' => $objectid,
+            'itemtype' => $itemtype,
+            'modid' => $modid,
+        ])) {
             // Return the extra info
             return $extrainfo;
         }

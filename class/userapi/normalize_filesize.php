@@ -40,6 +40,7 @@ class NormalizeFilesizeMethod extends MethodClass
         } else {
             return ['long' => 0, 'short' => 0];
         }
+        $fileSize ??= 0;
 
         $size = $fileSize;
 

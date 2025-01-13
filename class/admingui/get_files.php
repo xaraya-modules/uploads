@@ -75,7 +75,12 @@ class GetFilesMethod extends MethodClass
                 $uploads = DataPropertyMaster::getProperty(['name' => 'uploads']);
                 $uploads->initialization_initial_method = $args['action'];
                 $uploads->checkInput('upload');
-                $args['upload'] = $uploads->propertydata;
+                // UploadProperty()->propertydata contains ['action' => ..., 'upload' => [...]]
+                if (is_array($uploads->propertydata) && array_key_exists('upload', $uploads->propertydata)) {
+                    $args['upload'] = $uploads->propertydata['upload'];
+                } else {
+                    $args['upload'] = $uploads->propertydata;
+                }
                 break;
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total

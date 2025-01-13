@@ -39,6 +39,7 @@ class ImportExternalHttpMethod extends MethodClass
      * @var boolean $obfuscate  whether or not to obfuscate the filename
      * @var string $savePath   Complete path to directory in which we want to save this file
      * @return array|void          FALSE on error, otherwise an array containing the fileInformation
+     * @see UserApi::importExternalHttp()
      */
     public function __invoke(array $args = [])
     {

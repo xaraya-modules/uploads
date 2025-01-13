@@ -39,6 +39,7 @@ class FileGetMetadataMethod extends MethodClass
      * @var boolean $normalize     Whether or not to
      * @var boolean $analyze       Whether or not to
      * @return array|bool|void         array containing the inodeType, fileSize, fileType, fileLocation, fileName
+     * @see UserApi::fileGetMetadata()
      */
     public function __invoke(array $args = [])
     {

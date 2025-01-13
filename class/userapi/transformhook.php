@@ -33,6 +33,7 @@ class TransformhookMethod extends MethodClass
      * @param array<mixed> $args
      * @var array|string $extrainfo
      * @return mixed
+     * @see UserApi::transformhook()
      */
     public function __invoke(array $args = [])
     {

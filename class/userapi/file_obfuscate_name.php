@@ -32,6 +32,7 @@ class FileObfuscateNameMethod extends MethodClass
      * @access public
      * @param array<mixed> $args
      * @return string
+     * @see UserApi::fileObfuscateName()
      */
     public function __invoke(array $args = [])
     {

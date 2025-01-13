@@ -33,6 +33,7 @@ class SaveAttachmentsMethod extends MethodClass
     /**
      * Save attachments
      * @return bool|void true
+     * @see UserGui::saveAttachments()
      */
     public function __invoke(array $args = [])
     {

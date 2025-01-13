@@ -35,6 +35,7 @@ class ModifyconfigMethod extends MethodClass
 
     /**
      * Modify the configuration for the Uploads module
+     * @see AdminGui::modifyconfig()
      */
     public function __invoke(array $args = [])
     {

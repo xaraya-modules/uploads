@@ -35,17 +35,18 @@ class DbCountMethod extends MethodClass
      * @author Micheal Cortez
      * @access public
      * @param array<mixed> $args
-     *     mixed fileId       (Optional) grab file(s) with the specified file id(s)
-     *     string fileName     (Optional) grab file(s) with the specified file name
-     *     int fileType     (Optional) grab files with the specified mime type
-     *     int fileStatus   (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
-     *     string fileLocation (Optional) grab file(s) with the specified file location
-     *     string fileHash     (Optional) grab file(s) with the specified file hash
-     *     int userId       (Optional) grab files uploaded by a particular user
-     *     int store_type   (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
-     *     bool inverse      (Optional) inverse the selection
-     *     string catid        (Optional) grab file(s) in the specified categories
+     * @var mixed $fileId       (Optional) grab file(s) with the specified file id(s)
+     * @var string $fileName     (Optional) grab file(s) with the specified file name
+     * @var int $fileType     (Optional) grab files with the specified mime type
+     * @var int $fileStatus   (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
+     * @var string $fileLocation (Optional) grab file(s) with the specified file location
+     * @var string $fileHash     (Optional) grab file(s) with the specified file hash
+     * @var int $userId       (Optional) grab files uploaded by a particular user
+     * @var int $store_type   (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
+     * @var bool $inverse      (Optional) inverse the selection
+     * @var string $catid        (Optional) grab file(s) in the specified categories
      * @return array|bool|void All of the metadata stored for the particular file
+     * @see UserApi::dbCount()
      */
     public function __invoke(array $args = [])
     {

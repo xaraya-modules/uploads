@@ -32,6 +32,7 @@ class DdConfigureMethod extends MethodClass
      * @todo fix signature
      * @param mixed $confString
      * @return array
+     * @see AdminApi::ddConfigure()
      */
     public function __invoke($confString = null)
     {

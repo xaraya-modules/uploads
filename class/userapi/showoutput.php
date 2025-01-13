@@ -35,6 +35,7 @@ class ShowoutputMethod extends MethodClass
      * @var string $value The current value(s)
      * @var string $format Format specifying 'fileupload', 'textupload' or 'upload'
      * @return string containing the uploads output
+     * @see UserApi::showoutput()
      */
     public function __invoke(array $args = [])
     {

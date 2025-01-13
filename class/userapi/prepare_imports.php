@@ -34,6 +34,7 @@ class PrepareImportsMethod extends MethodClass
      * @param array<mixed> $args
      * @throws \Exception
      * @return mixed
+     * @see UserApi::prepareImports()
      */
     public function __invoke(array $args = [])
     {

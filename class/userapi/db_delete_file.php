@@ -39,6 +39,7 @@ class DbDeleteFileMethod extends MethodClass
      * @var integer $file_id    The id of the file we are deleting
      *
      * @return integer The number of affected rows on success, or FALSE on error
+     * @see UserApi::dbDeleteFile()
      */
     public function __invoke(array $args = [])
     {

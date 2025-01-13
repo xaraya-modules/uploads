@@ -29,6 +29,7 @@ class MainMethod extends MethodClass
 
     /**
      * Return to the download function
+     * @see UserGui::main()
      */
     public function __invoke(array $args = [])
     {

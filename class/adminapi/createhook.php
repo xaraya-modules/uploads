@@ -32,9 +32,10 @@ class CreatehookMethod extends MethodClass
      * Note: this will only be called if uploads is hooked to that module (e.g.
      * not for Upload properties)
      * @param array<mixed> $args
-     * @var int $objectid ID of the object
+     * @var int|string $objectid ID of the object
      * @var array $extrainfo extra information
      * @return array $extrainfo
+     * @see AdminApi::createhook()
      */
     public function __invoke(array $args = [])
     {

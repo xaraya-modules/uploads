@@ -35,6 +35,7 @@ class ImportExternalFileMethod extends MethodClass
      * @param array<mixed> $args
      * @var array $uri     the array containing the broken down url information
      * @return array|bool|void          FALSE on error, otherwise an array containing the fileInformation
+     * @see UserApi::importExternalFile()
      */
     public function __invoke(array $args = [])
     {

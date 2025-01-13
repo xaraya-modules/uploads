@@ -33,6 +33,7 @@ class DbChangeStatusMethod extends MethodClass
      * @access public
      *
      * @return integer The number of affected rows on success, or FALSE on error
+     * @see UserApi::dbChangeStatus()
      */
     public function __invoke(array $args = [])
     {

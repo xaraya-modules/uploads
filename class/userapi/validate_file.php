@@ -39,6 +39,7 @@ class ValidateFileMethod extends MethodClass
      *                  fileInfo['error']      Number representing any errors that were encountered during the upload
      *                  fileInfo['fileSize']   The size of the file (in bytes)
      * @return boolean            TRUE if it passed the checks, FALSE otherwise
+     * @see UserApi::validateFile()
      */
     public function __invoke(array $args = [])
     {

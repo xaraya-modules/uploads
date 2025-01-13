@@ -31,6 +31,7 @@ class UploadmagicMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return mixed
+     * @see UserApi::uploadmagic()
      */
     public function __invoke(array $args = [])
     {

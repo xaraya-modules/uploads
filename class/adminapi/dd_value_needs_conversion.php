@@ -30,6 +30,7 @@ class DdValueNeedsConversionMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return bool
+     * @see AdminApi::ddValueNeedsConversion()
      */
     public function __invoke(array $args = [])
     {

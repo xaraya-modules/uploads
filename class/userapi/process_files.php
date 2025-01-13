@@ -31,6 +31,9 @@ class ProcessFilesMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
+    /**
+     * @see UserApi::processFiles()
+     */
     public function __invoke(array $args = [])
     {
         extract($args);

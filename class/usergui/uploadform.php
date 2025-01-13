@@ -32,6 +32,7 @@ class UploadformMethod extends MethodClass
     /**
      * Show the uploads form
      * @return array|void
+     * @see UserGui::uploadForm()
      */
     public function __invoke(array $args = [])
     {

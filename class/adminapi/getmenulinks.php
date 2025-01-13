@@ -30,6 +30,7 @@ class GetmenulinksMethod extends MethodClass
     /**
      * utility function pass individual menu items to the main menu
      * @return array array containing the menulinks for the main menu items.
+     * @see AdminApi::getmenulinks()
      */
     public function __invoke(array $args = [])
     {

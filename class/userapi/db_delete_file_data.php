@@ -34,9 +34,10 @@ class DbDeleteFileDataMethod extends MethodClass
      * @author  Carl P. Corliss
      * @access public
      * @param array<mixed> $args
-     *     integer fileId    The id of the file who's contents we are removing
+     * @var integer $fileId    The id of the file who's contents we are removing
      *
      * @return integer The number of affected rows on success, or FALSE on error
+     * @see UserApi::dbDeleteFileData()
      */
     public function __invoke(array $args = [])
     {

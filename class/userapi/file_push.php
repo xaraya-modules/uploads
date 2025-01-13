@@ -35,12 +35,13 @@ class FilePushMethod extends MethodClass
      * @author Carl P. Corliss
      * @access   public
      * @param array<mixed> $args
-     *     string    fileName        The name of the file
-     *     string    fileLocation    The full path to the file
-     *     string    fileType        The mimetype of the file
-     *     int       fileSize        The size of the file (in bytes)
-     *     int       storeType       The type of storage of the file
+     * @var string    $fileName        The name of the file
+     * @var string    $fileLocation    The full path to the file
+     * @var string    $fileType        The mimetype of the file
+     * @var int       $fileSize        The size of the file (in bytes)
+     * @var int       $storeType       The type of storage of the file
      * @return  boolean                    This function will return true upon succes and, returns False and throws an exception otherwise
+     * @see UserApi::filePush()
      */
     public function __invoke(array $args = [])
     {

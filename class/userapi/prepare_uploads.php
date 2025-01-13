@@ -48,6 +48,7 @@ class PrepareUploadsMethod extends MethodClass
      * @var boolean $obfuscate            whether or not to obfuscate the filename
      * @var string $savePath             Complete path to directory in which we want to save this file
      * @return boolean|array                      TRUE on success, FALSE on failure
+     * @see UserApi::prepareUploads()
      */
     public function __invoke(array $args = [])
     {

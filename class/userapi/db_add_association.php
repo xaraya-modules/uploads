@@ -32,12 +32,13 @@ class DbAddAssociationMethod extends MethodClass
      * @author  Carl P. Corliss
      * @access public
      * @param array<mixed> $args
-     *     integer fileId    The id of the file we are going to associate with an item
-     *     integer modid     The id of module this file is associated with
-     *     integer itemtype  The item type within the defined module
-     *     integer itemid    The id of the item types item
+     * @var integer $fileId    The id of the file we are going to associate with an item
+     * @var integer $modid     The id of module this file is associated with
+     * @var integer $itemtype  The item type within the defined module
+     * @var integer $itemid    The id of the item types item
      *
      * @return integer The id of the file that was associated, FALSE with exception on error
+     * @see UserApi::dbAddAssociation()
      */
     public function __invoke(array $args = [])
     {

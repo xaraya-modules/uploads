@@ -35,6 +35,9 @@ class FilePropertiesMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
+    /**
+     * @see UserGui::fileProperties()
+     */
     public function __invoke(array $args = [])
     {
         extract($args);

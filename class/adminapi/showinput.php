@@ -42,6 +42,7 @@ class ShowinputMethod extends MethodClass
      * @var array $override array optional override values for import/upload path/obfuscate (cfr. process_files)
      * @var string $invalid string invalid error message
      * @return string string containing the input fields
+     * @see AdminApi::showinput()
      */
     public function __invoke(array $args = [])
     {

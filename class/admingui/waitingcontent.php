@@ -33,6 +33,7 @@ class WaitingcontentMethod extends MethodClass
      * display waiting content as a hook
      * @since 19 Feb 2008
      * @return array count of the files in 'submitted' status
+     * @see AdminGui::waitingcontent()
      */
     public function __invoke(array $args = [])
     {

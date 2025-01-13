@@ -43,6 +43,7 @@ class DbDiskusageMethod extends MethodClass
      * @var int $fileType    (Optional) grab files with the specified mime type
      * @var string $catid       (Optional) grab file(s) in the specified categories
      * @return int|void The total amount of diskspace used by the current set of selected files
+     * @see UserApi::dbDiskusage()
      */
     public function __invoke(array $args = [])
     {

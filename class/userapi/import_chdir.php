@@ -36,6 +36,7 @@ class ImportChdirMethod extends MethodClass
      * @param array<mixed> $args
      * @var string $dirName  The name of the directory (within the import sandbox) to change to
      * @return string           The complete path to the new Current Working Directory within the sandbox
+     * @see UserApi::importChdir()
      */
     public function __invoke(array $args = [])
     {

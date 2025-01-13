@@ -37,6 +37,7 @@ class DbListAssociationsMethod extends MethodClass
      * @var int $itemid    The id of the item types item
      * @var int $fileId    The id of the file we are going to associate with an item
      * @return array A list of associations, including the itemid -> fileId
+     * @see UserApi::dbListAssociations()
      */
     public function __invoke(array $args = [])
     {

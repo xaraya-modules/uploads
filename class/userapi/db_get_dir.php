@@ -32,6 +32,7 @@ class DbGetDirMethod extends MethodClass
      * @param array<mixed> $args
      * @var string $directory designation
      * @return string relative path of the directory
+     * @see UserApi::dbGetDir()
      */
     public function __invoke(array $args = [])
     {

@@ -31,6 +31,7 @@ class FileRenameMethod extends MethodClass
      * Rename a file. (alias for file_move)
      * @author  Carl P. Corliss
      * @access public
+     * @see UserApi::fileRename()
      */
     public function __invoke(array $args = [])
     {

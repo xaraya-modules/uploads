@@ -46,6 +46,7 @@ class DbGetallFilesMethod extends MethodClass
      * @var int $startnum     (Optional) starting file number
      * @var string $sort         (Optional) sort order ('id','name','type','size','user','status','location',...)
      * @return array|bool|void All of the metadata stored for all files
+     * @see UserApi::dbGetallFiles()
      */
     public function __invoke(array $args = [])
     {

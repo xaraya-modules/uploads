@@ -37,6 +37,7 @@ class PrivilegesMethod extends MethodClass
      * Manage definition of instances for privileges (unfinished)
      * @param array<mixed> $args
      * @return array|bool|void
+     * @see AdminGui::privileges()
      */
     public function __invoke(array $args = [])
     {

@@ -33,9 +33,10 @@ class DeletehookMethod extends MethodClass
      * Note: this will only be called if uploads is hooked to that module (e.g.
      * not for Upload properties)
      * @param array<mixed> $args
-     * @var mixed $objectid ID of the object
+     * @var int|string $objectid ID of the object
      * @var mixed $extrainfo extra information
      * @return array
+     * @see AdminApi::deletehook()
      */
     public function __invoke(array $args = [])
     {

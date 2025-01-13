@@ -40,6 +40,7 @@ class DownloadMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return bool|string|void
+     * @see UserGui::download()
      */
     public function __invoke(array $args = [])
     {

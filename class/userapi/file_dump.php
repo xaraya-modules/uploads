@@ -35,6 +35,7 @@ class FileDumpMethod extends MethodClass
      * @var string $fileSrc   The location of the file whose contents we want to dump into the database
      * @var integer $fileId    The file entry id of the file's meta data in the database
      * @return  integer           The total bytes stored or boolean FALSE on error
+     * @see UserApi::fileDump()
      */
     public function __invoke(array $args = [])
     {

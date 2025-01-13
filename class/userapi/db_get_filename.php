@@ -34,6 +34,7 @@ class DbGetFilenameMethod extends MethodClass
      * @param array<mixed> $args
      * @var int $fileId     (Optional) grab file with the specified file id
      * @return array|bool|void All of the metadata stored for the particular file
+     * @see UserApi::dbFilename()
      */
     public function __invoke(array $args = [])
     {

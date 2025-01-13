@@ -33,6 +33,7 @@ class MainMethod extends MethodClass
      * The main administration function
      * This function redirects the user to the view function
      * @return array|bool|void true
+     * @see AdminGui::main()
      */
     public function __invoke(array $args = [])
     {

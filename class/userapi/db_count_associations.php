@@ -32,12 +32,13 @@ class DbCountAssociationsMethod extends MethodClass
      * @author Carl P. Corliss
      * @access public
      * @param array<mixed> $args
-     *     mixed fileId    The id of the file, or an array of fileId's
-     *     int modid     The id of module this file is associated with
-     *     int itemtype  The item type within the defined module
-     *     int itemid    The id of the item types item
+     * @var mixed $fileId    The id of the file, or an array of fileId's
+     * @var int $modid     The id of module this file is associated with
+     * @var int $itemtype  The item type within the defined module
+     * @var int $itemid    The id of the item types item
      * @return mixed The total number of associations for particular file/module/itemtype/item combination
      * or an array of fileId's and their number of associations
+     * @see UserApi::dbCountAssociations()
      */
     public function __invoke(array $args = [])
     {

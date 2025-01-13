@@ -36,12 +36,13 @@ class DbDeleteAssociationMethod extends MethodClass
      * @author Carl P. Corliss
      * @access  public
      * @param array<mixed> $args
-     *     integer fileId    The id of the file we are going to remove association with
-     *     integer modid     The id of module this file is associated with
-     *     integer itemtype  The item type within the defined module
-     *     integer itemid    The id of the item types item
+     * @var integer $fileId    The id of the file we are going to remove association with
+     * @var integer $modid     The id of module this file is associated with
+     * @var integer $itemtype  The item type within the defined module
+     * @var integer $itemid    The id of the item types item
      *
      * @return bool TRUE on success, FALSE with exception on error
+     * @see UserApi::dbDeleteAssociation()
      */
     public function __invoke(array $args = [])
     {

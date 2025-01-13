@@ -41,6 +41,7 @@ class DeleteAssociationsMethod extends MethodClass
      * @var integer $itemid    The id of the item types item
      * @var integer $fileId    The id of the file we are going to rescan
      * @return  mixed TRUE on success, void with exception on error
+     * @see AdminApi::deleteAssociations()
      */
     public function __invoke(array $args = [])
     {

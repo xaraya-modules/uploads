@@ -33,8 +33,9 @@ class DbCountDataMethod extends MethodClass
      * @author Micheal Cortez
      * @access public
      * @param array<mixed> $args
-     *     int fileId     (Optional) grab file with the specified file id
+     * @var int $fileId     (Optional) grab file with the specified file id
      * @return int The total number of DATA Blocks stored for a particular file
+     * @see UserApi::dbCountData()
      */
     public function __invoke(array $args = [])
     {

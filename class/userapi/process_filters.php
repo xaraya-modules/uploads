@@ -35,6 +35,7 @@ class ProcessFiltersMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return array
+     * @see UserApi::processFilters()
      */
     public function __invoke(array $args = [])
     {

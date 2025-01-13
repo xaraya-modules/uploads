@@ -35,6 +35,7 @@ class DecodeShorturlMethod extends MethodClass
      * @param mixed $params array containing the different elements of the virtual path
      * @return array|void array containing func the function to be called and args the query
      * string arguments, or empty if it failed
+     * @see UserApi::decodeShorturl()
      */
     public function __invoke(array $params = [])
     {

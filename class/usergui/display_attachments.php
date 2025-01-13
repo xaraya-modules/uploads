@@ -40,6 +40,7 @@ class DisplayAttachmentsMethod extends MethodClass
      * @var mixed $style style to display this rating in (optional)
      * @var mixed $itemtype item type
      * @return string|void output with rating information
+     * @see UserGui::displayAttachments()
      */
     public function __invoke(array $args = [])
     {

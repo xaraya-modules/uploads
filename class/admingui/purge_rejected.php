@@ -34,6 +34,9 @@ class PurgeRejectedMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
+    /**
+     * @see AdminGui::purgeRejected()
+     */
     public function __invoke(array $args = [])
     {
         extract($args);

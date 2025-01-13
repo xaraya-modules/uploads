@@ -52,6 +52,7 @@ class ViewMethod extends MethodClass
      * @var string $sort
      * @var string $catid
      * @return array|void
+     * @see AdminGui::view()
      */
     public function __invoke(array $args = [])
     {

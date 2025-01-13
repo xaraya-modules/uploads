@@ -30,6 +30,7 @@ class GetitemtypesMethod extends MethodClass
     /**
      * utility function to retrieve the list of item types of this module (if any)
      * @return array array containing the item types and their description
+     * @see UserApi::getitemtypes()
      */
     public function __invoke(array $args = [])
     {

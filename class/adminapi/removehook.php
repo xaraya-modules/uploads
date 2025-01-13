@@ -33,10 +33,11 @@ class RemovehookMethod extends MethodClass
      * Note: this will only be called if uploads is hooked to that module (e.g.
      * not for Upload properties)
      * @param array<mixed> $args
-     * @var mixed $objectid ID of the object (must be the module name here !!)
+     * @var string $objectid ID of the object (must be the module name here !!)
      * @var mixed $extrainfo extra information
      * @return bool
      * @return true on success, false on failure
+     * @see AdminApi::removehook()
      */
     public function __invoke(array $args = [])
     {

@@ -37,6 +37,7 @@ class AssocMethod extends MethodClass
 
     /**
      * View statistics about file associations (adapted from categories stats)
+     * @see AdminGui::assoc()
      */
     public function __invoke(array $args = [])
     {

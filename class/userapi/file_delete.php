@@ -34,6 +34,7 @@ class FileDeleteMethod extends MethodClass
      * @var string $fileName    The complete path to the file being deleted
      *
      * @return bool TRUE on success, FALSE on error
+     * @see UserApi::fileDelete()
      */
     public function __invoke(array $args = [])
     {

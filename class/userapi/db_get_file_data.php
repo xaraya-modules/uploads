@@ -38,6 +38,7 @@ class DbGetFileDataMethod extends MethodClass
      * @param array<mixed> $args
      * @var int $fileId     The ID of the file we are are retrieving
      * @return array|void All the (4K) blocks stored for this file
+     * @see UserApi::dbGetFileData()
      */
     public function __invoke(array $args = [])
     {

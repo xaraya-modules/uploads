@@ -33,6 +33,7 @@ class UpdatehookMethod extends MethodClass
      * not for Upload properties)
      * @param array<mixed> $args
      * @return bool true on success, false on failure
+     * @see AdminApi::updatehook()
      */
     public function __invoke(array $args = [])
     {

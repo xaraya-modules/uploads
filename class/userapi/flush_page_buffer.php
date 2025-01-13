@@ -30,6 +30,7 @@ class FlushPageBufferMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return array
+     * @see UserApi::flushPageBuffer()
      */
     public function __invoke(array $args = [])
     {

@@ -30,6 +30,7 @@ class NewhookMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return string
+     * @see AdminGui::newhook()
      */
     public function __invoke(array $args = [])
     {

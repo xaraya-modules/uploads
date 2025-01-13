@@ -37,6 +37,7 @@ class UpdateconfigMethod extends MethodClass
     /**
      * Update the configuration
      * @return bool|string|void
+     * @see AdminGui::updateconfig()
      */
     public function __invoke(array $args = [])
     {

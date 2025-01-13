@@ -44,6 +44,7 @@ class ImportGetFilelistMethod extends MethodClass
      * @var boolean $analyze        Analyze each file for mime type (default TRUE)
      *
      * @return array|string array|string of file information
+     * @see UserApi::importGetFilelist()
      */
     public function __invoke(array $args = [])
     {

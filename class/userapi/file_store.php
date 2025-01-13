@@ -31,6 +31,9 @@ class FileStoreMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
+    /**
+     * @see UserApi::fileStore()
+     */
     public function __invoke(array $args = [])
     {
         extract($args);

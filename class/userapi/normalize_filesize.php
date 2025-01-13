@@ -29,7 +29,8 @@ class NormalizeFilesizeMethod extends MethodClass
     /**
      * @todo fix signature
      * @param mixed $args
-     * @var ?int $args['fileSize'] integer or null
+     * @var ?int $fileSize integer or null
+     * @see UserApi::normalizeFilesize()
      */
     public function __invoke(mixed $args = [])
     {

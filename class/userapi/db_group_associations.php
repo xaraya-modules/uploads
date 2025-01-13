@@ -31,6 +31,7 @@ class DbGroupAssociationsMethod extends MethodClass
     /**
      * get the list of modules and itemtypes we're associating files with
      * @return array|bool|void $array[$modid][$itemtype] = array('items' => $numitems,'files' => $numfiles,'links' => $numlinks);
+     * @see UserApi::dbGroupAssociations()
      */
     public function __invoke(array $args = [])
     {

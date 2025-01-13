@@ -36,6 +36,7 @@ class DbGetUsersMethod extends MethodClass
      * @param array<mixed> $args
      * @var string $mime_type   (Optional) grab files with the specified mime type
      * @return array|bool|void All of the metadata stored for the particular file
+     * @see UserApi::dbGetUsers()
      */
     public function __invoke(array $args = [])
     {

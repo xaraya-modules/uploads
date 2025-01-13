@@ -35,12 +35,13 @@ class FileCreateMethod extends MethodClass
      * @author  Carl P. Corliss
      * @access public
      * @param array<mixed> $args
-     *     string  filename       The name of the file (minus any path information)
-     *     string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
-     *     string  mime_type      The mime content-type of the file
-     *     string  contents       The contents of the new file
+     * @var string  $filename       The name of the file (minus any path information)
+     * @var string  $fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
+     * @var string  $mime_type      The mime content-type of the file
+     * @var string  $contents       The contents of the new file
      *
      * @return integer|void The fileId of the newly created file, or ZERO (FALSE) on error
+     * @see UserApi::fileCreate()
      */
     public function __invoke(array $args = []) {}
 }

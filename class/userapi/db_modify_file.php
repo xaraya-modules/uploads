@@ -44,6 +44,7 @@ class DbModifyFileMethod extends MethodClass
      * @var array $extrainfo  (optional) Extra information to be stored for this file (e.g. modified, width, height, ...)
      *
      * @return integer The number of affected rows on success, or FALSE on error
+     * @see UserApi::dbModifyFile()
      */
     public function __invoke(array $args = [])
     {

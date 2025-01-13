@@ -40,15 +40,16 @@ class DbAddFileMethod extends MethodClass
      * @author  Carl P. Corliss
      * @access public
      * @param array<mixed> $args
-     *     integer userId         The id of the user whom submitted the file
-     *     string  fileName       The name of the file (minus any path information)
-     *     string  fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
-     *     string  fileType       The mime content-type of the file
-     *     integer fileStatus     The status of the file (APPROVED, SUBMITTED, READABLE, REJECTED)
-     *     integer store_type     The manner in which the file is to be stored (filesystem, database)
-     *     array   extrainfo      Extra information to be stored for this file (e.g. modified, width, height, ...)
+     * @var integer $userId         The id of the user whom submitted the file
+     * @var string  $fileName       The name of the file (minus any path information)
+     * @var string  $fileLocation   The complete path to the file including the filename (obfuscated if so chosen)
+     * @var string  $fileType       The mime content-type of the file
+     * @var integer $fileStatus     The status of the file (APPROVED, SUBMITTED, READABLE, REJECTED)
+     * @var integer $store_type     The manner in which the file is to be stored (filesystem, database)
+     * @var array   $extrainfo      Extra information to be stored for this file (e.g. modified, width, height, ...)
      *
      * @return integer The id of the fileEntry that was added, or FALSE on error
+     * @see UserApi::dbAddFile()
      */
     public function __invoke(array $args = [])
     {

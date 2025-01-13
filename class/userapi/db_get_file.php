@@ -59,6 +59,7 @@ class DbGetFileMethod extends MethodClass
      * @var mixed $getnext      (Optional) grab the next file after this one (file id or file name)
      * @var mixed $getprev      (Optional) grab the previous file before this one (file id or file name)
      * @return array|void All of the metadata stored for the particular file(s)
+     * @see UserApi::dbGetFile()
      */
     public function __invoke(array $args = [])
     {

@@ -33,6 +33,7 @@ class CheckAssociationsMethod extends MethodClass
      * @access public
      *
      * @return mixed list of associations with missing files on success, void with exception on error
+     * @see AdminApi::checkAssociations()
      */
     public function __invoke(array $args = [])
     {

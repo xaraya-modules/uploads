@@ -32,6 +32,7 @@ class ErrorsMethod extends MethodClass
      * Summary of __invoke
      * @param array<mixed> $args
      * @return array|void
+     * @see UserGui::errors()
      */
     public function __invoke(array $args = [])
     {

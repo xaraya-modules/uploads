@@ -45,6 +45,7 @@ class ValidatevalueMethod extends MethodClass
      * @var integer $itemtype integer optional item type for keeping file associations
      * @var integer $itemid integer optional item id for keeping file associations
      * @return array|bool|void array of (result, value) with result true, false or NULL (= error)
+     * @see AdminApi::validatevalue()
      */
     public function __invoke(array $args = [])
     {

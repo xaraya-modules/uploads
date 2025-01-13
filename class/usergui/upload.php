@@ -36,6 +36,7 @@ class UploadMethod extends MethodClass
      * @param array<mixed> $args
      * @var string $importFrom
      * @return mixed
+     * @see UserGui::upload()
      */
     public function __invoke(array $args = [])
     {

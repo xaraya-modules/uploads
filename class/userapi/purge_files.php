@@ -35,6 +35,7 @@ class PurgeFilesMethod extends MethodClass
      * @param array<mixed> $args
      * @var array $fileList    List of files to delete containing complete fileName => fileInfo arrays
      * @return bool true if successful, false otherwise
+     * @see UserApi::purgeFiles()
      */
     public function __invoke(array $args = [])
     {

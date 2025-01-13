@@ -38,6 +38,7 @@ class FileMoveMethod extends MethodClass
      * @var boolean $isLocal    Whether or not the file is a Local file or not (think: grabbing a web page)
      *
      * @return boolean TRUE on success, FALSE otherwise
+     * @see UserApi::fileMove()
      */
     public function __invoke(array $args = [])
     {

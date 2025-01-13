@@ -37,6 +37,9 @@ class GetFilesMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
+    /**
+     * @see AdminGui::getFiles()
+     */
     public function __invoke(array $args = [])
     {
         if (!xarSecurity::check('AddUploads')) {

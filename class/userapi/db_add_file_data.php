@@ -34,10 +34,11 @@ class DbAddFileDataMethod extends MethodClass
      * @author Carl P. Corliss
      * @access  public
      * @param array<mixed> $args
-     *     integer fileId     The ID of the file this data belongs to
-     *     string  fileData   A line of data from the file to be stored (no greater than 65535 bytes)
+     * @var integer $fileId     The ID of the file this data belongs to
+     * @var string  $fileData   A line of data from the file to be stored (no greater than 65535 bytes)
      *
      * @return integer The id of the fileData that was added, or FALSE on error
+     * @see UserApi::dbAddFileData()
      */
     public function __invoke(array $args = [])
     {

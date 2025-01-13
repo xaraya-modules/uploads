@@ -81,6 +81,9 @@ class DbGetFileDataMethod extends MethodClass
 
         while (!$result->EOF) {
             $row = $result->GetRowAssoc(false);
+            if (empty($row)) {
+                break;
+            }
             $fileData[$row['xar_filedata_id']] = base64_decode($row['xar_filedata']);
             $result->MoveNext();
         }

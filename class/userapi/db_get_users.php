@@ -73,6 +73,9 @@ class DbGetUsersMethod extends MethodClass
 
         while (!$result->EOF) {
             $row = $result->GetRowAssoc(false);
+            if (empty($row)) {
+                break;
+            }
 
             $userInfo['userId']   = $row['xar_user_id'];
             $userInfo['userName'] = xarUser::getVar('name', $row['xar_user_id']);

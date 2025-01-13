@@ -65,6 +65,9 @@ class CheckAssociationsMethod extends MethodClass
 
         $list = [];
         while (!$result->EOF) {
+            if (empty($result->fields)) {
+                break;
+            }
             [$fileId, $modid, $itemtype, $itemid] = $result->fields;
             // simple item - file array
             if (!isset($list[$fileId])) {

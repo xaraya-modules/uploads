@@ -101,6 +101,9 @@ class DbGetAssociationsMethod extends MethodClass
         $fileList = [];
         while (!$result->EOF) {
             $row = $result->GetRowAssoc(false);
+            if (empty($row)) {
+                break;
+            }
 
             $fileAssoc['fileId']   = $row['xar_fileEntry_id'];
             $fileAssoc['modid']    = $row['xar_modid'];

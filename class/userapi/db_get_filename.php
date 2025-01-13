@@ -33,7 +33,7 @@ class DbGetFilenameMethod extends MethodClass
      * @access public
      * @param array<mixed> $args
      * @var int $fileId     (Optional) grab file with the specified file id
-     * @return array|bool|void All of the metadata stored for the particular file
+     * @return string|bool|void The filename for the particular file
      * @see UserApi::dbFilename()
      */
     public function __invoke(array $args = [])
@@ -70,13 +70,17 @@ class DbGetFilenameMethod extends MethodClass
             return;
         }
 
-        // if no record found, return an empty array
+        // if no record found, return false
         if ($result->EOF) {
-            return [];
+            return false;
         }
+        $fileName = false;
 
         while (!$result->EOF) {
             $row = $result->GetRowAssoc(false);
+            if (empty($row)) {
+                break;
+            }
             $fileName = $row['xar_filename'];
             $result->MoveNext();
         }

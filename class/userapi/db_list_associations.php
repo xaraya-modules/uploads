@@ -112,6 +112,9 @@ class DbListAssociationsMethod extends MethodClass
 
         $list = [];
         while (!$result->EOF) {
+            if (empty($result->fields)) {
+                break;
+            }
             [$modid, $itemtype, $itemid, $fileId] = $result->fields;
             // simple item - file array
             if (!isset($list[$itemid])) {

@@ -72,6 +72,9 @@ class DbGroupAssociationsMethod extends MethodClass
 
             $modlist = [];
             while (!$result->EOF) {
+                if (empty($result->fields)) {
+                    break;
+                }
                 [$modid, $itemtype, $numlinks] = $result->fields;
                 if (!isset($modlist[$modid])) {
                     $modlist[$modid] = [];
@@ -97,6 +100,9 @@ class DbGroupAssociationsMethod extends MethodClass
             }
 
             while (!$result->EOF) {
+                if (empty($result->fields)) {
+                    break;
+                }
                 [$modid, $itemtype, $numitems] = $result->fields;
                 $modlist[$modid][$itemtype]['items'] = $numitems;
                 $result->MoveNext();
@@ -119,6 +125,9 @@ class DbGroupAssociationsMethod extends MethodClass
             }
 
             while (!$result->EOF) {
+                if (empty($result->fields)) {
+                    break;
+                }
                 [$modid, $itemtype, $numfiles] = $result->fields;
                 $modlist[$modid][$itemtype]['files'] = $numfiles;
                 $result->MoveNext();
@@ -142,6 +151,9 @@ class DbGroupAssociationsMethod extends MethodClass
 
             $modlist = [];
             while (!$result->EOF) {
+                if (empty($result->fields)) {
+                    break;
+                }
                 [$modid, $itemtype, $numlinks, $numitems, $numfiles] = $result->fields;
                 if (!isset($modlist[$modid])) {
                     $modlist[$modid] = [];

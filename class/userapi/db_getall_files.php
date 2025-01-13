@@ -178,6 +178,9 @@ class DbGetallFilesMethod extends MethodClass
 
         while (!$result->EOF) {
             $row = $result->GetRowAssoc(false);
+            if (empty($row)) {
+                break;
+            }
 
             $fileInfo['fileId']        = $row['xar_fileEntry_id'];
             $fileInfo['userId']        = $row['xar_user_id'];

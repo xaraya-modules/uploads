@@ -118,6 +118,9 @@ class DbCountAssociationsMethod extends MethodClass
 
             $count = [];
             while (!$result->EOF) {
+                if (empty($result->fields)) {
+                    break;
+                }
                 [$file, $total] = $result->fields;
                 $count[$file] = $total;
 

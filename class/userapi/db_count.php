@@ -37,7 +37,7 @@ class DbCountMethod extends MethodClass
      * @param array<mixed> $args
      * @var mixed $fileId       (Optional) grab file(s) with the specified file id(s)
      * @var string $fileName     (Optional) grab file(s) with the specified file name
-     * @var int $fileType     (Optional) grab files with the specified mime type
+     * @var string $fileType     (Optional) grab files with the specified mime type like 'image/%'
      * @var int $fileStatus   (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
      * @var string $fileLocation (Optional) grab file(s) with the specified file location
      * @var string $fileHash     (Optional) grab file(s) with the specified file hash

@@ -40,7 +40,7 @@ class DbDiskusageMethod extends MethodClass
      * @var int $fileStatus  (Optional) grab files with a specified status  (SUBMITTED, APPROVED, REJECTED)
      * @var int $userId      (Optional) grab files uploaded by a particular user
      * @var int $store_type  (Optional) grab files with the specified store type (FILESYSTEM, DATABASE)
-     * @var int $fileType    (Optional) grab files with the specified mime type
+     * @var string $fileType    (Optional) grab files with the specified mime type like 'image/%'
      * @var string $catid       (Optional) grab file(s) in the specified categories
      * @return int|void The total amount of diskspace used by the current set of selected files
      * @see UserApi::dbDiskusage()

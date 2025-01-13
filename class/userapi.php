@@ -30,7 +30,7 @@ sys::import('xaraya.modules.userapi');
  *  array{fileId: int, fileData: string}
  * @method mixed dbChangeStatus(array $args = []) Change the status on a file, or group of files based on the file id(s) or filetype
  * @method mixed dbCount(array $args = []) Retrieve the total count of files in the database based on the filters passed in
- *  array{fileId?: mixed, fileName?: string, fileType?: int, fileStatus?: int, fileLocation?: string, fileHash?: string, userId?: int, store_type?: int, inverse?: bool, catid?: string}
+ *  array{fileId?: mixed, fileName?: string, fileType?: string, fileStatus?: int, fileLocation?: string, fileHash?: string, userId?: int, store_type?: int, inverse?: bool, catid?: string}
  * @method mixed dbCountAssociations(array $args) Retrieve the total count associations for a particular file/module/itemtype/item combination
  *  array{fileId: mixed, modid: int, itemtype: int, itemid: int}
  * @method mixed dbCountData(array $args = []) Retrieve the total count of data blocks stored for a particular file
@@ -42,13 +42,13 @@ sys::import('xaraya.modules.userapi');
  * @method mixed dbDeleteFileData(array $args) Remove a file's data contents from the database. This just removes any data (contents) -  that we might have in store for this file. The actual metadata (FILE ENTRY) for the file -  itself is removed via db_delete_file() .
  *  array{fileId: int}
  * @method mixed dbDiskusage(array $args = []) Retrieve the total size of disk usage for selected files based on the filters passed in
- *  array{fileId?: int, fileName?: string, fileStatus?: int, userId?: int, store_type?: int, fileType?: int, catid?: string}
+ *  array{fileId?: int, fileName?: string, fileStatus?: int, userId?: int, store_type?: int, fileType?: string, catid?: string}
  * @method mixed dbGetAssociations(array $args) Retrieve a list of file assocations for a particular file/module/itemtype/item combination
  *  array{modid: int, itemtype: int, itemid: int, fileId: int}
  * @method mixed dbGetDir(array $args) Retrieve a directory path
  *  array{directory: string}
  * @method mixed dbGetFile(array $args = []) Retrieve the metadata stored for a particular file based on either -  the file id or the file name.
- *  array{fileId?: mixed, fileName?: string, fileType?: int, fileStatus?: int, fileLocation?: string, fileHash?: string, userId?: int, store_type?: int, inverse?: bool, numitems?: int, startnum?: int, sort?: string, catid?: string, getnext?: mixed, getprev?: mixed}
+ *  array{fileId?: mixed, fileName?: string, fileType?: string, fileStatus?: int, fileLocation?: string, fileHash?: string, userId?: int, store_type?: int, inverse?: bool, numitems?: int, startnum?: int, sort?: string, catid?: string, getnext?: mixed, getprev?: mixed}
  * @method mixed dbGetFileData(array $args) Retrieve the DATA (contents) stored for a particular file based on -  the file id. This returns an array not unlike the php function -  'file()' whereby the contents of the file are in an ordered array.
  *  array{fileId: int}
  * @method mixed dbGetFilename(array $args = []) Retrieve the filename for a particular file based on the file id

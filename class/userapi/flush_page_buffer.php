@@ -44,11 +44,11 @@ class FlushPageBufferMethod extends MethodClass
                 } else {
                     $pageBuffer[] = $contents;
                 }
-            } while (@ob_end_clean());
+            } while (ob_get_level() > 0 && ob_end_clean());
         } else {
             do {
                 $pageBuffer[] = ob_get_contents();
-            } while (@ob_end_clean());
+            } while (ob_get_level() > 0 && ob_end_clean());
         }
 
         $buffer = array_reverse($pageBuffer);

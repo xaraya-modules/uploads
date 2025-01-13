@@ -119,7 +119,7 @@ class ProcessFiltersMethod extends MethodClass
         }
 
         if (!isset($status)) {
-            $status = '';
+            $status = 0;
         }
         /**
          *  Set up the MIME subtype filter

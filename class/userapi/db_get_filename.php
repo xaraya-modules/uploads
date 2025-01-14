@@ -41,7 +41,7 @@ class DbGetFilenameMethod extends MethodClass
         extract($args);
 
         if (!isset($fileId)) {
-            $msg = xarML('Missing [#(1)] parameter for function [#(2)] in module [#(3)]', 'fileId', 'db_get_filename', 'uploads');
+            $msg = $this->translate('Missing [#(1)] parameter for function [#(2)] in module [#(3)]', 'fileId', 'db_get_filename', 'uploads');
             throw new Exception($msg);
         }
 

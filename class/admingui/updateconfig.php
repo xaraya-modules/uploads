@@ -42,38 +42,38 @@ class UpdateconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get parameters
-        if (!xarVar::fetch('file', 'list:str:1:', $file, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('file', 'list:str:1:', $file, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('imports_directory', 'str:1:', $imports_directory, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('imports_directory', 'str:1:', $imports_directory, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('uploads_directory', 'str:1:', $uploads_directory, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('uploads_directory', 'str:1:', $uploads_directory, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('view', 'list:str:1:', $view, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('view', 'list:str:1:', $view, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('ddprop', 'array:1:', $ddprop, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('ddprop', 'array:1:', $ddprop, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('permit_download', 'int', $permit_download, 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('permit_download', 'int', $permit_download, 0, xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('permit_download_function', 'str', $permit_download_function, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('permit_download_function', 'str', $permit_download_function, '', xarVar::NOT_REQUIRED)) {
             return;
         }
 
         // Confirm authorisation code.
-        if (!xarSec::confirmAuthKey()) {
+        if (!$this->confirmAuthKey()) {
             return;
         }
 
-        xarModVars::set('uploads', 'uploads_directory', $uploads_directory);
-        xarModVars::set('uploads', 'imports_directory', $imports_directory);
+        $this->setModVar('uploads_directory', $uploads_directory);
+        $this->setModVar('imports_directory', $imports_directory);
 
-        xarModVars::set('uploads', 'permit_download', $permit_download);
-        xarModVars::set('uploads', 'permit_download_function', $permit_download_function);
+        $this->setModVar('permit_download', $permit_download);
+        $this->setModVar('permit_download_function', $permit_download_function);
 
         if (isset($file) && is_array($file)) {
             foreach ($file as $varname => $value) {
@@ -83,8 +83,8 @@ class UpdateconfigMethod extends MethodClass
                 }
                 // check to make sure that the value passed in is
                 // a real uploads module variable
-                if (null !== xarModVars::get('uploads', 'file.' . $varname)) {
-                    xarModVars::set('uploads', 'file.' . $varname, $value);
+                if (null !== $this->getModVar('file.' . $varname)) {
+                    $this->setModVar('file.' . $varname, $value);
                 }
             }
         }
@@ -101,27 +101,27 @@ class UpdateconfigMethod extends MethodClass
         }
 
         if (isset($ddprop['trusted'])) {
-            xarModVars::set('uploads', 'dd.fileupload.trusted', 1);
+            $this->setModVar('dd.fileupload.trusted', 1);
         } else {
-            xarModVars::set('uploads', 'dd.fileupload.trusted', 0);
+            $this->setModVar('dd.fileupload.trusted', 0);
         }
 
         if (isset($ddprop['external'])) {
-            xarModVars::set('uploads', 'dd.fileupload.external', 1);
+            $this->setModVar('dd.fileupload.external', 1);
         } else {
-            xarModVars::set('uploads', 'dd.fileupload.external', 0);
+            $this->setModVar('dd.fileupload.external', 0);
         }
 
         if (isset($ddprop['stored'])) {
-            xarModVars::set('uploads', 'dd.fileupload.stored', 1);
+            $this->setModVar('dd.fileupload.stored', 1);
         } else {
-            xarModVars::set('uploads', 'dd.fileupload.stored', 0);
+            $this->setModVar('dd.fileupload.stored', 0);
         }
 
         if (isset($ddprop['upload'])) {
-            xarModVars::set('uploads', 'dd.fileupload.upload', 1);
+            $this->setModVar('dd.fileupload.upload', 1);
         } else {
-            xarModVars::set('uploads', 'dd.fileupload.upload', 0);
+            $this->setModVar('dd.fileupload.upload', 0);
         }
 
         // FIXME: change only if the imports_directory was changed? <rabbitt>
@@ -129,7 +129,7 @@ class UpdateconfigMethod extends MethodClass
         // imports directory was changed. We do this by first deleting the modvar
         // and then recreating it to ensure that the user's version is cleared
         // xarModVars::delete('uploads', 'path.imports-cwd');
-        xarModVars::set('uploads', 'path.imports-cwd', xarModVars::get('uploads', 'imports_directory'));
+        $this->setModVar('path.imports-cwd', $this->getModVar('imports_directory'));
 
         xarModHooks::call(
             'module',
@@ -139,7 +139,7 @@ class UpdateconfigMethod extends MethodClass
                 'itemtype' => 1, ]
         ); // Files
 
-        xarController::redirect(xarController::URL('uploads', 'admin', 'modifyconfig'), null, $this->getContext());
+        $this->redirect($this->getUrl('admin', 'modifyconfig'));
 
         // Return
         return true;

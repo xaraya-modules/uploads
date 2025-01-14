@@ -36,12 +36,12 @@ class UploadformMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!xarSecurity::check('AddUploads')) {
+        if (!$this->checkAccess('AddUploads')) {
             return;
         }
         // Generate a one-time authorisation code for this operation
-        $data['authid'] = xarSec::genAuthKey();
-        $data['file_maxsize'] = xarModVars::get('uploads', 'file.maxsize');
+        $data['authid'] = $this->genAuthKey();
+        $data['file_maxsize'] = $this->getModVar('file.maxsize');
 
         return $data;
     }

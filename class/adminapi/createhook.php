@@ -46,7 +46,7 @@ class CreatehookMethod extends MethodClass
         }
 
         if (!isset($objectid) || !is_numeric($objectid)) {
-            $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID', 'admin', 'createhook', 'uploads');
+            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID', 'admin', 'createhook', 'uploads');
             //throw new BadParameterException(null, $msg);
             // Return the extra info
             return $extrainfo;
@@ -62,7 +62,7 @@ class CreatehookMethod extends MethodClass
 
         $modid = xarMod::getRegID($modname);
         if (empty($modid)) {
-            $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module name', 'admin', 'createhook', 'uploads');
+            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module name', 'admin', 'createhook', 'uploads');
             //throw new BadParameterException(null, $msg);
             // Return the extra info
             return $extrainfo;

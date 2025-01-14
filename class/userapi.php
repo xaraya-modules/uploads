@@ -138,7 +138,7 @@ class UserApi extends UserApiClass
         }
 
         // (try to) check if we're previewing or not
-        xarVar::fetch('preview', 'isset', $preview, false, xarVar::NOT_REQUIRED);
+        $this->fetch('preview', 'isset', $preview, false, xarVar::NOT_REQUIRED);
         if (!empty($preview)) {
             return;
         }

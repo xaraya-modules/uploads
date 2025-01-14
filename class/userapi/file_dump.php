@@ -45,7 +45,7 @@ class FileDumpMethod extends MethodClass
             $unlink = true;
         }
         if (!isset($fileSrc)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for API function [#(2)] in module [#(3)].',
                 'fileSrc',
                 'file_dump',
@@ -55,7 +55,7 @@ class FileDumpMethod extends MethodClass
         }
 
         if (!isset($fileId)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for API function [#(2)] in module [#(3)].',
                 'fileId',
                 'file_dump',
@@ -65,12 +65,12 @@ class FileDumpMethod extends MethodClass
         }
 
         if (!file_exists($fileSrc)) {
-            $msg = xarML('Unable to locate file [#(1)]. Are you sure it\'s there??', $fileSrc);
+            $msg = $this->translate('Unable to locate file [#(1)]. Are you sure it\'s there??', $fileSrc);
             throw new Exception($msg);
         }
 
         if (!is_readable($fileSrc) || !is_writable($fileSrc)) {
-            $msg = xarML('Cannot read and/or write to file [#(1)]. File will be read from and deleted afterwards. Please ensure that this application has sufficient access to do so.', $fileSrc);
+            $msg = $this->translate('Cannot read and/or write to file [#(1)]. File will be read from and deleted afterwards. Please ensure that this application has sufficient access to do so.', $fileSrc);
             throw new Exception($msg);
         }
         $userapi = $this->getParent();
@@ -79,7 +79,7 @@ class FileDumpMethod extends MethodClass
         $fileInfo = end($fileInfo);
 
         if (!count($fileInfo) || empty($fileInfo)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'FileId [#(1)] does not exist. File [#(2)] does not have a corresponding metadata entry in the databsae.',
                 $fileId,
                 $fileSrc
@@ -92,7 +92,7 @@ class FileDumpMethod extends MethodClass
                 // we don't support non-truncated overwrites nor appends
                 // so truncate the file and then save it
                 if (!$userapi->dbDeleteFileData(['fileId' => $fileId])) {
-                    $msg = xarML('Unable to truncate file [#(1)] in database.', $fileInfo['fileName']);
+                    $msg = $this->translate('Unable to truncate file [#(1)] in database.', $fileInfo['fileName']);
                     throw new Exception($msg);
                 }
             }
@@ -114,12 +114,12 @@ class FileDumpMethod extends MethodClass
                             @unlink($fileSrc); // fail silently
                         }
                         $userapi->dbDeleteFileData(['fileId' => $fileId]);
-                        $msg = xarML('Unable to save file contents to database.');
+                        $msg = $this->translate('Unable to save file contents to database.');
                         throw new Exception($msg);
                     }
                 } while (true);
             } else {
-                $msg = xarML('Cannot read and/or write to file [#(1)]. File will be read from and deleted afterwards. Please ensure that this application has sufficient access to do so.', $fileSrc);
+                $msg = $this->translate('Cannot read and/or write to file [#(1)]. File will be read from and deleted afterwards. Please ensure that this application has sufficient access to do so.', $fileSrc);
                 throw new Exception($msg);
             }
         }

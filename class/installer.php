@@ -67,7 +67,7 @@ class Installer extends InstallerClass
     {
         //Not needed anymore with the dependency checks.
         if (!xarMod::isAvailable('mime')) {
-            $msg = xarML('The mime module should be activated first');
+            $msg = $this->translate('The mime module should be activated first');
             throw new Exception($msg);
         }
 
@@ -79,27 +79,27 @@ class Installer extends InstallerClass
         } else {
             $base_directory = './';
         }
-        xarModVars::set('uploads', 'uploads_directory', 'Change me to something outside the webroot');
-        xarModVars::set('uploads', 'imports_directory', 'Change me to something outside the webroot');
-        xarModVars::set('uploads', 'file.maxsize', '10000000');
-        xarModVars::set('uploads', 'file.delete-confirmation', true);
-        xarModVars::set('uploads', 'file.auto-purge', false);
-        xarModVars::set('uploads', 'file.obfuscate-on-import', false);
-        xarModVars::set('uploads', 'file.obfuscate-on-upload', true);
-        xarModVars::set('uploads', 'path.imports-cwd', xarModVars::get('uploads', 'imports_directory'));
-        xarModVars::set('uploads', 'dd.fileupload.stored', true);
-        xarModVars::set('uploads', 'dd.fileupload.external', true);
-        xarModVars::set('uploads', 'dd.fileupload.upload', true);
-        xarModVars::set('uploads', 'dd.fileupload.trusted', true);
-        xarModVars::set('uploads', 'file.auto-approve', Defines::APPROVE_ADMIN);
+        $this->setModVar('uploads_directory', 'Change me to something outside the webroot');
+        $this->setModVar('imports_directory', 'Change me to something outside the webroot');
+        $this->setModVar('file.maxsize', '10000000');
+        $this->setModVar('file.delete-confirmation', true);
+        $this->setModVar('file.auto-purge', false);
+        $this->setModVar('file.obfuscate-on-import', false);
+        $this->setModVar('file.obfuscate-on-upload', true);
+        $this->setModVar('path.imports-cwd', $this->getModVar('imports_directory'));
+        $this->setModVar('dd.fileupload.stored', true);
+        $this->setModVar('dd.fileupload.external', true);
+        $this->setModVar('dd.fileupload.upload', true);
+        $this->setModVar('dd.fileupload.trusted', true);
+        $this->setModVar('file.auto-approve', Defines::APPROVE_ADMIN);
 
         $data['filters']['inverse']                     = false;
         $data['filters']['mimetypes'][0]['typeId']      = 0;
-        $data['filters']['mimetypes'][0]['typeName']    = xarML('All');
+        $data['filters']['mimetypes'][0]['typeName']    = $this->translate('All');
         $data['filters']['subtypes'][0]['subtypeId']    = 0;
-        $data['filters']['subtypes'][0]['subtypeName']  = xarML('All');
+        $data['filters']['subtypes'][0]['subtypeName']  = $this->translate('All');
         $data['filters']['status'][0]['statusId']       = 0;
-        $data['filters']['status'][0]['statusName']     = xarML('All');
+        $data['filters']['status'][0]['statusName']     = $this->translate('All');
         $data['filters']['status'][Defines::STATUS_SUBMITTED]['statusId']    = Defines::STATUS_SUBMITTED;
         $data['filters']['status'][Defines::STATUS_SUBMITTED]['statusName']  = 'Submitted';
         $data['filters']['status'][Defines::STATUS_APPROVED]['statusId']     = Defines::STATUS_APPROVED;
@@ -116,12 +116,12 @@ class Installer extends InstallerClass
 
         $mimetypes += $mimeapi->getallTypes();
 
-        xarModVars::set('uploads', 'view.filter', serialize(['data' => $data,'filter' => $filter]));
+        $this->setModVar('view.filter', serialize(['data' => $data,'filter' => $filter]));
         unset($mimetypes);
 
-        xarModVars::set('uploads', 'items_per_page', 200);
-        xarModVars::set('uploads', 'file.cache-expire', 0);
-        xarModVars::set('uploads', 'file.allow-duplicate-upload', 0);
+        $this->setModVar('items_per_page', 200);
+        $this->setModVar('file.cache-expire', 0);
+        $this->setModVar('file.allow-duplicate-upload', 0);
 
         // Get datbase setup
         $dbconn = xarDB::getConn();
@@ -177,7 +177,7 @@ class Installer extends InstallerClass
         $result  = & $dbconn->Execute($query);
 
         $instances[0]['header'] = 'external';
-        $instances[0]['query']  = xarController::URL('uploads', 'admin', 'privileges');
+        $instances[0]['query']  = $this->getUrl('admin', 'privileges');
         $instances[0]['limit']  = 0;
 
         xarPrivileges::defineInstance('uploads', 'File', $instances);
@@ -200,26 +200,26 @@ class Installer extends InstallerClass
          * Register hooks
          */
         if (!xarModHooks::register('item', 'transform', 'API', 'uploads', 'user', 'transformhook')) {
-            $msg = xarML('Could not register hook');
+            $msg = $this->translate('Could not register hook');
             throw new Exception($msg);
         }
         /*
             if (!xarModHooks::register('item', 'create', 'API', 'uploads', 'admin', 'createhook')) {
-                 $msg = xarML('Could not register hook');
+                 $msg = $this->translate('Could not register hook');
                 throw new Exception($msg);
             }
             if (!xarModHooks::register('item', 'update', 'API', 'uploads', 'admin', 'updatehook')) {
-                 $msg = xarML('Could not register hook');
+                 $msg = $this->translate('Could not register hook');
                 throw new Exception($msg);
             }
             if (!xarModHooks::register('item', 'delete', 'API', 'uploads', 'admin', 'deletehook')) {
-                 $msg = xarML('Could not register hook');
+                 $msg = $this->translate('Could not register hook');
                 throw new Exception($msg);
             }
             // when a whole module is removed, e.g. via the modules admin screen
             // (set object ID to the module name !)
             if (!xarModHooks::register('module', 'remove', 'API', 'uploads', 'admin', 'removehook')) {
-                 $msg = xarML('Could not register hook');
+                 $msg = $this->translate('Could not register hook');
                 throw new Exception($msg);
             }
         */

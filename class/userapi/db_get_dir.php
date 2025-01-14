@@ -39,15 +39,15 @@ class DbGetDirMethod extends MethodClass
         extract($args);
 
         if (!isset($directory)) {
-            $msg = xarML('Missing [#(1)] parameter for function [#(2)] in module [#(3)]', 'directory', 'db_get_dir', 'uploads');
+            $msg = $this->translate('Missing [#(1)] parameter for function [#(2)] in module [#(3)]', 'directory', 'db_get_dir', 'uploads');
             throw new Exception($msg);
         }
 
         $root = sys::root();
         if (empty($root)) {
-            $directory = xarModVars::get('uploads', $directory);
+            $directory = $this->getModVar($directory);
         } else {
-            $directory = sys::root() . "/" . xarModVars::get('uploads', $directory);
+            $directory = sys::root() . "/" . $this->getModVar($directory);
         }
         return $directory;
     }

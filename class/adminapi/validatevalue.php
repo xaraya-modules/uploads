@@ -65,7 +65,7 @@ class ValidatevalueMethod extends MethodClass
             $multiple = true;
         }
         if (empty($maxsize)) {
-            $maxsize = xarModVars::get('uploads', 'file.maxsize');
+            $maxsize = $this->getModVar('file.maxsize');
         }
         if (empty($methods)) {
             $methods = null;
@@ -104,13 +104,13 @@ class ValidatevalueMethod extends MethodClass
             $typeCheck .= ':-2'; // clear value
         } else {
             $typeCheck = 'enum:0:' . Defines::GET_STORED;
-            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.external') == true) ? ':' . Defines::GET_EXTERNAL : '';
-            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.trusted') == true) ? ':' . Defines::GET_LOCAL : '';
-            $typeCheck .= (xarModVars::get('uploads', 'dd.fileupload.upload') == true) ? ':' . Defines::GET_UPLOAD : '';
+            $typeCheck .= ($this->getModVar('dd.fileupload.external') == true) ? ':' . Defines::GET_EXTERNAL : '';
+            $typeCheck .= ($this->getModVar('dd.fileupload.trusted') == true) ? ':' . Defines::GET_LOCAL : '';
+            $typeCheck .= ($this->getModVar('dd.fileupload.upload') == true) ? ':' . Defines::GET_UPLOAD : '';
             $typeCheck .= ':-2'; // clear value
         }
 
-        xarVar::fetch($id . '_attach_type', $typeCheck, $action, -3, xarVar::NOT_REQUIRED);
+        $this->fetch($id . '_attach_type', $typeCheck, $action, -3, xarVar::NOT_REQUIRED);
 
         if (!isset($action)) {
             $action = -3;
@@ -120,10 +120,10 @@ class ValidatevalueMethod extends MethodClass
         switch ($action) {
             case Defines::GET_UPLOAD:
 
-                $file_maxsize = xarModVars::get('uploads', 'file.maxsize');
+                $file_maxsize = $this->getModVar('file.maxsize');
                 $file_maxsize = $file_maxsize > 0 ? $file_maxsize : $maxsize;
 
-                if (!xarVar::fetch('MAX_FILE_SIZE', "int::$file_maxsize", $maxsize)) {
+                if (!$this->fetch('MAX_FILE_SIZE', "int::$file_maxsize", $maxsize)) {
                     return;
                 }
 
@@ -137,7 +137,7 @@ class ValidatevalueMethod extends MethodClass
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!xarVar::fetch($id . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->fetch($id . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -153,13 +153,13 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_LOCAL:
 
-                if (!xarVar::fetch($id . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList)) {
+                if (!$this->fetch($id . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList)) {
                     return;
                 }
 
                 // CHECKME: use 'imports' name like in db_get_file() ?
                 // replace /trusted coming from showinput() again
-                $importDir = sys::root() . "/" . xarModVars::get('uploads', 'imports_directory');
+                $importDir = sys::root() . "/" . $this->getModVar('imports_directory');
                 foreach ($fileList as $file) {
                     $file = str_replace('/trusted', $importDir, $file);
                     $args['fileList']["$file"] = $userapi->fileGetMetadata(['fileLocation' => "$file"]);
@@ -170,7 +170,7 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_STORED:
 
-                if (!xarVar::fetch($id . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->fetch($id . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -227,7 +227,7 @@ class ValidatevalueMethod extends MethodClass
                 if (!isset($fileInfo['errors'])) {
                     $storeList[] = $fileInfo['fileId'];
                 } else {
-                    $msg = xarML('Error Found: #(1)', $fileInfo['errors'][0]['errorMesg']);
+                    $msg = $this->translate('Error Found: #(1)', $fileInfo['errors'][0]['errorMesg']);
                     throw new Exception($msg);
                 }
             }

@@ -25,7 +25,7 @@
                         <td class="xar-norm">{{ loop_item1['ulfile'] }}</td>
                         <td class="xar-norm">{{ loop_item1['ulhash'] }}</td>
                         <td class="xar-norm">
-                            <a href=" }}xarController::URL('uploads', 'admin', 'confirmdelete', {'ulid': loop_item1['ulid'], 'authid': $authid})#">
+                            <a href="{{ xar_moduleurl('uploads', 'admin', 'confirmdelete', {'ulid': loop_item1['ulid'], 'authid': authid}) }}">
                                 Confirm Delete\
                             </a>
                         </td>

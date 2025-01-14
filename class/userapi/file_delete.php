@@ -41,7 +41,7 @@ class FileDeleteMethod extends MethodClass
         extract($args);
 
         if (!isset($fileName)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [(#(2)] in module [#(3)]',
                 'fileName',
                 'file_move',
@@ -57,7 +57,7 @@ class FileDeleteMethod extends MethodClass
         }
 
         if (!unlink($fileName)) {
-            $msg = xarML('Unable to remove file: [#(1)].', $fileName);
+            $msg = $this->translate('Unable to remove file: [#(1)].', $fileName);
             throw new Exception($msg);
         }
 

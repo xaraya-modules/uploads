@@ -52,7 +52,7 @@ class ImportGetFilelistMethod extends MethodClass
 
         if (!empty($cacheExpire) && is_numeric($cacheExpire)) {
             $cachekey = md5(serialize($args));
-            $cacheinfo = xarModVars::get('uploads', 'file.cachelist.' . $cachekey);
+            $cacheinfo = $this->getModVar('file.cachelist.' . $cachekey);
             if (!empty($cacheinfo)) {
                 $cacheinfo = @unserialize($cacheinfo);
                 if (!empty($cacheinfo['time']) && $cacheinfo['time'] > time() - $cacheExpire) {
@@ -95,21 +95,19 @@ class ImportGetFilelistMethod extends MethodClass
         $fileList = [];
 
         if (!isset($fileLocation)) {
-            return xarController::redirect(xarController::URL(
-                'uploads',
+            return $this->redirect($this->getUrl(
                 'user',
                 'errors',
                 ['layout' => 'dir_not_set']
-            ), null, $this->getContext());
+            ));
         }
 
         if (!file_exists($fileLocation)) {
-            return xarController::redirect(xarController::URL(
-                'uploads',
+            return $this->redirect($this->getUrl(
                 'user',
                 'errors',
                 ['layout' => 'dir_not_found','location' => $fileLocation]
-            ), null, $this->getContext());
+            ));
         }
 
         if (is_file($fileLocation)) {
@@ -253,7 +251,7 @@ class ImportGetFilelistMethod extends MethodClass
             $cacheinfo = ['time' => time(),
                 'list' => $fileList, ];
             $cacheinfo = serialize($cacheinfo);
-            xarModVars::set('uploads', 'file.cachelist.' . $cachekey, $cacheinfo);
+            $this->setModVar('file.cachelist.' . $cachekey, $cacheinfo);
         }
 
         return $fileList;

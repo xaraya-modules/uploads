@@ -42,18 +42,18 @@ class FilePropertiesMethod extends MethodClass
     {
         extract($args);
 
-        if (!xarSecurity::check('ViewUploads')) {
+        if (!$this->checkAccess('ViewUploads')) {
             return;
         }
-        if (!xarVar::fetch('fileId', 'int:1', $fileId)) {
+        if (!$this->fetch('fileId', 'int:1', $fileId)) {
             return;
         }
-        if (!xarVar::fetch('fileName', 'str:1:64', $fileName, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('fileName', 'str:1:64', $fileName, '', xarVar::NOT_REQUIRED)) {
             return;
         }
 
         if (!isset($fileId)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing paramater [#(1)] for GUI function [#(2)] in module [#(3)].',
                 'fileId',
                 'file_properties',
@@ -69,7 +69,7 @@ class FilePropertiesMethod extends MethodClass
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
         if (empty($fileInfo) || !count($fileInfo)) {
             $data['fileInfo']   = [];
-            $data['error']      = xarML('File not found!');
+            $data['error']      = $this->translate('File not found!');
         } else {
             // the file should be the first indice in the array
             $fileInfo = end($fileInfo);
@@ -99,22 +99,21 @@ class FilePropertiesMethod extends MethodClass
                     $args['fileName'] = trim($fileName);
 
                     if (!$userapi->dbModifyFile($args)) {
-                        $msg = xarML(
+                        $msg = $this->translate(
                             'Unable to change filename for file: #(1) with file Id #(2)',
                             $fileInfo['fileName'],
                             $fileInfo['fileId']
                         );
                         throw new Exception($msg);
                     }
-                    xarController::redirect(xarController::URL(
-                        'uploads',
+                    $this->redirect($this->getUrl(
                         'user',
                         'file_properties',
                         ['fileId' => $fileId]
-                    ), null, $this->getContext());
+                    ));
                     return;
                 } else {
-                    $msg = xarML('You do not have the necessary permissions for this object.');
+                    $msg = $this->translate('You do not have the necessary permissions for this object.');
                     throw new Exception($msg);
                 }
             }
@@ -191,9 +190,10 @@ class FilePropertiesMethod extends MethodClass
 
                 $data['context'] ??= $this->getContext();
                 echo xarTpl::module('uploads', 'user', 'file_properties', $data, null);
-                exit();
+                $this->exit();
+                return;
             } else {
-                $msg = xarML('You do not have the necessary permissions for this object.');
+                $msg = $this->translate('You do not have the necessary permissions for this object.');
                 throw new Exception($msg);
             }
         }

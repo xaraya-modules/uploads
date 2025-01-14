@@ -54,7 +54,7 @@ class FileMoveMethod extends MethodClass
         }
 
         if (!isset($fileSrc)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileSrc',
                 'file_move',
@@ -64,7 +64,7 @@ class FileMoveMethod extends MethodClass
         }
 
         if (!isset($fileDest)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [(#(2)] in module [#(3)]',
                 'fileDest',
                 'file_move',
@@ -74,46 +74,46 @@ class FileMoveMethod extends MethodClass
         }
 
         if (!is_readable($fileSrc)) {
-            $msg = xarML('Unable to move file - Source file [#(1)]is unreadable!', $fileSrc);
+            $msg = $this->translate('Unable to move file - Source file [#(1)]is unreadable!', $fileSrc);
             throw new Exception($msg);
         }
 
         if (!file_exists($fileSrc)) {
-            $msg = xarML('Unable to move file - Source file [#(1)]does not exist!', $fileSrc);
+            $msg = $this->translate('Unable to move file - Source file [#(1)]does not exist!', $fileSrc);
             throw new Exception($msg);
         }
 
         $dirDest = realpath(dirname($fileDest));
 
         if (!file_exists($dirDest)) {
-            $msg = xarML('Unable to move file - Destination directory does not exist!');
+            $msg = $this->translate('Unable to move file - Destination directory does not exist!');
             throw new Exception($msg);
         }
 
         if (!is_writable($dirDest)) {
-            $msg = xarML('Unable to move file - Destination directory is not writable!');
+            $msg = $this->translate('Unable to move file - Destination directory is not writable!');
             throw new Exception($msg);
         }
 
         $freespace = @disk_free_space($dirDest);
         if (!empty($freespace) && $freespace <= filesize($fileSrc)) {
-            $msg = xarML('Unable to move file - Destination drive does not have enough free space!');
+            $msg = $this->translate('Unable to move file - Destination drive does not have enough free space!');
             throw new Exception($msg);
         }
 
         if (file_exists($fileDest) && $force != true) {
-            $msg = xarML('Unable to move file - Destination file already exists!');
+            $msg = $this->translate('Unable to move file - Destination file already exists!');
             throw new Exception($msg);
         }
 
         if ($isUpload) {
             if (!move_uploaded_file($fileSrc, $fileDest)) {
-                $msg = xarML('Unable to move file [#(1)] to destination [#(2)].', $fileSrc, $fileDest);
+                $msg = $this->translate('Unable to move file [#(1)] to destination [#(2)].', $fileSrc, $fileDest);
                 throw new Exception($msg);
             }
         } else {
             if (!copy($fileSrc, $fileDest)) {
-                $msg = xarML('Unable to move file [#(1)] to destination [#(2)].', $fileSrc, $fileDest);
+                $msg = $this->translate('Unable to move file [#(1)] to destination [#(2)].', $fileSrc, $fileDest);
                 throw new Exception($msg);
             }
             // Now remove the file :-)

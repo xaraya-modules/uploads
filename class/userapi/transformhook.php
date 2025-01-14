@@ -116,7 +116,7 @@ class TransformhookMethod extends MethodClass
                     $replacement = $file['fileName'];
                     break;
                 default:
-                    $body = xarML("The text '#(1)' is not a valid replacement placeholder", "#$type:$id#");
+                    $body = $this->translate("The text '#(1)' is not a valid replacement placeholder", "#$type:$id#");
                     return $body;
             }
 

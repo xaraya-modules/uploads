@@ -53,7 +53,7 @@ class DbModifyFileMethod extends MethodClass
         $update_fields = [];
 
         if (!isset($fileId)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for API function [#(2)] in module (#3)]',
                 'fileId',
                 'db_modify_file',

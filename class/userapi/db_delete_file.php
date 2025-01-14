@@ -46,7 +46,7 @@ class DbDeleteFileMethod extends MethodClass
         extract($args);
 
         if (!isset($fileId)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'file_id',
                 'db_delete_file',

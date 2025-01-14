@@ -40,10 +40,10 @@ class DdConfigureMethod extends MethodClass
         $multiple = true;
         // Grab the sitewide defaults for the methods
         $methods = [
-            'trusted'  => xarModVars::get('uploads', 'dd.fileupload.trusted') ? true : false,
-            'external' => xarModVars::get('uploads', 'dd.fileupload.external') ? true : false,
-            'upload'   => xarModVars::get('uploads', 'dd.fileupload.upload') ? true : false,
-            'stored'   => xarModVars::get('uploads', 'dd.fileupload.stored') ? true : false,
+            'trusted'  => $this->getModVar('dd.fileupload.trusted') ? true : false,
+            'external' => $this->getModVar('dd.fileupload.external') ? true : false,
+            'upload'   => $this->getModVar('dd.fileupload.upload') ? true : false,
+            'stored'   => $this->getModVar('dd.fileupload.stored') ? true : false,
         ];
         $basedir = null;
         $importdir = null;

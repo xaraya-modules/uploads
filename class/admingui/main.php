@@ -37,14 +37,14 @@ class MainMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!xarSecurity::check('EditUploads')) {
+        if (!$this->checkAccess('EditUploads')) {
             return;
         }
 
         if (xarModVars::get('modules', 'disableoverview') == 0) {
             return [];
         } else {
-            xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $this->getContext());
+            $this->redirect($this->getUrl('admin', 'view'));
         }
         // success
         return true;

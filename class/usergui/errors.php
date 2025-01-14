@@ -36,17 +36,17 @@ class ErrorsMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!xarSecurity::check('ViewUploads')) {
+        if (!$this->checkAccess('ViewUploads')) {
             return;
         }
 
-        if (!xarVar::fetch('layout', 'str:1:100', $data['layout'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('layout', 'str:1:100', $data['layout'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('maxallowed', 'str:1:100', $data['maxallowed'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('maxallowed', 'str:1:100', $data['maxallowed'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('location', 'str:1:100', $data['location'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('location', 'str:1:100', $data['location'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
 

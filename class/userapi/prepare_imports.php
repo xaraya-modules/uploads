@@ -41,7 +41,7 @@ class PrepareImportsMethod extends MethodClass
         extract($args);
 
         if (!isset($importFrom)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'importFrom',
                 'prepare_imports',
@@ -56,7 +56,7 @@ class PrepareImportsMethod extends MethodClass
         }
 
         if (!isset($import_obfuscate)) {
-            $import_obfuscate = xarModVars::get('uploads', 'file.obfuscate-on-import');
+            $import_obfuscate = $this->getModVar('file.obfuscate-on-import');
         }
 
         /**
@@ -94,7 +94,7 @@ class PrepareImportsMethod extends MethodClass
             $fileInfo['fileDest'] = $import_directory;
             $fileInfo['fileSize'] = 0;
 
-            $fileInfo['errors'][]['errorMsg'] = xarML('Unknown');
+            $fileInfo['errors'][]['errorMsg'] = $this->translate('Unknown');
             $fileInfo['errors'][]['errorId']  = Defines::ERROR_UNKNOWN;
             return [$fileInfo];
         } else {

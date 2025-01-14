@@ -57,7 +57,7 @@ class ViewMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         //security check
-        if (!xarSecurity::check('AdminUploads')) {
+        if (!$this->checkAccess('AdminUploads')) {
             return;
         }
 
@@ -65,37 +65,37 @@ class ViewMethod extends MethodClass
          *  Validate variables passed back
          */
 
-        if (!xarVar::fetch('mimetype', 'int:0:', $mimetype, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('mimetype', 'int:0:', $mimetype, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('subtype', 'int:0:', $subtype, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('subtype', 'int:0:', $subtype, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('status', 'int:0:', $status, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('status', 'int:0:', $status, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('inverse', 'checkbox', $inverse, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('inverse', 'checkbox', $inverse, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('fileId', 'list:int:1', $fileId, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('fileId', 'list:int:1', $fileId, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('fileDo', 'str:5:', $fileDo, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('fileDo', 'str:5:', $fileDo, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('action', 'int:0:', $action, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('action', 'int:0:', $action, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('sort', 'enum:id:name:size:user:status', $sort, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('sort', 'enum:id:name:size:user:status', $sort, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('catid', 'str:1:', $catid, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('catid', 'str:1:', $catid, null, xarVar::DONT_SET)) {
             return;
         }
         $admingui = $this->getParent();
@@ -163,11 +163,11 @@ class ViewMethod extends MethodClass
                     break;
                 case Defines::STATUS_REJECTED:
                     $userapi->dbChangeStatus($args + ['newStatus'   => Defines::STATUS_REJECTED]);
-                    if (xarModVars::get('uploads', 'file.auto-purge')) {
-                        if (xarModVars::get('uploads', 'file.delete-confirmation')) {
-                            return xarMod::guiFunc('uploads', 'admin', 'purge_rejected', ['confirmation' => false, 'authid' => xarSec::genAuthKey('uploads')]);
+                    if ($this->getModVar('file.auto-purge')) {
+                        if ($this->getModVar('file.delete-confirmation')) {
+                            return $admingui->purgeRejected(['confirmation' => false, 'authid' => $this->genAuthKey()]);
                         } else {
-                            return xarMod::guiFunc('uploads', 'admin', 'purge_rejected', ['confirmation' => true, 'authid' => xarSec::genAuthKey('uploads')]);
+                            return $admingui->purgeRejected(['confirmation' => true, 'authid' => $this->genAuthKey()]);
                         }
                     }
                     break;
@@ -182,7 +182,7 @@ class ViewMethod extends MethodClass
          */
 
         if (!isset($numitems)) {
-            $numitems = xarModVars::get('uploads', 'view.itemsperpage');
+            $numitems = $this->getModVar('view.itemsperpage');
             $skipnum = 1;
         }
 
@@ -206,7 +206,8 @@ class ViewMethod extends MethodClass
             ]);
         }
 
-        if (xarSecurity::check('EditUploads', 0)) {
+        // @todo do we want to generate an exception here!?
+        if ($this->checkAccess('EditUploads', 0)) {
             $data['diskUsage']['stored_size_filtered'] = $userapi->dbDiskusage($filter);
             $data['diskUsage']['stored_size_total']    = $userapi->dbDiskusage();
 
@@ -254,7 +255,7 @@ class ViewMethod extends MethodClass
         } // throw back
 
         $data['items'] = $items;
-        $data['authid'] = xarSec::genAuthKey();
+        $data['authid'] = $this->genAuthKey();
 
         // Add pager
         if (!empty($numitems) && $countitems > $numitems) {
@@ -262,8 +263,7 @@ class ViewMethod extends MethodClass
             $data['pager'] = xarTplPager::getPager(
                 $startnum,
                 $countitems,
-                xarController::URL(
-                    'uploads',
+                $this->getUrl(
                     'admin',
                     'view',
                     ['startnum' => '%%',

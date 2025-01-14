@@ -48,7 +48,7 @@ class FilePushMethod extends MethodClass
         extract($args);
 
         if (!isset($fileName)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileName',
                 'file_push',
@@ -58,7 +58,7 @@ class FilePushMethod extends MethodClass
         }
 
         if (!isset($fileLocation)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileLocation',
                 'file_push',
@@ -68,7 +68,7 @@ class FilePushMethod extends MethodClass
         }
 
         if (!isset($fileType)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileType',
                 'file_push',
@@ -78,7 +78,7 @@ class FilePushMethod extends MethodClass
         }
 
         if (!isset($storeType)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'storeType',
                 'file_push',
@@ -87,7 +87,7 @@ class FilePushMethod extends MethodClass
             throw new Exception($msg);
         } elseif ($storeType & Defines::STORE_DB_DATA) {
             if (!isset($fileId)) {
-                $msg = xarML(
+                $msg = $this->translate(
                     'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                     'fileId',
                     'file_push',
@@ -98,7 +98,7 @@ class FilePushMethod extends MethodClass
         }
 
         if (!isset($fileSize)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileSize',
                 'file_push',
@@ -185,7 +185,7 @@ class FilePushMethod extends MethodClass
         }
         unset($pageBuffer);
 
-        $msg = xarML('Could not open file [#(1)] for reading', $fileName);
+        $msg = $this->translate('Could not open file [#(1)] for reading', $fileName);
         throw new BadParameterException(null, $msg);
     }
 }

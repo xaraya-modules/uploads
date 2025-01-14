@@ -33,6 +33,8 @@ class MainMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        return xarMod::guiFunc('uploads', 'user', 'download', $args);
+        $usergui = $this->getParent();
+
+        return $usergui->download($args);
     }
 }

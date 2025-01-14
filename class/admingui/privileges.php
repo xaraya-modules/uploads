@@ -44,43 +44,43 @@ class PrivilegesMethod extends MethodClass
         extract($args);
 
         // fixed params
-        if (!xarVar::fetch('mimetype', 'int:0:', $mimetype, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('mimetype', 'int:0:', $mimetype, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('subtype', 'int:0:', $subtype, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('subtype', 'int:0:', $subtype, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('userId', 'int:0:', $userId, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('userId', 'int:0:', $userId, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('fileId', 'int:0:', $fileId, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('fileId', 'int:0:', $fileId, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('userName', 'isset', $userName, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('userName', 'isset', $userName, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('apply', 'isset', $apply, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('apply', 'isset', $apply, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extpid', 'isset', $extpid, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extpid', 'isset', $extpid, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extname', 'isset', $extname, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extname', 'isset', $extname, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extrealm', 'isset', $extrealm, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extrealm', 'isset', $extrealm, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extmodule', 'isset', $extmodule, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extmodule', 'isset', $extmodule, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extcomponent', 'isset', $extcomponent, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extcomponent', 'isset', $extcomponent, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extinstance', 'isset', $extinstance, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extinstance', 'isset', $extinstance, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('extlevel', 'isset', $extlevel, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('extlevel', 'isset', $extlevel, null, xarVar::DONT_SET)) {
             return;
         }
 
@@ -106,7 +106,7 @@ class PrivilegesMethod extends MethodClass
         // Otherwise do a quick check to make sure this user has access
         if (empty($mimetype) || !is_numeric($mimetype)) {
             $mimetype = 0;
-            if (!xarSecurity::check('AdminUploads')) {
+            if (!$this->checkAccess('AdminUploads')) {
                 return;
             }
         } else {
@@ -228,12 +228,12 @@ class PrivilegesMethod extends MethodClass
             }
 
             // redirect to the privilege
-            xarController::redirect(xarController::URL(
+            $this->redirect(xarController::URL(
                 'privileges',
                 'admin',
                 'modifyprivilege',
                 ['pid' => $pid]
-            ), null, $this->getContext());
+            ));
             return true;
         }
 
@@ -257,7 +257,7 @@ class PrivilegesMethod extends MethodClass
 
         // Set up default 'All' option for users
         $userNameList[0]['userId'] = 0;
-        $userNameList[0]['userName'] = xarML('All');
+        $userNameList[0]['userName'] = $this->translate('All');
 
         if (isset($userNameList[$userId])) {
             $userNameList[$userId]['selected'] = true;
@@ -271,7 +271,7 @@ class PrivilegesMethod extends MethodClass
 
         $fileList = $userapi->dbGetFile($filter);
         $fileList[0]['fileId'] = 0;
-        $fileList[0]['fileName'] = xarML('All');
+        $fileList[0]['fileName'] = $this->translate('All');
         $fileList[0]['fileLocation'] = $fileList[0]['fileName'];
 
         if (isset($fileList[$fileId])) {
@@ -303,7 +303,7 @@ class PrivilegesMethod extends MethodClass
         $data['extcomponent']   = $extcomponent;
         $data['extlevel']       = $extlevel;
         $data['extinstance']    = xarVar::prepForDisplay(join(':', $newinstance));
-        $data['applylabel']     = xarML('Finish and Apply to Privilege');
+        $data['applylabel']     = $this->translate('Finish and Apply to Privilege');
 
         return $data;
     }

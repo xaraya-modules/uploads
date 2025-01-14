@@ -45,7 +45,7 @@ class DbAddFileDataMethod extends MethodClass
         extract($args);
 
         if (!isset($fileId)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileId',
                 'db_add_file_data',
@@ -55,7 +55,7 @@ class DbAddFileDataMethod extends MethodClass
         }
 
         if (!isset($fileData)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [#(2)] in module (#3)]',
                 'location',
                 'db_add_file_data',
@@ -65,7 +65,7 @@ class DbAddFileDataMethod extends MethodClass
         }
 
         if (sizeof($fileData) >= (1024 * 64)) {
-            $msg = xarML('#(1) exceeds maximum storage limit of 64KB per data chunk.', 'fileData');
+            $msg = $this->translate('#(1) exceeds maximum storage limit of 64KB per data chunk.', 'fileData');
             throw new Exception($msg);
         }
 

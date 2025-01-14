@@ -68,7 +68,7 @@ class DbGetFileMethod extends MethodClass
         if (!isset($fileId) && !isset($fileName) && !isset($fileStatus) && !isset($fileLocation) &&
             !isset($userId)  && !isset($fileType) && !isset($store_type) && !isset($fileHash) &&
             !isset($fileLocationMD5) && empty($getnext) && empty($getprev)) {
-            $msg = xarML('Missing parameters for function [#(1)] in module [#(2)]', 'db_get_file', 'uploads');
+            $msg = $this->translate('Missing parameters for function [#(1)] in module [#(2)]', 'db_get_file', 'uploads');
             throw new Exception($msg);
         }
 
@@ -351,9 +351,9 @@ class DbGetFileMethod extends MethodClass
                 $imgcache[$fileInfo['fileType']] = $mimeapi->getMimeImage(['mimeType' => $fileInfo['fileType']]);
             }
             $fileInfo['mimeImage']     = $imgcache[$fileInfo['fileType']];
-            $fileInfo['fileDownload']  = xarController::URL('uploads', 'user', 'download', ['fileId' => $fileInfo['fileId']]);
+            $fileInfo['fileDownload']  = $this->getUrl( 'user', 'download', ['fileId' => $fileInfo['fileId']]);
             $fileInfo['fileURL']       = $fileInfo['fileDownload'];
-            $fileInfo['DownloadLabel'] = xarML('Download file: #(1)', $fileInfo['fileName']);
+            $fileInfo['DownloadLabel'] = $this->translate('Download file: #(1)', $fileInfo['fileName']);
             if (!empty($fileInfo['fileLocation']) && file_exists($fileInfo['fileLocation'])) {
                 $fileInfo['fileModified'] = @filemtime($fileInfo['fileLocation']);
             }
@@ -374,16 +374,16 @@ class DbGetFileMethod extends MethodClass
 
             switch ($fileInfo['fileStatus']) {
                 case Defines::STATUS_REJECTED:
-                    $fileInfo['fileStatusName'] = xarML('Rejected');
+                    $fileInfo['fileStatusName'] = $this->translate('Rejected');
                     break;
                 case Defines::STATUS_APPROVED:
-                    $fileInfo['fileStatusName'] = xarML('Approved');
+                    $fileInfo['fileStatusName'] = $this->translate('Approved');
                     break;
                 case Defines::STATUS_SUBMITTED:
-                    $fileInfo['fileStatusName'] = xarML('Submitted');
+                    $fileInfo['fileStatusName'] = $this->translate('Submitted');
                     break;
                 default:
-                    $fileInfo['fileStatusName'] = xarML('Unknown!');
+                    $fileInfo['fileStatusName'] = $this->translate('Unknown!');
                     break;
             }
 

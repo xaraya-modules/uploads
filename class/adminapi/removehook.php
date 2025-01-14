@@ -50,7 +50,7 @@ class RemovehookMethod extends MethodClass
         // When called via hooks, we should get the real module name from objectid
         // here, because the current module is probably going to be 'modules' !!!
         if (!isset($objectid) || !is_string($objectid)) {
-            $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID (= module name)', 'admin', 'removehook', 'uploads');
+            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID (= module name)', 'admin', 'removehook', 'uploads');
             //throw new BadParameterException(null, $msg);
             // Return the extra info
             return $extrainfo;
@@ -58,7 +58,7 @@ class RemovehookMethod extends MethodClass
 
         $modid = xarMod::getRegID($objectid);
         if (empty($modid)) {
-            $msg = xarML('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module ID', 'admin', 'removehook', 'uploads');
+            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module ID', 'admin', 'removehook', 'uploads');
             //throw new BadParameterException(null, $msg);
             // Return the extra info
             return $extrainfo;

@@ -42,29 +42,29 @@ class AssocMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminUploads')) {
+        if (!$this->checkAccess('AdminUploads')) {
             return;
         }
 
-        if (!xarVar::fetch('modid', 'isset', $modid, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('modid', 'isset', $modid, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('itemtype', 'isset', $itemtype, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('itemtype', 'isset', $itemtype, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('itemid', 'isset', $itemid, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('itemid', 'isset', $itemid, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('sort', 'isset', $sort, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('sort', 'isset', $sort, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('startnum', 'isset', $startnum, 1, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('startnum', 'isset', $startnum, 1, xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('fileId', 'isset', $fileId, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('fileId', 'isset', $fileId, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('action', 'isset', $action, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('action', 'isset', $action, null, xarVar::DONT_SET)) {
             return;
         }
 
@@ -96,12 +96,12 @@ class AssocMethod extends MethodClass
                     return;
                 }
             } elseif ($action == 'delete' && !empty($modid)) {
-                if (!xarVar::fetch('confirm', 'isset', $confirm, null, xarVar::DONT_SET)) {
+                if (!$this->fetch('confirm', 'isset', $confirm, null, xarVar::DONT_SET)) {
                     return;
                 }
                 if (!empty($confirm)) {
                     // Confirm authorisation code.
-                    if (!xarSec::confirmAuthKey()) {
+                    if (!$this->confirmAuthKey()) {
                         return;
                     }
                     $result = $adminapi->deleteAssociations([
@@ -113,7 +113,7 @@ class AssocMethod extends MethodClass
                     if (!$result) {
                         return;
                     }
-                    xarController::redirect(xarController::URL('uploads', 'admin', 'assoc'), null, $this->getContext());
+                    $this->redirect($this->getUrl('admin', 'assoc'));
                     return true;
                 }
             }
@@ -164,16 +164,14 @@ class AssocMethod extends MethodClass
                             //    $moditem['link'] = xarController::URL($modinfo['name'],'user','view',array('itemtype' => $itemtype));
                         }
                     }
-                    $moditem['link'] = xarController::URL(
-                        'uploads',
+                    $moditem['link'] = $this->getUrl(
                         'admin',
                         'assoc',
                         ['modid' => $modid,
                             'itemtype' => empty($itemtype) ? null : $itemtype,
                             'fileId' => $fileId, ]
                     );
-                    $moditem['rescan'] = xarController::URL(
-                        'uploads',
+                    $moditem['rescan'] = $this->getUrl(
                         'admin',
                         'assoc',
                         ['action' => 'rescan',
@@ -181,8 +179,7 @@ class AssocMethod extends MethodClass
                             'itemtype' => empty($itemtype) ? null : $itemtype,
                             'fileId' => $fileId, ]
                     );
-                    $moditem['delete'] = xarController::URL(
-                        'uploads',
+                    $moditem['delete'] = $this->getUrl(
                         'admin',
                         'assoc',
                         ['action' => 'delete',
@@ -195,15 +192,13 @@ class AssocMethod extends MethodClass
                     $data['numlinks'] += $moditem['numlinks'];
                 }
             }
-            $data['rescan'] = xarController::URL(
-                'uploads',
+            $data['rescan'] = $this->getUrl(
                 'admin',
                 'assoc',
                 ['action' => 'rescan',
                     'fileId' => $fileId, ]
             );
-            $data['delete'] = xarController::URL(
-                'uploads',
+            $data['delete'] = $this->getUrl(
                 'admin',
                 'assoc',
                 ['action' => 'delete',
@@ -248,7 +243,7 @@ class AssocMethod extends MethodClass
                 $data['numitems'] = 0;
                 $data['numlinks'] = '';
             }
-            $numstats = xarModVars::get('uploads', 'numstats');
+            $numstats = $this->getModVar('numstats');
             if (empty($numstats)) {
                 $numstats = 100;
             }
@@ -266,8 +261,7 @@ class AssocMethod extends MethodClass
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $data['numlinks'],
-                    xarController::URL(
-                        'uploads',
+                    $this->getUrl(
                         'admin',
                         'assoc',
                         ['modid' => $modid,
@@ -290,7 +284,7 @@ class AssocMethod extends MethodClass
                 'sort' => $sort,
                 'fileId' => $fileId,
             ]);
-            //$showtitle = xarModVars::get('uploads','showtitle');
+            //$showtitle = $this->getModVar('showtitle');
             $showtitle = true;
             if (!empty($getitems) && !empty($showtitle)) {
                 $itemids = array_keys($getitems);
@@ -320,8 +314,7 @@ class AssocMethod extends MethodClass
                 foreach ($filelist as $id) {
                     $seenfileid[$id] = 1;
                 }
-                $data['moditems'][$itemid]['rescan'] = xarController::URL(
-                    'uploads',
+                $data['moditems'][$itemid]['rescan'] = $this->getUrl(
                     'admin',
                     'assoc',
                     ['action' => 'rescan',
@@ -330,8 +323,7 @@ class AssocMethod extends MethodClass
                         'itemid' => $itemid,
                         'fileId' => $fileId, ]
                 );
-                $data['moditems'][$itemid]['delete'] = xarController::URL(
-                    'uploads',
+                $data['moditems'][$itemid]['delete'] = $this->getUrl(
                     'admin',
                     'assoc',
                     ['action' => 'delete',
@@ -354,8 +346,7 @@ class AssocMethod extends MethodClass
             } else {
                 $data['fileinfo'] = [];
             }
-            $data['rescan'] = xarController::URL(
-                'uploads',
+            $data['rescan'] = $this->getUrl(
                 'admin',
                 'assoc',
                 ['action' => 'rescan',
@@ -363,8 +354,7 @@ class AssocMethod extends MethodClass
                     'itemtype' => $itemtype,
                     'fileId' => $fileId, ]
             );
-            $data['delete'] = xarController::URL(
-                'uploads',
+            $data['delete'] = $this->getUrl(
                 'admin',
                 'assoc',
                 ['action' => 'delete',
@@ -376,8 +366,7 @@ class AssocMethod extends MethodClass
             if (empty($sort) || $sort == 'itemid') {
                 $data['sortlink']['itemid'] = '';
             } else {
-                $data['sortlink']['itemid'] = xarController::URL(
-                    'uploads',
+                $data['sortlink']['itemid'] = $this->getUrl(
                     'admin',
                     'assoc',
                     ['modid' => $modid,
@@ -388,8 +377,7 @@ class AssocMethod extends MethodClass
             if (!empty($sort) && $sort == 'numlinks') {
                 $data['sortlink']['numlinks'] = '';
             } else {
-                $data['sortlink']['numlinks'] = xarController::URL(
-                    'uploads',
+                $data['sortlink']['numlinks'] = $this->getUrl(
                     'admin',
                     'assoc',
                     ['modid' => $modid,
@@ -401,7 +389,7 @@ class AssocMethod extends MethodClass
 
             if (!empty($action) && $action == 'delete') {
                 $data['action'] = 'delete';
-                $data['authid'] = xarSec::genAuthKey();
+                $data['authid'] = $this->genAuthKey();
             }
         }
 

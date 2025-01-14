@@ -38,9 +38,9 @@ class GetitemtypesMethod extends MethodClass
 
         // Files
         $id = 1;
-        $itemtypes[$id] = ['label' => xarML('Files'),
-            'title' => xarML('View All Files'),
-            'url'   => xarController::URL('uploads', 'admin', 'view'),
+        $itemtypes[$id] = ['label' => $this->translate('Files'),
+            'title' => $this->translate('View All Files'),
+            'url'   => $this->getUrl('admin', 'view'),
         ];
 
         // TODO: Assoc, VDir and other future tables ?

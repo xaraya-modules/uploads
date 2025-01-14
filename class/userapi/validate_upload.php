@@ -50,7 +50,7 @@ class ValidateUploadMethod extends MethodClass
         extract($args);
 
         if (!isset($fileInfo)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 'Missing parameter [#(1)] for function [(#(2)] in module [#(3)]',
                 'fileInfo',
                 'validate_upload',
@@ -61,41 +61,40 @@ class ValidateUploadMethod extends MethodClass
 
         switch ($fileInfo['error']) {
             case 1: // The uploaded file exceeds the upload_max_filesize directive in php.ini
-                $msg = xarML('File size exceeds the maximum allowable based on the server\'s settings.');
-                return xarController::redirect(xarController::URL(
-                    'uploads',
+                $msg = $this->translate('File size exceeds the maximum allowable based on the server\'s settings.');
+                return $this->redirect($this->getUrl(
                     'user',
                     'errors',
                     ['layout' => 'maxfilesize','maxallowed' => ini_get('upload_max_filesize')]
-                ), null, $this->getContext());
+                ));
                 //throw new Exception($msg);
 
             case 2: // The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form
-                $msg = xarML('File size exceeds the maximum allowable defined by the website administrator.');
+                $msg = $this->translate('File size exceeds the maximum allowable defined by the website administrator.');
                 throw new Exception($msg);
 
             case 3: // The uploaded file was only partially uploaded
-                $msg = xarML('The file was only partially uploaded.');
+                $msg = $this->translate('The file was only partially uploaded.');
                 throw new Exception($msg);
 
             case 4: // No file was uploaded
-                $msg = xarML('No file was uploaded..');
+                $msg = $this->translate('No file was uploaded..');
                 throw new Exception($msg);
             default:
             case 0:  // no error
                 break;
         }
 
-        $maxsize = xarModVars::get('uploads', 'file.maxsize');
+        $maxsize = $this->getModVar('file.maxsize');
         $maxsize = $maxsize > 0 ? $maxsize : 0;
 
         if ($fileInfo['size'] > $maxsize) {
-            $msg = xarML('File size exceeds the maximum allowable defined by the website administrator.');
+            $msg = $this->translate('File size exceeds the maximum allowable defined by the website administrator.');
             throw new Exception($msg);
         }
 
         if (!is_uploaded_file($fileInfo['fileSrc'])) {
-            $msg = xarML('Possible attempted malicious file upload.');
+            $msg = $this->translate('Possible attempted malicious file upload.');
             throw new Exception($msg);
         }
 

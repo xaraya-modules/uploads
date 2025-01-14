@@ -44,14 +44,14 @@ class DownloadMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!xarSecurity::check('ViewUploads')) {
+        if (!$this->checkAccess('ViewUploads')) {
             return;
         }
 
-        if (!xarVar::fetch('file', 'str:1:', $fileName, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('file', 'str:1:', $fileName, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('fileId', 'int:1:', $fileId, 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('fileId', 'int:1:', $fileId, 0, xarVar::NOT_REQUIRED)) {
             return;
         }
         $usergui = $this->getParent();
@@ -62,7 +62,7 @@ class DownloadMethod extends MethodClass
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
 
         if (empty($fileName) && (empty($fileInfo) || !count($fileInfo))) {
-            xarController::redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif', null, $this->getContext());
+            $this->redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif');
             return true;
         }
 
@@ -81,13 +81,14 @@ class DownloadMethod extends MethodClass
             xarVar::setCached('Hooks.hitcount', 'save', 1);
 
             // File has been pushed to the client, now shut down.
-            exit();
+            $this->exit();
+            return;
         } else {
             // the file should be the first indice in the array
             $fileInfo = end($fileInfo);
 
             // Check whether download is permitted
-            switch (xarModVars::get('uploads', 'permit_download')) {
+            switch ($this->getModVar('permit_download')) {
                 // No download permitted
                 case 0:
                     $permitted = false;
@@ -98,7 +99,7 @@ class DownloadMethod extends MethodClass
                     break;
                     // Group files only
                 case 2:
-                    $rawfunction = xarModVars::get('uploads', 'permit_download_function');
+                    $rawfunction = $this->getModVar('permit_download_function');
                     if (empty($rawfunction)) {
                         $permitted = false;
                     }
@@ -162,11 +163,12 @@ class DownloadMethod extends MethodClass
                     $fileId,
                     ['module'    => 'uploads',
                         'itemtype'  => 1, // Files
-                        'returnurl' => xarController::URL('uploads', 'user', 'download', ['fileId' => $fileId]), ]
+                        'returnurl' => $this->getUrl( 'user', 'download', ['fileId' => $fileId]), ]
                 );
 
                 // File has been pushed to the client, now shut down.
-                exit();
+                $this->exit();
+                return;
             } else {
                 return false;
             }

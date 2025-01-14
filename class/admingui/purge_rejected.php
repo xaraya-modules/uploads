@@ -41,7 +41,7 @@ class PurgeRejectedMethod extends MethodClass
     {
         extract($args);
 
-        if (!xarSecurity::check('ManageUploads')) {
+        if (!$this->checkAccess('ManageUploads')) {
             return;
         }
 
@@ -50,10 +50,10 @@ class PurgeRejectedMethod extends MethodClass
         }
 
         if (!isset($confirmation)) {
-            xarVar::fetch('confirmation', 'int:1:', $confirmation, '', xarVar::NOT_REQUIRED);
+            $this->fetch('confirmation', 'int:1:', $confirmation, '', xarVar::NOT_REQUIRED);
         }
         // Confirm authorisation code.
-        if (!xarSec::confirmAuthKey()) {
+        if (!$this->confirmAuthKey()) {
             return;
         }
         $admingui = $this->getParent();
@@ -61,20 +61,20 @@ class PurgeRejectedMethod extends MethodClass
         /** @var UserApi $userapi */
         $userapi = $admingui->getAPI();
 
-        if ((isset($confirmation) && $confirmation) || !xarModVars::get('uploads', 'file.delete-confirmation')) {
+        if ((isset($confirmation) && $confirmation) || !$this->getModVar('file.delete-confirmation')) {
             $fileList = $userapi->dbGetFile([
                 'fileStatus' => Defines::STATUS_REJECTED,
             ]);
 
             if (empty($fileList)) {
-                xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $this->getContext());
+                $this->redirect($this->getUrl('admin', 'view'));
                 return;
             } else {
                 $result = $userapi->purgeFiles([
                     'fileList' => $fileList,
                 ]);
                 if (!$result) {
-                    $msg = xarML('Unable to purge rejected files!');
+                    $msg = $this->translate('Unable to purge rejected files!');
                     throw new Exception($msg);
                 }
             }
@@ -87,11 +87,11 @@ class PurgeRejectedMethod extends MethodClass
             } else {
                 $data['fileList']   = $fileList;
             }
-            $data['authid']     = xarSec::genAuthKey();
+            $data['authid']     = $this->genAuthKey();
 
             return $data;
         }
 
-        xarController::redirect(xarController::URL('uploads', 'admin', 'view'), null, $this->getContext());
+        $this->redirect($this->getUrl('admin', 'view'));
     }
 }

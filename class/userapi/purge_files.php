@@ -42,7 +42,7 @@ class PurgeFilesMethod extends MethodClass
         extract($args);
 
         if (!isset($fileList)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing required parameter [#(1)] for API function [#(2)] in module [#(3)]',
                 'fileList',
                 'purge_files',

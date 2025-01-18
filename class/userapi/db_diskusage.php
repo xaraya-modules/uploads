@@ -109,7 +109,7 @@ class DbDiskusageMethod extends MethodClass
         $sql = "SELECT SUM(xar_filesize) AS disk_usage
                   FROM $fileEntry_table ";
 
-        if (!empty($catid) && xarMod::isAvailable('categories') && xarModHooks::isHooked('categories', 'uploads', 1)) {
+        if (!empty($catid) && $this->mod()->isAvailable('categories') && xarModHooks::isHooked('categories', 'uploads', 1)) {
             // Get the LEFT JOIN ... ON ...  and WHERE (!) parts from categories
             $categoriesdef = xarMod::apiFunc(
                 'categories',

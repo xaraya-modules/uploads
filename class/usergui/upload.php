@@ -40,7 +40,7 @@ class UploadMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!$this->checkAccess('AddUploads')) {
+        if (!$this->sec()->checkAccess('AddUploads')) {
             return;
         }
         $usergui = $this->getParent();
@@ -48,7 +48,7 @@ class UploadMethod extends MethodClass
         /** @var UserApi $userapi */
         $userapi = $usergui->getAPI();
 
-        $this->fetch('importFrom', 'str:1:', $importFrom, null, xarVar::NOT_REQUIRED);
+        $this->var()->find('importFrom', $importFrom, 'str:1:');
 
         $list = $userapi->processFiles([
             'importFrom' => $importFrom,
@@ -57,7 +57,7 @@ class UploadMethod extends MethodClass
         if (is_array($list) && count($list)) {
             return ['fileList' => $list];
         } else {
-            $this->redirect($this->getUrl('user', 'uploadform'));
+            $this->ctl()->redirect($this->mod()->getURL('user', 'uploadform'));
         }
     }
 }

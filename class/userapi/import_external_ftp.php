@@ -56,7 +56,7 @@ class ImportExternalFtpMethod extends MethodClass
         if (isset($obfuscate) && $obfuscate) {
             $obfuscate_fileName = true;
         } else {
-            $obfuscate_fileName = $this->getModVar('file.obfuscate-on-upload');
+            $obfuscate_fileName = $this->mod()->getVar('file.obfuscate-on-upload');
         }
         $userapi = $this->getParent();
 
@@ -137,7 +137,7 @@ class ImportExternalFtpMethod extends MethodClass
             if (!$ftpId || !$result) {
                 // if the connection failed unlink
                 // the temporary file and log and return an exception
-                $msg = $this->translate(
+                $msg = $this->ml(
                     'Unable to connect to host [#(1):#(2)] to retrieve file [#(3)]',
                     $uri['host'],
                     $uri['port'],
@@ -146,7 +146,7 @@ class ImportExternalFtpMethod extends MethodClass
                 throw new Exception($msg);
             } else {
                 if (($tmpId = fopen($tmpName, 'wb')) === false) {
-                    $msg = $this->translate(
+                    $msg = $this->ml(
                         'Unable to open temp file to store remote host [#(1):#(2)] file [#(3)]',
                         $uri['host'],
                         $uri['port'],
@@ -164,7 +164,7 @@ class ImportExternalFtpMethod extends MethodClass
                     // until the file transfer has finished - hence, the
                     // much needed 'ignore_user_abort()' up above
                     if (!ftp_fget($ftpId, $tmpId, $uri['path'], $ftpMode)) {
-                        $msg = $this->translate(
+                        $msg = $this->ml(
                             'Unable to connect to host [#(1):#(2)] to retrieve file [#(3)]',
                             $uri['host'],
                             $uri['port'],
@@ -183,7 +183,7 @@ class ImportExternalFtpMethod extends MethodClass
             // Otherwise we have to do it the "hard" way ;-)
         } else {
             if (($ftpId = fopen($ftpURI, 'rb')) === false) {
-                $msg = $this->translate(
+                $msg = $this->ml(
                     'Unable to connect to host [#(1):#(2)] to retrieve file [#(3)]',
                     $uri['host'],
                     $uri['port'],
@@ -192,7 +192,7 @@ class ImportExternalFtpMethod extends MethodClass
                 throw new Exception($msg);
             } else {
                 if (($tmpId = fopen($tmpName, 'wb')) === false) {
-                    $msg = $this->translate(
+                    $msg = $this->ml(
                         'Unable to open temp file to store remote host [#(1):#(2)] file [#(3)]',
                         $uri['host'],
                         $uri['port'],
@@ -209,7 +209,7 @@ class ImportExternalFtpMethod extends MethodClass
                             break;
                         } else {
                             if (fwrite($tmpId, $data, strlen($data)) !== strlen($data)) {
-                                $msg = $this->translate('Unable to write to temp file!');
+                                $msg = $this->ml('Unable to write to temp file!');
                                 throw new Exception($msg);
                             }
                         }

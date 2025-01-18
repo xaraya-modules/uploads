@@ -84,7 +84,7 @@ class FileGetMetadataMethod extends MethodClass
             }
 
             // CHECKME: use 'imports' name like in db_get_file() ?
-            $relative_path = str_replace($this->getModVar('imports_directory'), '/trusted', $file);
+            $relative_path = str_replace($this->mod()->getVar('imports_directory'), '/trusted', $file);
 
             $fileInfo = ['inodeType'    => $type,
                 'fileName'     => $name,

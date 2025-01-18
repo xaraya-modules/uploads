@@ -52,7 +52,7 @@ class ImportGetFilelistMethod extends MethodClass
 
         if (!empty($cacheExpire) && is_numeric($cacheExpire)) {
             $cachekey = md5(serialize($args));
-            $cacheinfo = $this->getModVar('file.cachelist.' . $cachekey);
+            $cacheinfo = $this->mod()->getVar('file.cachelist.' . $cachekey);
             if (!empty($cacheinfo)) {
                 $cacheinfo = @unserialize($cacheinfo);
                 if (!empty($cacheinfo['time']) && $cacheinfo['time'] > time() - $cacheExpire) {
@@ -95,7 +95,7 @@ class ImportGetFilelistMethod extends MethodClass
         $fileList = [];
 
         if (!isset($fileLocation)) {
-            return $this->redirect($this->getUrl(
+            return $this->ctl()->redirect($this->mod()->getURL(
                 'user',
                 'errors',
                 ['layout' => 'dir_not_set']
@@ -103,7 +103,7 @@ class ImportGetFilelistMethod extends MethodClass
         }
 
         if (!file_exists($fileLocation)) {
-            return $this->redirect($this->getUrl(
+            return $this->ctl()->redirect($this->mod()->getURL(
                 'user',
                 'errors',
                 ['layout' => 'dir_not_found','location' => $fileLocation]
@@ -251,7 +251,7 @@ class ImportGetFilelistMethod extends MethodClass
             $cacheinfo = ['time' => time(),
                 'list' => $fileList, ];
             $cacheinfo = serialize($cacheinfo);
-            $this->setModVar('file.cachelist.' . $cachekey, $cacheinfo);
+            $this->mod()->setVar('file.cachelist.' . $cachekey, $cacheinfo);
         }
 
         return $fileList;

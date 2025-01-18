@@ -38,24 +38,24 @@ class SaveAttachmentsMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get parameters
-        if (!$this->fetch('modname', 'isset', $modname, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('modname', $modname)) {
             return;
         }
-        if (!$this->fetch('itemtype', 'isset', $itemtype, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('itemtype', $itemtype)) {
             return;
         }
-        if (!$this->fetch('objectid', 'isset', $objectid, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('objectid', $objectid)) {
             return;
         }
-        if (!$this->fetch('returnurl', 'isset', $returnurl, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('returnurl', $returnurl)) {
             return;
         }
-        if (!$this->fetch('rating', 'isset', $rating, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('rating', $rating)) {
             return;
         }
 
         // Confirm authorisation code
-        if (!$this->confirmAuthKey()) {
+        if (!$this->sec()->confirmAuthKey()) {
             return;
         }
 
@@ -70,7 +70,7 @@ class SaveAttachmentsMethod extends MethodClass
                 'rating'     => $rating, ]
         );
 
-        $this->redirect($returnurl);
+        $this->ctl()->redirect($returnurl);
 
         return true;
     }

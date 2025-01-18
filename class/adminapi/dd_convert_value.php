@@ -80,7 +80,7 @@ class DdConvertValueMethod extends MethodClass
                 if (!isset($fileInfo['errors'])) {
                     $storeList[] = $fileInfo['fileId'];
                 } else {
-                    $msg = $this->translate('Error Found: #(1)', $fileInfo['errors'][0]['errorMesg']);
+                    $msg = $this->ml('Error Found: #(1)', $fileInfo['errors'][0]['errorMesg']);
                     throw new Exception($msg);
                 }
             }

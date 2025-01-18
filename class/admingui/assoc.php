@@ -42,29 +42,29 @@ class AssocMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('AdminUploads')) {
+        if (!$this->sec()->checkAccess('AdminUploads')) {
             return;
         }
 
-        if (!$this->fetch('modid', 'isset', $modid, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('modid', $modid)) {
             return;
         }
-        if (!$this->fetch('itemtype', 'isset', $itemtype, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('itemtype', $itemtype)) {
             return;
         }
-        if (!$this->fetch('itemid', 'isset', $itemid, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('itemid', $itemid)) {
             return;
         }
-        if (!$this->fetch('sort', 'isset', $sort, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('sort', $sort)) {
             return;
         }
-        if (!$this->fetch('startnum', 'isset', $startnum, 1, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('startnum', $startnum, 'isset', 1)) {
             return;
         }
-        if (!$this->fetch('fileId', 'isset', $fileId, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('fileId', $fileId)) {
             return;
         }
-        if (!$this->fetch('action', 'isset', $action, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('action', $action)) {
             return;
         }
 
@@ -96,12 +96,12 @@ class AssocMethod extends MethodClass
                     return;
                 }
             } elseif ($action == 'delete' && !empty($modid)) {
-                if (!$this->fetch('confirm', 'isset', $confirm, null, xarVar::DONT_SET)) {
+                if (!$this->var()->check('confirm', $confirm)) {
                     return;
                 }
                 if (!empty($confirm)) {
                     // Confirm authorisation code.
-                    if (!$this->confirmAuthKey()) {
+                    if (!$this->sec()->confirmAuthKey()) {
                         return;
                     }
                     $result = $adminapi->deleteAssociations([
@@ -113,7 +113,7 @@ class AssocMethod extends MethodClass
                     if (!$result) {
                         return;
                     }
-                    $this->redirect($this->getUrl('admin', 'assoc'));
+                    $this->ctl()->redirect($this->mod()->getURL('admin', 'assoc'));
                     return true;
                 }
             }
@@ -164,14 +164,14 @@ class AssocMethod extends MethodClass
                             //    $moditem['link'] = xarController::URL($modinfo['name'],'user','view',array('itemtype' => $itemtype));
                         }
                     }
-                    $moditem['link'] = $this->getUrl(
+                    $moditem['link'] = $this->mod()->getURL(
                         'admin',
                         'assoc',
                         ['modid' => $modid,
                             'itemtype' => empty($itemtype) ? null : $itemtype,
                             'fileId' => $fileId, ]
                     );
-                    $moditem['rescan'] = $this->getUrl(
+                    $moditem['rescan'] = $this->mod()->getURL(
                         'admin',
                         'assoc',
                         ['action' => 'rescan',
@@ -179,7 +179,7 @@ class AssocMethod extends MethodClass
                             'itemtype' => empty($itemtype) ? null : $itemtype,
                             'fileId' => $fileId, ]
                     );
-                    $moditem['delete'] = $this->getUrl(
+                    $moditem['delete'] = $this->mod()->getURL(
                         'admin',
                         'assoc',
                         ['action' => 'delete',
@@ -192,13 +192,13 @@ class AssocMethod extends MethodClass
                     $data['numlinks'] += $moditem['numlinks'];
                 }
             }
-            $data['rescan'] = $this->getUrl(
+            $data['rescan'] = $this->mod()->getURL(
                 'admin',
                 'assoc',
                 ['action' => 'rescan',
                     'fileId' => $fileId, ]
             );
-            $data['delete'] = $this->getUrl(
+            $data['delete'] = $this->mod()->getURL(
                 'admin',
                 'assoc',
                 ['action' => 'delete',
@@ -243,7 +243,7 @@ class AssocMethod extends MethodClass
                 $data['numitems'] = 0;
                 $data['numlinks'] = '';
             }
-            $numstats = $this->getModVar('numstats');
+            $numstats = $this->mod()->getVar('numstats');
             if (empty($numstats)) {
                 $numstats = 100;
             }
@@ -261,7 +261,7 @@ class AssocMethod extends MethodClass
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $data['numlinks'],
-                    $this->getUrl(
+                    $this->mod()->getURL(
                         'admin',
                         'assoc',
                         ['modid' => $modid,
@@ -284,7 +284,7 @@ class AssocMethod extends MethodClass
                 'sort' => $sort,
                 'fileId' => $fileId,
             ]);
-            //$showtitle = $this->getModVar('showtitle');
+            //$showtitle = $this->mod()->getVar('showtitle');
             $showtitle = true;
             if (!empty($getitems) && !empty($showtitle)) {
                 $itemids = array_keys($getitems);
@@ -314,7 +314,7 @@ class AssocMethod extends MethodClass
                 foreach ($filelist as $id) {
                     $seenfileid[$id] = 1;
                 }
-                $data['moditems'][$itemid]['rescan'] = $this->getUrl(
+                $data['moditems'][$itemid]['rescan'] = $this->mod()->getURL(
                     'admin',
                     'assoc',
                     ['action' => 'rescan',
@@ -323,7 +323,7 @@ class AssocMethod extends MethodClass
                         'itemid' => $itemid,
                         'fileId' => $fileId, ]
                 );
-                $data['moditems'][$itemid]['delete'] = $this->getUrl(
+                $data['moditems'][$itemid]['delete'] = $this->mod()->getURL(
                     'admin',
                     'assoc',
                     ['action' => 'delete',
@@ -346,7 +346,7 @@ class AssocMethod extends MethodClass
             } else {
                 $data['fileinfo'] = [];
             }
-            $data['rescan'] = $this->getUrl(
+            $data['rescan'] = $this->mod()->getURL(
                 'admin',
                 'assoc',
                 ['action' => 'rescan',
@@ -354,7 +354,7 @@ class AssocMethod extends MethodClass
                     'itemtype' => $itemtype,
                     'fileId' => $fileId, ]
             );
-            $data['delete'] = $this->getUrl(
+            $data['delete'] = $this->mod()->getURL(
                 'admin',
                 'assoc',
                 ['action' => 'delete',
@@ -366,7 +366,7 @@ class AssocMethod extends MethodClass
             if (empty($sort) || $sort == 'itemid') {
                 $data['sortlink']['itemid'] = '';
             } else {
-                $data['sortlink']['itemid'] = $this->getUrl(
+                $data['sortlink']['itemid'] = $this->mod()->getURL(
                     'admin',
                     'assoc',
                     ['modid' => $modid,
@@ -377,7 +377,7 @@ class AssocMethod extends MethodClass
             if (!empty($sort) && $sort == 'numlinks') {
                 $data['sortlink']['numlinks'] = '';
             } else {
-                $data['sortlink']['numlinks'] = $this->getUrl(
+                $data['sortlink']['numlinks'] = $this->mod()->getURL(
                     'admin',
                     'assoc',
                     ['modid' => $modid,
@@ -389,7 +389,7 @@ class AssocMethod extends MethodClass
 
             if (!empty($action) && $action == 'delete') {
                 $data['action'] = 'delete';
-                $data['authid'] = $this->genAuthKey();
+                $data['authid'] = $this->sec()->genAuthKey();
             }
         }
 

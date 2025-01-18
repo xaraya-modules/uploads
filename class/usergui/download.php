@@ -44,14 +44,14 @@ class DownloadMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!$this->checkAccess('ViewUploads')) {
+        if (!$this->sec()->checkAccess('ViewUploads')) {
             return;
         }
 
-        if (!$this->fetch('file', 'str:1:', $fileName, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('file', $fileName, 'str:1:', '')) {
             return;
         }
-        if (!$this->fetch('fileId', 'int:1:', $fileId, 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('fileId', $fileId, 'int:1:', 0)) {
             return;
         }
         $usergui = $this->getParent();
@@ -62,7 +62,7 @@ class DownloadMethod extends MethodClass
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
 
         if (empty($fileName) && (empty($fileInfo) || !count($fileInfo))) {
-            $this->redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif');
+            $this->ctl()->redirect(sys::code() . 'modules/uploads/xarimages/notapproved.gif');
             return true;
         }
 
@@ -72,13 +72,13 @@ class DownloadMethod extends MethodClass
             try {
                 $result = $userapi->filePush($fileInfo);
             } catch (Exception $e) {
-                return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
+                return $this->mod()->template('errors', ['layout' => 'not_accessible']);
             }
 
             // Let any hooked modules know that we've just pushed a file
             // the hitcount module in particular needs to know to save the fact
             // that we just pushed a file and not display the count
-            xarVar::setCached('Hooks.hitcount', 'save', 1);
+            $this->var()->setCached('Hooks.hitcount', 'save', 1);
 
             // File has been pushed to the client, now shut down.
             $this->exit();
@@ -88,7 +88,7 @@ class DownloadMethod extends MethodClass
             $fileInfo = end($fileInfo);
 
             // Check whether download is permitted
-            switch ($this->getModVar('permit_download')) {
+            switch ($this->mod()->getVar('permit_download')) {
                 // No download permitted
                 case 0:
                     $permitted = false;
@@ -99,7 +99,7 @@ class DownloadMethod extends MethodClass
                     break;
                     // Group files only
                 case 2:
-                    $rawfunction = $this->getModVar('permit_download_function');
+                    $rawfunction = $this->mod()->getVar('permit_download_function');
                     if (empty($rawfunction)) {
                         $permitted = false;
                     }
@@ -128,17 +128,17 @@ class DownloadMethod extends MethodClass
 
             // If you are an administrator OR the file is approved, continue
             if ($fileInfo['fileStatus'] != Defines::STATUS_APPROVED && !xarSecurity::check('EditUploads', 0, 'File', $instance)) {
-                return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'no_permission']);
+                return $this->mod()->template('errors', ['layout' => 'no_permission']);
             }
 
             if (xarSecurity::check('ViewUploads', 1, 'File', $instance)) {
                 if ($fileInfo['storeType'] & Defines::STORE_FILESYSTEM || ($fileInfo['storeType'] == Defines::STORE_DB_ENTRY)) {
                     if (!file_exists($fileInfo['fileLocation'])) {
-                        return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
+                        return $this->mod()->template('errors', ['layout' => 'not_accessible']);
                     }
                 } elseif ($fileInfo['storeType'] & Defines::STORE_DB_FULL) {
                     if (!$userapi->dbCountData(['fileId' => $fileInfo['fileId']])) {
-                        return xarTpl::module('uploads', 'user', 'errors', ['layout' => 'not_accessible']);
+                        return $this->mod()->template('errors', ['layout' => 'not_accessible']);
                     }
                 }
 
@@ -154,7 +154,7 @@ class DownloadMethod extends MethodClass
                 // Let any hooked modules know that we've just pushed a file
                 // the hitcount module in particular needs to know to save the fact
                 // that we just pushed a file and not display the count
-                xarVar::setCached('Hooks.hitcount', 'save', 1);
+                $this->var()->setCached('Hooks.hitcount', 'save', 1);
 
                 // Note: we're ignoring the output from the display hooks here
                 xarModHooks::call(
@@ -163,7 +163,7 @@ class DownloadMethod extends MethodClass
                     $fileId,
                     ['module'    => 'uploads',
                         'itemtype'  => 1, // Files
-                        'returnurl' => $this->getUrl( 'user', 'download', ['fileId' => $fileId]), ]
+                        'returnurl' => $this->mod()->getURL( 'user', 'download', ['fileId' => $fileId]), ]
                 );
 
                 // File has been pushed to the client, now shut down.

@@ -42,7 +42,7 @@ class GetFilesMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!$this->checkAccess('AddUploads')) {
+        if (!$this->sec()->checkAccess('AddUploads')) {
             return;
         }
 
@@ -53,19 +53,19 @@ class GetFilesMethod extends MethodClass
         $actionList = 'enum:' . implode(':', $actionList);
 
         // What action are we performing?
-        if (!$this->fetch('action', $actionList, $args['action'], null, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('action', $args['action'], $actionList)) {
             return;
         }
 
         // StoreType can -only- be one of FSDB or DB_FULL
         $storeTypes = Defines::STORE_FSDB . ':' . Defines::STORE_DB_FULL;
-        if (!$this->fetch('storeType', "enum:$storeTypes", $storeType, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('storeType', $storeType, "enum:$storeTypes", '')) {
             return;
         }
         $admingui = $this->getParent();
 
         // now make sure someone hasn't tried to change our maxsize on us ;-)
-        $file_maxsize = $this->getModVar('file.maxsize');
+        $file_maxsize = $this->mod()->getVar('file.maxsize');
 
         /** @var UserApi $userapi */
         $userapi = $admingui->getAPI();
@@ -84,27 +84,27 @@ class GetFilesMethod extends MethodClass
                 break;
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
-                if (!$this->fetch('import', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 'NULL', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->get('import', }, 'regexp:/^([a-z]*).\/\/(.{7)/', $import, 'NULL', xarVar::NOT_REQUIRED)) {
                     return;
                 }
                 $args['import'] = $import;
                 break;
             case Defines::GET_LOCAL:
-                if (!$this->fetch('fileList', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList)) {
+                if (!$this->var()->get('fileList', 2}\/, 'list:regexp:/(?<!\.{2)[\w\d]*/', $fileList)) {
                     return;
                 }
-                if (!$this->fetch('file_all', 'checkbox', $file_all, '', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find('file_all', $file_all, 'checkbox', '')) {
                     return;
                 }
-                if (!$this->fetch('addbutton', 'str:1', $addbutton, '', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find('addbutton', $addbutton, 'str:1', '')) {
                     return;
                 }
-                if (!$this->fetch('delbutton', 'str:1', $delbutton, '', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find('delbutton', $delbutton, 'str:1', '')) {
                     return;
                 }
 
                 if (empty($addbutton) && empty($delbutton)) {
-                    $msg = $this->translate('Unsure how to proceed - missing button action!');
+                    $msg = $this->ml('Unsure how to proceed - missing button action!');
                     throw new Exception($msg);
                 } else {
                     $args['bAction'] = (!empty($addbutton)) ? $addbutton : $delbutton;
@@ -121,7 +121,7 @@ class GetFilesMethod extends MethodClass
                 break;
             default:
             case Defines::GET_REFRESH_LOCAL:
-                if (!$this->fetch('inode', 'regexp:/(?<!\.{2,2}\/)[\w\d]*/', $inode, '', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->get('inode', 2}\/, 'regexp:/(?<!\.{2)[\w\d]*/', $inode, '', xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -135,18 +135,18 @@ class GetFilesMethod extends MethodClass
                 $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
                 $data['getAction']['UPLOAD']      = Defines::GET_UPLOAD;
                 $data['getAction']['REFRESH']     = Defines::GET_REFRESH_LOCAL;
-                $data['local_import_post_url']    = $this->getUrl('admin', 'get_files');
-                $data['external_import_post_url'] = $this->getUrl('admin', 'get_files');
+                $data['local_import_post_url']    = $this->mod()->getURL('admin', 'get_files');
+                $data['external_import_post_url'] = $this->mod()->getURL('admin', 'get_files');
                 $data['fileList'] = $userapi->importGetFilelist([
                     'fileLocation' => $cwd,
                     'onlyNew' => true,
                 ]);
 
-                $data['curDir'] = str_replace($this->getModVar('imports_directory'), '', $cwd);
-                $data['noPrevDir'] = ($this->getModVar('imports_directory') == $cwd) ? true : false;
+                $data['curDir'] = str_replace($this->mod()->getVar('imports_directory'), '', $cwd);
+                $data['noPrevDir'] = ($this->mod()->getVar('imports_directory') == $cwd) ? true : false;
                 // reset the CWD for the local import
                 // then only display the: 'check for new imports' button
-                $data['authid'] = $this->genAuthKey();
+                $data['authid'] = $this->sec()->genAuthKey();
                 $data['file_maxsize'] = $file_maxsize;
                 return $data;
         }
@@ -155,9 +155,9 @@ class GetFilesMethod extends MethodClass
         }
         $list = $userapi->processFiles($args);
         if (is_array($list) && count($list)) {
-            return xarTpl::module('uploads', 'admin', 'addfile-status', ['fileList' => $list], null);
+            return $this->mod()->template('addfile-status', ['fileList' => $list], null);
         } else {
-            $this->redirect($this->getUrl('admin', 'get_files'));
+            $this->ctl()->redirect($this->mod()->getURL('admin', 'get_files'));
             return;
         }
     }

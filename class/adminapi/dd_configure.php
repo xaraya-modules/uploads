@@ -40,10 +40,10 @@ class DdConfigureMethod extends MethodClass
         $multiple = true;
         // Grab the sitewide defaults for the methods
         $methods = [
-            'trusted'  => $this->getModVar('dd.fileupload.trusted') ? true : false,
-            'external' => $this->getModVar('dd.fileupload.external') ? true : false,
-            'upload'   => $this->getModVar('dd.fileupload.upload') ? true : false,
-            'stored'   => $this->getModVar('dd.fileupload.stored') ? true : false,
+            'trusted'  => $this->mod()->getVar('dd.fileupload.trusted') ? true : false,
+            'external' => $this->mod()->getVar('dd.fileupload.external') ? true : false,
+            'upload'   => $this->mod()->getVar('dd.fileupload.upload') ? true : false,
+            'stored'   => $this->mod()->getVar('dd.fileupload.stored') ? true : false,
         ];
         $basedir = null;
         $importdir = null;

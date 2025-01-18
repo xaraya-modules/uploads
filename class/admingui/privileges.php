@@ -44,43 +44,43 @@ class PrivilegesMethod extends MethodClass
         extract($args);
 
         // fixed params
-        if (!$this->fetch('mimetype', 'int:0:', $mimetype, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('mimetype', $mimetype, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('subtype', 'int:0:', $subtype, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('subtype', $subtype, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('userId', 'int:0:', $userId, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('userId', $userId, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('fileId', 'int:0:', $fileId, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('fileId', $fileId, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('userName', 'isset', $userName, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('userName', $userName)) {
             return;
         }
-        if (!$this->fetch('apply', 'isset', $apply, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('apply', $apply)) {
             return;
         }
-        if (!$this->fetch('extpid', 'isset', $extpid, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extpid', $extpid)) {
             return;
         }
-        if (!$this->fetch('extname', 'isset', $extname, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extname', $extname)) {
             return;
         }
-        if (!$this->fetch('extrealm', 'isset', $extrealm, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extrealm', $extrealm)) {
             return;
         }
-        if (!$this->fetch('extmodule', 'isset', $extmodule, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extmodule', $extmodule)) {
             return;
         }
-        if (!$this->fetch('extcomponent', 'isset', $extcomponent, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extcomponent', $extcomponent)) {
             return;
         }
-        if (!$this->fetch('extinstance', 'isset', $extinstance, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extinstance', $extinstance)) {
             return;
         }
-        if (!$this->fetch('extlevel', 'isset', $extlevel, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('extlevel', $extlevel)) {
             return;
         }
 
@@ -106,7 +106,7 @@ class PrivilegesMethod extends MethodClass
         // Otherwise do a quick check to make sure this user has access
         if (empty($mimetype) || !is_numeric($mimetype)) {
             $mimetype = 0;
-            if (!$this->checkAccess('AdminUploads')) {
+            if (!$this->sec()->checkAccess('AdminUploads')) {
                 return;
             }
         } else {
@@ -228,7 +228,7 @@ class PrivilegesMethod extends MethodClass
             }
 
             // redirect to the privilege
-            $this->redirect(xarController::URL(
+            $this->ctl()->redirect(xarController::URL(
                 'privileges',
                 'admin',
                 'modifyprivilege',
@@ -257,7 +257,7 @@ class PrivilegesMethod extends MethodClass
 
         // Set up default 'All' option for users
         $userNameList[0]['userId'] = 0;
-        $userNameList[0]['userName'] = $this->translate('All');
+        $userNameList[0]['userName'] = $this->ml('All');
 
         if (isset($userNameList[$userId])) {
             $userNameList[$userId]['selected'] = true;
@@ -271,7 +271,7 @@ class PrivilegesMethod extends MethodClass
 
         $fileList = $userapi->dbGetFile($filter);
         $fileList[0]['fileId'] = 0;
-        $fileList[0]['fileName'] = $this->translate('All');
+        $fileList[0]['fileName'] = $this->ml('All');
         $fileList[0]['fileLocation'] = $fileList[0]['fileName'];
 
         if (isset($fileList[$fileId])) {
@@ -303,7 +303,7 @@ class PrivilegesMethod extends MethodClass
         $data['extcomponent']   = $extcomponent;
         $data['extlevel']       = $extlevel;
         $data['extinstance']    = xarVar::prepForDisplay(join(':', $newinstance));
-        $data['applylabel']     = $this->translate('Finish and Apply to Privilege');
+        $data['applylabel']     = $this->ml('Finish and Apply to Privilege');
 
         return $data;
     }

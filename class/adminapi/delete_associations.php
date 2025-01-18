@@ -52,7 +52,7 @@ class DeleteAssociationsMethod extends MethodClass
 
         // we only accept deleting file associations for a particular module + itemtype
         if (empty($modid)) {
-            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'modid', 'admin', 'delete_associations', 'uploads');
+            $msg = $this->ml('Invalid #(1) for #(2) function #(3)() in module #(4)', 'modid', 'admin', 'delete_associations', 'uploads');
             throw new Exception($msg);
         }
         if (empty($itemtype)) {
@@ -177,7 +177,7 @@ class DeleteAssociationsMethod extends MethodClass
         }
 
         // let's try some articles fields too
-        if (!xarMod::isAvailable('articles')) {
+        if (!$this->mod()->isAvailable('articles')) {
             return true;
         }
         $artmodid = xarMod::getRegID('articles');

@@ -41,7 +41,7 @@ class ProcessFilesMethod extends MethodClass
         $storeList = [];
 
         if (!isset($action)) {
-            $msg = $this->translate("Missing parameter [#(1)] to API function [#(2)] in module [#(3)].", 'action', 'process_files', 'uploads');
+            $msg = $this->ml("Missing parameter [#(1)] to API function [#(2)] in module [#(3)].", 'action', 'process_files', 'uploads');
             throw new Exception($msg);
         }
 
@@ -80,12 +80,12 @@ class ProcessFilesMethod extends MethodClass
         switch ($action) {
             case Defines::GET_UPLOAD:
                 if (!isset($upload) || empty($upload)) {
-                    $msg = $this->translate('Missing parameter [#(1)] to API function [#(2)] in module [#(3)].', 'upload', 'process_files', 'uploads');
+                    $msg = $this->ml('Missing parameter [#(1)] to API function [#(2)] in module [#(3)].', 'upload', 'process_files', 'uploads');
                     throw new Exception($msg);
                 }
 
                 // Set in the uploads method
-                //$allow_duplicate = $this->getModVar('file.allow-duplicate-upload');
+                //$allow_duplicate = $this->mod()->getVar('file.allow-duplicate-upload');
 
                 // Rearange the uploads array so we can pass the uploads one by one
                 $uploadarray = [];
@@ -124,7 +124,7 @@ class ProcessFilesMethod extends MethodClass
                             if (empty($allow_duplicate)) {
                                 // specify the error message
                                 $file['errors'] = [];
-                                $file['errors'][] = ['errorMesg' => $this->translate('Filename already exists'),
+                                $file['errors'][] = ['errorMesg' => $this->ml('Filename already exists'),
                                     'errorId'   => Defines::ERROR_BAD_FORMAT, ];
                                 // set the fileId to null for templates etc.
                                 $file['fileId'] = null;
@@ -187,7 +187,7 @@ class ProcessFilesMethod extends MethodClass
             case Defines::GET_EXTERNAL:
 
                 if (!isset($import)) {
-                    $msg = $this->translate('Missing parameter [#(1)] to API function [#(2)] in module [#(3)].', 'import', 'process_files', 'uploads');
+                    $msg = $this->ml('Missing parameter [#(1)] to API function [#(2)] in module [#(3)].', 'import', 'process_files', 'uploads');
                     throw new Exception($msg);
                 }
 
@@ -195,7 +195,7 @@ class ProcessFilesMethod extends MethodClass
                 $uri = parse_url($import);
 
                 if (!isset($uri['scheme']) || empty($uri['scheme'])) {
-                    $uri['scheme'] = $this->translate('unknown');
+                    $uri['scheme'] = $this->ml('unknown');
                 }
 
                 switch ($uri['scheme']) {
@@ -229,12 +229,12 @@ class ProcessFilesMethod extends MethodClass
                     case 'prospero':
                     default:
                         // ERROR
-                        $msg = $this->translate('Import via scheme \'#(1)\' is not currently supported', $uri['scheme']);
+                        $msg = $this->ml('Import via scheme \'#(1)\' is not currently supported', $uri['scheme']);
                         throw new Exception($msg);
                 }
                 break;
             default:
-                $msg = $this->translate("Invalid parameter [#(1)] to API function [#(2)] in module [#(3)].", 'action', 'process_files', 'uploads');
+                $msg = $this->ml("Invalid parameter [#(1)] to API function [#(2)] in module [#(3)].", 'action', 'process_files', 'uploads');
                 throw new Exception($msg);
         }
         foreach ($fileList as $fileInfo) {

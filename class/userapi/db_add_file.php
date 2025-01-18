@@ -56,7 +56,7 @@ class DbAddFileMethod extends MethodClass
         extract($args);
 
         if (!isset($fileName)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'filename',
                 'db_add_file',
@@ -66,7 +66,7 @@ class DbAddFileMethod extends MethodClass
         }
 
         if (!isset($fileLocation)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileLocation',
                 'db_add_file',
@@ -80,10 +80,10 @@ class DbAddFileMethod extends MethodClass
         }
 
         if (!isset($fileStatus)) {
-            $autoApprove = $this->getModVar('file.auto-approve');
+            $autoApprove = $this->mod()->getVar('file.auto-approve');
 
             if ($autoApprove == Defines::APPROVE_EVERYONE ||
-               ($autoApprove == Defines::APPROVE_ADMIN && $this->checkAccess('AdminUploads', 0))) {
+               ($autoApprove == Defines::APPROVE_ADMIN && $this->sec()->checkAccess('AdminUploads', 0))) {
                 $fileStatus = Defines::STATUS_APPROVED;
             } else {
                 $fileStatus = Defines::STATUS_SUBMITTED;

@@ -65,7 +65,7 @@ class ValidatevalueMethod extends MethodClass
             $multiple = true;
         }
         if (empty($maxsize)) {
-            $maxsize = $this->getModVar('file.maxsize');
+            $maxsize = $this->mod()->getVar('file.maxsize');
         }
         if (empty($methods)) {
             $methods = null;
@@ -104,13 +104,13 @@ class ValidatevalueMethod extends MethodClass
             $typeCheck .= ':-2'; // clear value
         } else {
             $typeCheck = 'enum:0:' . Defines::GET_STORED;
-            $typeCheck .= ($this->getModVar('dd.fileupload.external') == true) ? ':' . Defines::GET_EXTERNAL : '';
-            $typeCheck .= ($this->getModVar('dd.fileupload.trusted') == true) ? ':' . Defines::GET_LOCAL : '';
-            $typeCheck .= ($this->getModVar('dd.fileupload.upload') == true) ? ':' . Defines::GET_UPLOAD : '';
+            $typeCheck .= ($this->mod()->getVar('dd.fileupload.external') == true) ? ':' . Defines::GET_EXTERNAL : '';
+            $typeCheck .= ($this->mod()->getVar('dd.fileupload.trusted') == true) ? ':' . Defines::GET_LOCAL : '';
+            $typeCheck .= ($this->mod()->getVar('dd.fileupload.upload') == true) ? ':' . Defines::GET_UPLOAD : '';
             $typeCheck .= ':-2'; // clear value
         }
 
-        $this->fetch($id . '_attach_type', $typeCheck, $action, -3, xarVar::NOT_REQUIRED);
+        $this->var()->find($id . '_attach_type', $action, $typeCheck, -3);
 
         if (!isset($action)) {
             $action = -3;
@@ -120,14 +120,14 @@ class ValidatevalueMethod extends MethodClass
         switch ($action) {
             case Defines::GET_UPLOAD:
 
-                $file_maxsize = $this->getModVar('file.maxsize');
+                $file_maxsize = $this->mod()->getVar('file.maxsize');
                 $file_maxsize = $file_maxsize > 0 ? $file_maxsize : $maxsize;
 
-                if (!$this->fetch('MAX_FILE_SIZE', "int::$file_maxsize", $maxsize)) {
+                if (!$this->var()->get('MAX_FILE_SIZE', $maxsize), "int::$file_maxsize") {
                     return;
                 }
 
-                if (!xarVar::validate('array:1:', $_FILES[$id . '_attach_upload'])) {
+                if (!$this->var()->validate('array:1:', $_FILES[$id . '_attach_upload'])) {
                     return;
                 }
 
@@ -137,7 +137,7 @@ class ValidatevalueMethod extends MethodClass
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!$this->fetch($id . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->get($id . '_attach_external', }, 'regexp:/^([a-z]*).\/\/(.{7)/', $import, 0, xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -153,13 +153,13 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_LOCAL:
 
-                if (!$this->fetch($id . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList)) {
+                if (!$this->var()->get($id . '_attach_trusted', 2}\/, 'list:regexp:/(?<!\.{2)[\w\d]*/', $fileList)) {
                     return;
                 }
 
                 // CHECKME: use 'imports' name like in db_get_file() ?
                 // replace /trusted coming from showinput() again
-                $importDir = sys::root() . "/" . $this->getModVar('imports_directory');
+                $importDir = sys::root() . "/" . $this->mod()->getVar('imports_directory');
                 foreach ($fileList as $file) {
                     $file = str_replace('/trusted', $importDir, $file);
                     $args['fileList']["$file"] = $userapi->fileGetMetadata(['fileLocation' => "$file"]);
@@ -170,7 +170,7 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_STORED:
 
-                if (!$this->fetch($id . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find($id . '_attach_stored', $fileList, 'list:int:1:', 0)) {
                     return;
                 }
 
@@ -227,7 +227,7 @@ class ValidatevalueMethod extends MethodClass
                 if (!isset($fileInfo['errors'])) {
                     $storeList[] = $fileInfo['fileId'];
                 } else {
-                    $msg = $this->translate('Error Found: #(1)', $fileInfo['errors'][0]['errorMesg']);
+                    $msg = $this->ml('Error Found: #(1)', $fileInfo['errors'][0]['errorMesg']);
                     throw new Exception($msg);
                 }
             }

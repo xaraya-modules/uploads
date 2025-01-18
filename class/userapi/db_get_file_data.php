@@ -45,7 +45,7 @@ class DbGetFileDataMethod extends MethodClass
         extract($args);
 
         if (!isset($fileId)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileId',
                 'db_get_file_data',

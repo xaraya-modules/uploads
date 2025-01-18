@@ -71,7 +71,7 @@ class PrepareUploadsMethod extends MethodClass
         if (isset($obfuscate) && $obfuscate) {
             $obfuscate_fileName = true;
         } else {
-            $obfuscate_fileName = $this->getModVar('file.obfuscate-on-upload');
+            $obfuscate_fileName = $this->mod()->getVar('file.obfuscate-on-upload');
         }
         $userapi = $this->getParent();
 
@@ -87,8 +87,8 @@ class PrepareUploadsMethod extends MethodClass
             $fileInfo['fileType']   = 'unknown';
             $fileInfo['fileSrc']    = 'missing';
             $fileInfo['fileSize']   = 0;
-            $fileInfo['fileName']   = $this->translate('Missing File!');
-            $fileInfo['errors'][0]['errorMesg'] = $this->translate('Invalid data format for upload ID: [#(1)]', 'upload');
+            $fileInfo['fileName']   = $this->ml('Missing File!');
+            $fileInfo['errors'][0]['errorMesg'] = $this->ml('Invalid data format for upload ID: [#(1)]', 'upload');
             $fileInfo['errors'][0]['errorId']  = Defines::ERROR_BAD_FORMAT;
             return ["$fileInfo[fileName]" => $fileInfo];
         }

@@ -36,12 +36,12 @@ class UploadformMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!$this->checkAccess('AddUploads')) {
+        if (!$this->sec()->checkAccess('AddUploads')) {
             return;
         }
         // Generate a one-time authorisation code for this operation
-        $data['authid'] = $this->genAuthKey();
-        $data['file_maxsize'] = $this->getModVar('file.maxsize');
+        $data['authid'] = $this->sec()->genAuthKey();
+        $data['file_maxsize'] = $this->mod()->getVar('file.maxsize');
 
         return $data;
     }

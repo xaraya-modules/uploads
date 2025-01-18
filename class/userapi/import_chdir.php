@@ -70,7 +70,7 @@ class ImportChdirMethod extends MethodClass
             }
         } else {
             // if dirName is empty, then reset the cwd to the top level directory
-            $cwd = $this->getModVar('imports_directory');
+            $cwd = $this->mod()->getVar('imports_directory');
             xarModUserVars::set('uploads', 'path.imports-cwd', $cwd);
         }
 

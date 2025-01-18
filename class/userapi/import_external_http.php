@@ -55,7 +55,7 @@ class ImportExternalHttpMethod extends MethodClass
         if (isset($obfuscate) && $obfuscate) {
             $obfuscate_fileName = true;
         } else {
-            $obfuscate_fileName = $this->getModVar('file.obfuscate-on-upload');
+            $obfuscate_fileName = $this->mod()->getVar('file.obfuscate-on-upload');
         }
         $userapi = $this->getParent();
 
@@ -84,7 +84,7 @@ class ImportExternalHttpMethod extends MethodClass
             $uri['fragment'] = '';
         }
         $total = 0;
-        $maxSize = $this->getModVar('file.maxsize');
+        $maxSize = $this->mod()->getVar('file.maxsize');
 
         // create the URI in the event we don't have the http library
         $httpURI = "$uri[scheme]://$uri[host]:$uri[port]$uri[path]$uri[query]$uri[fragment]";
@@ -109,7 +109,7 @@ class ImportExternalHttpMethod extends MethodClass
         $fileInfo['fileSize']     = 0;
 
         if (($httpId = fopen($httpURI, 'rb')) === false) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Unable to connect to host [#(1):#(2)] to retrieve file [#(3)]',
                 $uri['host'],
                 $uri['port'],
@@ -118,7 +118,7 @@ class ImportExternalHttpMethod extends MethodClass
             throw new Exception($msg);
         } else {
             if (($tmpId = fopen($tmpName, 'wb')) === false) {
-                $msg = $this->translate(
+                $msg = $this->ml(
                     'Unable to open temp file to store remote host [#(1):#(2)] file [#(3)]',
                     $uri['host'],
                     $uri['port'],
@@ -136,10 +136,10 @@ class ImportExternalHttpMethod extends MethodClass
                     } else {
                         $total += strlen($data);
                         if ($total > $maxSize) {
-                            $msg = $this->translate('File size is greater than the maximum allowable.');
+                            $msg = $this->ml('File size is greater than the maximum allowable.');
                             throw new Exception($msg);
                         } elseif (fwrite($tmpId, $data, strlen($data)) !== strlen($data)) {
-                            $msg = $this->translate('Unable to write to temp file!');
+                            $msg = $this->ml('Unable to write to temp file!');
                             throw new Exception($msg);
                         }
                     }

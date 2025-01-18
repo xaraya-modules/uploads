@@ -41,7 +41,7 @@ class PurgeRejectedMethod extends MethodClass
     {
         extract($args);
 
-        if (!$this->checkAccess('ManageUploads')) {
+        if (!$this->sec()->checkAccess('ManageUploads')) {
             return;
         }
 
@@ -50,10 +50,10 @@ class PurgeRejectedMethod extends MethodClass
         }
 
         if (!isset($confirmation)) {
-            $this->fetch('confirmation', 'int:1:', $confirmation, '', xarVar::NOT_REQUIRED);
+            $this->var()->find('confirmation', $confirmation, 'int:1:', '');
         }
         // Confirm authorisation code.
-        if (!$this->confirmAuthKey()) {
+        if (!$this->sec()->confirmAuthKey()) {
             return;
         }
         $usergui = $this->getParent();
@@ -61,20 +61,20 @@ class PurgeRejectedMethod extends MethodClass
         /** @var UserApi $userapi */
         $userapi = $usergui->getAPI();
 
-        if ((isset($confirmation) && $confirmation) || !$this->getModVar('file.delete-confirmation')) {
+        if ((isset($confirmation) && $confirmation) || !$this->mod()->getVar('file.delete-confirmation')) {
             $fileList = $userapi->dbGetFile([
                 'fileStatus' => Defines::STATUS_REJECTED,
             ]);
 
             if (empty($fileList)) {
-                $this->redirect($this->getUrl('admin', 'view'));
+                $this->ctl()->redirect($this->mod()->getURL('admin', 'view'));
                 return;
             } else {
                 $result = $userapi->purgeFiles([
                     'fileList'   => $fileList,
                 ]);
                 if (!$result) {
-                    $msg = $this->translate('Unable to purge rejected files!');
+                    $msg = $this->ml('Unable to purge rejected files!');
                     throw new Exception($msg);
                 }
             }
@@ -87,11 +87,11 @@ class PurgeRejectedMethod extends MethodClass
             } else {
                 $data['fileList']   = $fileList;
             }
-            $data['authid']     = $this->genAuthKey();
+            $data['authid']     = $this->sec()->genAuthKey();
 
             return $data;
         }
 
-        $this->redirect($this->getUrl('admin', 'view'));
+        $this->ctl()->redirect($this->mod()->getURL('admin', 'view'));
     }
 }

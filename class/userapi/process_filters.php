@@ -52,7 +52,7 @@ class ProcessFiltersMethod extends MethodClass
         /** @var MimeApi $mimeapi */
         $mimeapi = $userapi->getMimeAPI();
 
-        $options   =  unserialize($this->getModVar('view.filter'));
+        $options   =  unserialize($this->mod()->getVar('view.filter'));
 
         $data      =  $options['data'];
         $filter    =  $options['filter'];

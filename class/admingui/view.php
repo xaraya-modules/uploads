@@ -57,7 +57,7 @@ class ViewMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         //security check
-        if (!$this->checkAccess('AdminUploads')) {
+        if (!$this->sec()->checkAccess('AdminUploads')) {
             return;
         }
 
@@ -65,37 +65,37 @@ class ViewMethod extends MethodClass
          *  Validate variables passed back
          */
 
-        if (!$this->fetch('mimetype', 'int:0:', $mimetype, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('mimetype', $mimetype, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('subtype', 'int:0:', $subtype, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('subtype', $subtype, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('status', 'int:0:', $status, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('status', $status, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('inverse', 'checkbox', $inverse, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('inverse', $inverse, 'checkbox')) {
             return;
         }
-        if (!$this->fetch('fileId', 'list:int:1', $fileId, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('fileId', $fileId, 'list:int:1')) {
             return;
         }
-        if (!$this->fetch('fileDo', 'str:5:', $fileDo, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('fileDo', $fileDo, 'str:5:')) {
             return;
         }
-        if (!$this->fetch('action', 'int:0:', $action, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('action', $action, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('sort', 'enum:id:name:size:user:status', $sort, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('sort', $sort, 'enum:id:name:size:user:status')) {
             return;
         }
-        if (!$this->fetch('catid', 'str:1:', $catid, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('catid', $catid, 'str:1:')) {
             return;
         }
         $admingui = $this->getParent();
@@ -163,11 +163,11 @@ class ViewMethod extends MethodClass
                     break;
                 case Defines::STATUS_REJECTED:
                     $userapi->dbChangeStatus($args + ['newStatus'   => Defines::STATUS_REJECTED]);
-                    if ($this->getModVar('file.auto-purge')) {
-                        if ($this->getModVar('file.delete-confirmation')) {
-                            return $admingui->purgeRejected(['confirmation' => false, 'authid' => $this->genAuthKey()]);
+                    if ($this->mod()->getVar('file.auto-purge')) {
+                        if ($this->mod()->getVar('file.delete-confirmation')) {
+                            return $admingui->purgeRejected(['confirmation' => false, 'authid' => $this->sec()->genAuthKey()]);
                         } else {
-                            return $admingui->purgeRejected(['confirmation' => true, 'authid' => $this->genAuthKey()]);
+                            return $admingui->purgeRejected(['confirmation' => true, 'authid' => $this->sec()->genAuthKey()]);
                         }
                     }
                     break;
@@ -182,7 +182,7 @@ class ViewMethod extends MethodClass
          */
 
         if (!isset($numitems)) {
-            $numitems = $this->getModVar('view.itemsperpage');
+            $numitems = $this->mod()->getVar('view.itemsperpage');
             $skipnum = 1;
         }
 
@@ -207,7 +207,7 @@ class ViewMethod extends MethodClass
         }
 
         // @todo do we want to generate an exception here!?
-        if ($this->checkAccess('EditUploads', 0)) {
+        if ($this->sec()->checkAccess('EditUploads', 0)) {
             $data['diskUsage']['stored_size_filtered'] = $userapi->dbDiskusage($filter);
             $data['diskUsage']['stored_size_total']    = $userapi->dbDiskusage();
 
@@ -255,7 +255,7 @@ class ViewMethod extends MethodClass
         } // throw back
 
         $data['items'] = $items;
-        $data['authid'] = $this->genAuthKey();
+        $data['authid'] = $this->sec()->genAuthKey();
 
         // Add pager
         if (!empty($numitems) && $countitems > $numitems) {
@@ -263,7 +263,7 @@ class ViewMethod extends MethodClass
             $data['pager'] = xarTplPager::getPager(
                 $startnum,
                 $countitems,
-                $this->getUrl(
+                $this->mod()->getURL(
                     'admin',
                     'view',
                     ['startnum' => '%%',

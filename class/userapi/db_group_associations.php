@@ -39,7 +39,7 @@ class DbGroupAssociationsMethod extends MethodClass
         extract($args);
 
         // Security check
-        if (!$this->checkAccess('ViewUploads')) {
+        if (!$this->sec()->checkAccess('ViewUploads')) {
             return;
         }
 

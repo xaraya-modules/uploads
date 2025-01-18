@@ -70,7 +70,7 @@ class DbGetallFilesMethod extends MethodClass
                        xar_extrainfo
                   FROM $fileEntry_table ";
 
-        if (!empty($catid) && xarMod::isAvailable('categories') && xarModHooks::isHooked('categories', 'uploads', 1)) {
+        if (!empty($catid) && $this->mod()->isAvailable('categories') && xarModHooks::isHooked('categories', 'uploads', 1)) {
             // Get the LEFT JOIN ... ON ...  and WHERE (!) parts from categories
             $categoriesdef = xarMod::apiFunc(
                 'categories',
@@ -202,9 +202,9 @@ class DbGetallFilesMethod extends MethodClass
                 $imgcache[$fileInfo['fileType']] = $mimeapi->getMimeImage(['mimeType' => $fileInfo['fileType']]);
             }
             $fileInfo['mimeImage']     = $imgcache[$fileInfo['fileType']];
-            $fileInfo['fileDownload']  = $this->getUrl( 'user', 'download', ['fileId' => $fileInfo['fileId']]);
+            $fileInfo['fileDownload']  = $this->mod()->getURL( 'user', 'download', ['fileId' => $fileInfo['fileId']]);
             $fileInfo['fileURL']       = $fileInfo['fileDownload'];
-            $fileInfo['DownloadLabel'] = $this->translate('Download file: #(1)', $fileInfo['fileName']);
+            $fileInfo['DownloadLabel'] = $this->ml('Download file: #(1)', $fileInfo['fileName']);
             if (!empty($fileInfo['fileLocation']) && file_exists($fileInfo['fileLocation'])) {
                 $fileInfo['fileModified'] = @filemtime($fileInfo['fileLocation']);
             }
@@ -225,16 +225,16 @@ class DbGetallFilesMethod extends MethodClass
 
             switch ($fileInfo['fileStatus']) {
                 case Defines::STATUS_REJECTED:
-                    $fileInfo['fileStatusName'] = $this->translate('Rejected');
+                    $fileInfo['fileStatusName'] = $this->ml('Rejected');
                     break;
                 case Defines::STATUS_APPROVED:
-                    $fileInfo['fileStatusName'] = $this->translate('Approved');
+                    $fileInfo['fileStatusName'] = $this->ml('Approved');
                     break;
                 case Defines::STATUS_SUBMITTED:
-                    $fileInfo['fileStatusName'] = $this->translate('Submitted');
+                    $fileInfo['fileStatusName'] = $this->ml('Submitted');
                     break;
                 default:
-                    $fileInfo['fileStatusName'] = $this->translate('Unknown!');
+                    $fileInfo['fileStatusName'] = $this->ml('Unknown!');
                     break;
             }
 

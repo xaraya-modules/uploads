@@ -38,9 +38,9 @@ class GetitemtypesMethod extends MethodClass
 
         // Files
         $id = 1;
-        $itemtypes[$id] = ['label' => $this->translate('Files'),
-            'title' => $this->translate('View All Files'),
-            'url'   => $this->getUrl('admin', 'view'),
+        $itemtypes[$id] = ['label' => $this->ml('Files'),
+            'title' => $this->ml('View All Files'),
+            'url'   => $this->mod()->getURL('admin', 'view'),
         ];
 
         // TODO: Assoc, VDir and other future tables ?

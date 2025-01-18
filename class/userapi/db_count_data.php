@@ -44,7 +44,7 @@ class DbCountDataMethod extends MethodClass
         $where = [];
 
         if (!isset($fileId)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for API function [#(2)] in module [#(3)]',
                 'fileId',
                 'db_count_data',

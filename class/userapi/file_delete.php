@@ -41,7 +41,7 @@ class FileDeleteMethod extends MethodClass
         extract($args);
 
         if (!isset($fileName)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [(#(2)] in module [#(3)]',
                 'fileName',
                 'file_move',
@@ -57,7 +57,7 @@ class FileDeleteMethod extends MethodClass
         }
 
         if (!unlink($fileName)) {
-            $msg = $this->translate('Unable to remove file: [#(1)].', $fileName);
+            $msg = $this->ml('Unable to remove file: [#(1)].', $fileName);
             throw new Exception($msg);
         }
 

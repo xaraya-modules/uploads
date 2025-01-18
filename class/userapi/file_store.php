@@ -39,7 +39,7 @@ class FileStoreMethod extends MethodClass
         extract($args);
 
         if (!isset($fileInfo)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'fileInfo',
                 'file_store',
@@ -147,7 +147,7 @@ class FileStoreMethod extends MethodClass
                 } else {
                     // if it was successfully added, then change the stored fileLocation
                     // to DATABASE instead of uploads/blahblahblah
-                    $userapi->dbModifyFile(['fileId' => $fileId, 'fileLocation' => $this->translate('DATABASE')]);
+                    $userapi->dbModifyFile(['fileId' => $fileId, 'fileLocation' => $this->ml('DATABASE')]);
                 }
             }
         }

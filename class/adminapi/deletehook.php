@@ -47,7 +47,7 @@ class DeletehookMethod extends MethodClass
         }
 
         if (!isset($objectid) || !is_numeric($objectid)) {
-            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID', 'admin', 'deletehook', 'uploads');
+            $msg = $this->ml('Invalid #(1) for #(2) function #(3)() in module #(4)', 'object ID', 'admin', 'deletehook', 'uploads');
             //throw new BadParameterException(null, $msg);
             // Return the extra info
             return $extrainfo;
@@ -63,7 +63,7 @@ class DeletehookMethod extends MethodClass
 
         $modid = xarMod::getRegID($modname);
         if (empty($modid)) {
-            $msg = $this->translate('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module name', 'admin', 'deletehook', 'uploads');
+            $msg = $this->ml('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module name', 'admin', 'deletehook', 'uploads');
             //throw new BadParameterException(null, $msg);
             // Return the extra info
             return $extrainfo;

@@ -168,7 +168,7 @@ class RescanAssociationsMethod extends MethodClass
         }
 
         // let's try some articles fields too
-        if (!xarMod::isAvailable('articles')) {
+        if (!$this->mod()->isAvailable('articles')) {
             return true;
         }
         $artmodid = xarMod::getRegID('articles');

@@ -59,7 +59,7 @@ class GetitemlinksMethod extends MethodClass
 
             $file = $fileList[$itemid];
 
-            $itemlinks[$itemid] = ['url'   => $this->getUrl( 'user', 'download', ['fileId' => $file['fileId']]),
+            $itemlinks[$itemid] = ['url'   => $this->mod()->getURL( 'user', 'download', ['fileId' => $file['fileId']]),
                 'title' => $file['DownloadLabel'],
                 'label' => xarVar::prepForDisplay($file['fileName']), ];
         }

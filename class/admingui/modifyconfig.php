@@ -42,7 +42,7 @@ class ModifyconfigMethod extends MethodClass
         xarMod::apiLoad('uploads', 'user');
 
         // Security check
-        if (!$this->checkAccess('AdminUploads')) {
+        if (!$this->sec()->checkAccess('AdminUploads')) {
             return;
         }
 
@@ -51,26 +51,26 @@ class ModifyconfigMethod extends MethodClass
         // get the current module variables for display
         // *********************************************
         // Global
-        $data['file']['maxsize']                = number_format($this->getModVar('file.maxsize'));
-        $data['file']['delete-confirmation']    = $this->getModVar('file.delete-confirmation');
-        $data['file']['auto-purge']             = $this->getModVar('file.auto-purge');
-        $data['file']['auto-approve']           = $this->getModVar('file.auto-approve');
-        $data['file']['obfuscate-on-import']    = $this->getModVar('file.obfuscate-on-import');
-        $data['file']['obfuscate-on-upload']    = $this->getModVar('file.obfuscate-on-upload');
-        $data['file']['cache-expire']           = $this->getModVar('file.cache-expire');
+        $data['file']['maxsize']                = number_format($this->mod()->getVar('file.maxsize'));
+        $data['file']['delete-confirmation']    = $this->mod()->getVar('file.delete-confirmation');
+        $data['file']['auto-purge']             = $this->mod()->getVar('file.auto-purge');
+        $data['file']['auto-approve']           = $this->mod()->getVar('file.auto-approve');
+        $data['file']['obfuscate-on-import']    = $this->mod()->getVar('file.obfuscate-on-import');
+        $data['file']['obfuscate-on-upload']    = $this->mod()->getVar('file.obfuscate-on-upload');
+        $data['file']['cache-expire']           = $this->mod()->getVar('file.cache-expire');
         if (!isset($data['file']['cache-expire'])) {
-            $this->setModVar('file.cache-expire', 0);
+            $this->mod()->setVar('file.cache-expire', 0);
         }
-        $data['file']['allow-duplicate-upload'] = $this->getModVar('file.allow-duplicate-upload');
+        $data['file']['allow-duplicate-upload'] = $this->mod()->getVar('file.allow-duplicate-upload');
         if (!isset($data['file']['allow-duplicate-upload'])) {
-            $this->setModVar('file.allow-duplicate-upload', 0);
+            $this->mod()->setVar('file.allow-duplicate-upload', 0);
             $data['file']['allow-duplicate-upload'] = 0;
         }
-        $data['ddprop']['trusted']              = $this->getModVar('dd.fileupload.trusted');
-        $data['ddprop']['external']             = $this->getModVar('dd.fileupload.external');
-        $data['ddprop']['stored']               = $this->getModVar('dd.fileupload.stored');
-        $data['ddprop']['upload']               = $this->getModVar('dd.fileupload.upload');
-        $data['authid']                         = $this->genAuthKey();
+        $data['ddprop']['trusted']              = $this->mod()->getVar('dd.fileupload.trusted');
+        $data['ddprop']['external']             = $this->mod()->getVar('dd.fileupload.external');
+        $data['ddprop']['stored']               = $this->mod()->getVar('dd.fileupload.stored');
+        $data['ddprop']['upload']               = $this->mod()->getVar('dd.fileupload.upload');
+        $data['authid']                         = $this->sec()->genAuthKey();
 
         $data['approveList']['noone']      = Defines::APPROVE_NOONE;
         $data['approveList']['admin']      = Defines::APPROVE_ADMIN;
@@ -104,17 +104,17 @@ class ModifyconfigMethod extends MethodClass
         $location = $userapi->dbGetDir(['directory' => 'uploads_directory']);
         $data['uploads_directory_message'] = "";
         if (!file_exists($location) || !is_dir($location)) {
-            $data['uploads_directory_message'] = $this->translate('Not a valid directory');
+            $data['uploads_directory_message'] = $this->ml('Not a valid directory');
         } elseif (!is_writable($location)) {
-            $data['uploads_directory_message'] = $this->translate('Not a writable directory');
+            $data['uploads_directory_message'] = $this->ml('Not a writable directory');
         }
 
         $location = $userapi->dbGetDir(['directory' => 'imports_directory']);
         $data['imports_directory_message'] = "";
         if (!file_exists($location) || !is_dir($location)) {
-            $data['imports_directory_message'] = $this->translate('Not a valid directory');
+            $data['imports_directory_message'] = $this->ml('Not a valid directory');
         } elseif (!is_writable($location)) {
-            $data['imports_directory_message'] = $this->translate('Not a writable directory');
+            $data['imports_directory_message'] = $this->ml('Not a writable directory');
         }
 
         // Define the module settings

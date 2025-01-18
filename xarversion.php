@@ -34,7 +34,7 @@
 $modversion['name']         = 'uploads';
 $modversion['id']           = '666';
 $modversion['version']      = '2.6.0'; // long jump to current mime version
-$modversion['displayname']  = xarML('Uploads');
+$modversion['displayname']  = xarMLS::translate('Uploads');
 $modversion['description']  = 'Upload/Download File Handler';
 $modversion['credits']      = 'docs/credits.txt';
 $modversion['help']         = 'docs/help.txt';

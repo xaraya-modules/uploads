@@ -42,18 +42,18 @@ class FilePropertiesMethod extends MethodClass
     {
         extract($args);
 
-        if (!$this->checkAccess('ViewUploads')) {
+        if (!$this->sec()->checkAccess('ViewUploads')) {
             return;
         }
-        if (!$this->fetch('fileId', 'int:1', $fileId)) {
+        if (!$this->var()->get('fileId', $fileId), 'int:1') {
             return;
         }
-        if (!$this->fetch('fileName', 'str:1:64', $fileName, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('fileName', $fileName, 'str:1:64', '')) {
             return;
         }
 
         if (!isset($fileId)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing paramater [#(1)] for GUI function [#(2)] in module [#(3)].',
                 'fileId',
                 'file_properties',
@@ -69,7 +69,7 @@ class FilePropertiesMethod extends MethodClass
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
         if (empty($fileInfo) || !count($fileInfo)) {
             $data['fileInfo']   = [];
-            $data['error']      = $this->translate('File not found!');
+            $data['error']      = $this->ml('File not found!');
         } else {
             // the file should be the first indice in the array
             $fileInfo = end($fileInfo);
@@ -99,21 +99,21 @@ class FilePropertiesMethod extends MethodClass
                     $args['fileName'] = trim($fileName);
 
                     if (!$userapi->dbModifyFile($args)) {
-                        $msg = $this->translate(
+                        $msg = $this->ml(
                             'Unable to change filename for file: #(1) with file Id #(2)',
                             $fileInfo['fileName'],
                             $fileInfo['fileId']
                         );
                         throw new Exception($msg);
                     }
-                    $this->redirect($this->getUrl(
+                    $this->ctl()->redirect($this->mod()->getURL(
                         'user',
                         'file_properties',
                         ['fileId' => $fileId]
                     ));
                     return;
                 } else {
-                    $msg = $this->translate('You do not have the necessary permissions for this object.');
+                    $msg = $this->ml('You do not have the necessary permissions for this object.');
                     throw new Exception($msg);
                 }
             }
@@ -145,7 +145,7 @@ class FilePropertiesMethod extends MethodClass
 
                 if (mb_ereg('^image', $fileInfo['fileType'])) {
                     // let the images module handle it
-                    if (xarMod::isAvailable('images')) {
+                    if ($this->mod()->isAvailable('images')) {
                         $fileInfo['image'] = true;
 
                         // try to get the image size
@@ -193,7 +193,7 @@ class FilePropertiesMethod extends MethodClass
                 $this->exit();
                 return;
             } else {
-                $msg = $this->translate('You do not have the necessary permissions for this object.');
+                $msg = $this->ml('You do not have the necessary permissions for this object.');
                 throw new Exception($msg);
             }
         }

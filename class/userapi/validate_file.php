@@ -46,7 +46,7 @@ class ValidateFileMethod extends MethodClass
         extract($args);
 
         if (!isset($fileInfo)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [(#(2)] in module [#(3)]',
                 'fileInfo',
                 'validate_file',
@@ -59,19 +59,19 @@ class ValidateFileMethod extends MethodClass
 
         switch ($fileInfo['error']) {
             case 1: // The uploaded file exceeds the upload_max_filesize directive in php.ini
-                $msg = $this->translate('File size exceeds the maximum allowable based on your system settings.');
+                $msg = $this->ml('File size exceeds the maximum allowable based on your system settings.');
                 throw new Exception($msg);
 
             case 2: // The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form
-                $msg = $this->translate('File size exceeds the maximum allowable.');
+                $msg = $this->ml('File size exceeds the maximum allowable.');
                 throw new Exception($msg);
 
             case 3: // The uploaded file was only partially uploaded
-                $msg = $this->translate('The file was only partially uploaded.');
+                $msg = $this->ml('The file was only partially uploaded.');
                 throw new Exception($msg);
 
             case 4: // No file was uploaded
-                $msg = $this->translate('No file was uploaded..');
+                $msg = $this->ml('No file was uploaded..');
                 throw new Exception($msg);
             default:
             case 0:  // no error
@@ -80,7 +80,7 @@ class ValidateFileMethod extends MethodClass
 
 
         if (!is_uploaded_file($fileInfo['fileSrc'])) {
-            $msg = $this->translate('Possible attempted malicious file upload.');
+            $msg = $this->ml('Possible attempted malicious file upload.');
             throw new Exception($msg);
         }
 

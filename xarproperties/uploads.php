@@ -172,7 +172,7 @@ class UploadProperty extends FileUploadProperty
                     $this->value = '';
                     return true;
                 } elseif (!$this->validateExtension($data['upload']['name'])) {
-                    $this->invalid = xarML('The file type is not allowed');
+                    $this->invalid = xarMLS::translate('The file type is not allowed');
                     $this->value = null;
                     return false;
                 }
@@ -305,7 +305,7 @@ class UploadProperty extends FileUploadProperty
                     $storeList[] = $fileInfo['fileId'];
                     $storeListData[] = $fileInfo;
                 } else {
-                    $this->invalid .= xarML('Invalid upload: #(1)', $fileInfo['fileName'] . " " . $fileInfo['errors'][0]['errorMesg']);
+                    $this->invalid .= xarMLS::translate('Invalid upload: #(1)', $fileInfo['fileName'] . " " . $fileInfo['errors'][0]['errorMesg']);
                 }
             }
             if (!empty($this->invalid)) {
@@ -398,7 +398,7 @@ class UploadProperty extends FileUploadProperty
         // Set up for the trusted input method
         if (in_array(Defines::GET_LOCAL, $this->initialization_file_input_methods)) {
             if (!file_exists($this->initialization_import_directory)) {
-                $msg = xarML('Unable to find trusted directory #(1)', $this->initialization_import_directory);
+                $msg = xarMLS::translate('Unable to find trusted directory #(1)', $this->initialization_import_directory);
                 throw new Exception($msg);
             }
             $cacheExpire = xarModVars::get('uploads', 'file.cache-expire');
@@ -439,7 +439,7 @@ class UploadProperty extends FileUploadProperty
                     } else {
                         // CHECKME: fall back to common uploads directory, or fail here ?
                         //  $data['storedList']   = $userapi->dbGetallFiles();
-                        $msg = xarML('Unable to create an upload directory #(1)', $this->initialization_basedirectory);
+                        $msg = xarMLS::translate('Unable to create an upload directory #(1)', $this->initialization_basedirectory);
                         throw new Exception($msg);
                     }
                 }
@@ -639,7 +639,7 @@ class UploadProperty extends FileUploadProperty
             $data['name']       = !empty($name) ? $name : 'dd_'.$this->id;
             $data['id']         = !empty($id)   ? $id   : 'dd_'.$this->id;
             $data['tabindex']   = !empty($tabindex) ? $tabindex : 0;
-            $data['invalid']    = !empty($this->invalid) ? xarML('Invalid #(1)', $this->invalid) :'';
+            $data['invalid']    = !empty($this->invalid) ? xarMLS::translate('Invalid #(1)', $this->invalid) :'';
 
             $data['size']       = !empty($size) ? $size : 50;
             $data['maxlength']  = !empty($maxlength) ? $maxlength : 254;

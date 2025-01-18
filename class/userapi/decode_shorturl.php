@@ -59,7 +59,7 @@ class DecodeShorturlMethod extends MethodClass
             $fileExists = $userapi->dbCount(['fileId' => $fileId]);
 
             if (!$fileExists) {
-                $msg = $this->translate('Unable to display - file \'#(1)\' does not exist!', $params[1]);
+                $msg = $this->ml('Unable to display - file \'#(1)\' does not exist!', $params[1]);
                 throw new Exception($msg);
             } else {
                 $args['fileId'] = $fileId;

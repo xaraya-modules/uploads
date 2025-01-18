@@ -44,7 +44,7 @@ class DbChangeStatusMethod extends MethodClass
         }
 
         if (!isset($fileId) && !isset($fileType)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing identifying parameter function [#(1)] in module [#(2)]',
                 'db_change_status',
                 'uploads'
@@ -53,7 +53,7 @@ class DbChangeStatusMethod extends MethodClass
         }
 
         if (!isset($newStatus)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 'Missing parameter [#(1)] for function [#(2)] in module [#(3)]',
                 'newStatus',
                 'db_change_status',

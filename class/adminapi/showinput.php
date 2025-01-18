@@ -95,10 +95,10 @@ class ShowinputMethod extends MethodClass
             ];
         } else {
             $data['methods'] = [
-                'trusted'  => $this->getModVar('dd.fileupload.trusted') ? true : false,
-                'external' => $this->getModVar('dd.fileupload.external') ? true : false,
-                'upload'   => $this->getModVar('dd.fileupload.upload') ? true : false,
-                'stored'   => $this->getModVar('dd.fileupload.stored') ? true : false,
+                'trusted'  => $this->mod()->getVar('dd.fileupload.trusted') ? true : false,
+                'external' => $this->mod()->getVar('dd.fileupload.external') ? true : false,
+                'upload'   => $this->mod()->getVar('dd.fileupload.upload') ? true : false,
+                'stored'   => $this->mod()->getVar('dd.fileupload.stored') ? true : false,
             ];
         }
 
@@ -115,20 +115,20 @@ class ShowinputMethod extends MethodClass
         $data['getAction']['STORED']      = Defines::GET_STORED;
         $data['getAction']['REFRESH']     = Defines::GET_REFRESH_LOCAL;
         $data['id']                       = $id;
-        $data['file_maxsize'] = $this->getModVar('file.maxsize');
+        $data['file_maxsize'] = $this->mod()->getVar('file.maxsize');
         if ($data['methods']['trusted']) {
             // if there is an override['import']['path'], try to use that
             if (!empty($override['import']['path'])) {
                 $trusted_dir = $override['import']['path'];
                 if (!file_exists($trusted_dir)) {
                     // CHECKME: fall back to common trusted directory, or fail here ?
-                    $trusted_dir = sys::root() . "/" . $this->getModVar('imports_directory');
-                    //  return $this->translate('Unable to find trusted directory #(1)', $trusted_dir);
+                    $trusted_dir = sys::root() . "/" . $this->mod()->getVar('imports_directory');
+                    //  return $this->ml('Unable to find trusted directory #(1)', $trusted_dir);
                 }
             } else {
-                $trusted_dir = sys::root() . "/" . $this->getModVar('imports_directory');
+                $trusted_dir = sys::root() . "/" . $this->mod()->getVar('imports_directory');
             }
-            $cacheExpire = $this->getModVar('file.cache-expire');
+            $cacheExpire = $this->mod()->getVar('file.cache-expire');
 
             // CHECKME: use 'imports' name like in db_get_file() ?
             // Note: for relativePath, the (main) import directory is replaced by /trusted in file_get_metadata()
@@ -163,7 +163,7 @@ class ShowinputMethod extends MethodClass
                     } else {
                         // CHECKME: fall back to common uploads directory, or fail here ?
                         //  $data['storedList']   = $userapi->dbGetallFiles();
-                        return $this->translate('Unable to create upload directory #(1)', $upload_directory);
+                        return $this->ml('Unable to create upload directory #(1)', $upload_directory);
                     }
                 }
             } else {

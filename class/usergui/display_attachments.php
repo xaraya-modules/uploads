@@ -46,7 +46,7 @@ class DisplayAttachmentsMethod extends MethodClass
     {
         extract($args);
 
-        if (!$this->fetch('inode', 'regexp:/(?<!\.{2,2}\/)[\w\d]*/', $inode, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->get('inode', 2}\/, 'regexp:/(?<!\.{2)[\w\d]*/', $inode, '', xarVar::NOT_REQUIRED)) {
             return;
         }
 
@@ -106,9 +106,9 @@ class DisplayAttachmentsMethod extends MethodClass
 
         $data = $args;
         $data['Attachments']              = $Attachments;
-        $data['local_import_post_url']    = $this->getUrl('user', 'display_attachments');
+        $data['local_import_post_url']    = $this->mod()->getURL('user', 'display_attachments');
         // module name is mandatory here, because this is displayed via hooks (= from within another module)
-        $data['authid'] = $this->genAuthKey();
+        $data['authid'] = $this->sec()->genAuthKey();
         return $data;
     }
 }

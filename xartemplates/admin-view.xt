@@ -117,7 +117,7 @@
                     <td colspan="7" style="text-align:right;">
                         <xar:if condition="!xarModVars::get('uploads','file.auto-purge')">
                         <form action="#xarController::URL('uploads','admin','purge_rejected')#" method="post">
-                            <input type="hidden" name="authid" value="#$this->genAuthKey()#"/>
+                            <input type="hidden" name="authid" value="#xarSec::genAuthKey()#"/>
                             <xar:var name="label">Purge Rejected Files</xar:var>
                             <xar:button type="submit" name="fileDo" id="fileDo_purge" label="$label"/>
                         </form>

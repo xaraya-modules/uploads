@@ -45,7 +45,7 @@ class FilePropertiesMethod extends MethodClass
         if (!$this->sec()->checkAccess('ViewUploads')) {
             return;
         }
-        if (!$this->var()->get('fileId', $fileId), 'int:1') {
+        if (!$this->var()->get('fileId', $fileId, 'int:1')) {
             return;
         }
         if (!$this->var()->find('fileName', $fileName, 'str:1:64', '')) {
@@ -188,7 +188,7 @@ class FilePropertiesMethod extends MethodClass
                 $data['fileInfo'] = $fileInfo;
 
                 $data['context'] ??= $this->getContext();
-                echo xarTpl::module('uploads', 'user', 'file_properties', $data, null);
+                echo $this->tpl()->module('uploads', 'user', 'file_properties', $data, null);
                 $this->exit();
                 return;
             } else {

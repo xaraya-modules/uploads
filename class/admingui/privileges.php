@@ -292,7 +292,7 @@ class PrivilegesMethod extends MethodClass
         $data['subtype']        = $subtype;
         $data['subtypeList']    = $instances['subtypes'];
         $data['userId']         = $userId;
-        $data['userName']       = xarVar::prepForDisplay($userName);
+        $data['userName']       = $this->var()->prep($userName);
         $data['userNameList']   = $userNameList;
         $data['numitems']       = $numitems;
         $data['extpid']         = $extpid;
@@ -301,7 +301,7 @@ class PrivilegesMethod extends MethodClass
         $data['extmodule']      = $extmodule;
         $data['extcomponent']   = $extcomponent;
         $data['extlevel']       = $extlevel;
-        $data['extinstance']    = xarVar::prepForDisplay(join(':', $newinstance));
+        $data['extinstance']    = $this->var()->prep(join(':', $newinstance));
         $data['applylabel']     = $this->ml('Finish and Apply to Privilege');
 
         return $data;

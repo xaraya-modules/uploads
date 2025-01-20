@@ -124,7 +124,7 @@ class ValidatevalueMethod extends MethodClass
                 $file_maxsize = $this->mod()->getVar('file.maxsize');
                 $file_maxsize = $file_maxsize > 0 ? $file_maxsize : $maxsize;
 
-                if (!$this->var()->get('MAX_FILE_SIZE', $maxsize), "int::$file_maxsize") {
+                if (!$this->var()->get('MAX_FILE_SIZE', $maxsize, "int::$file_maxsize")) {
                     return;
                 }
 
@@ -138,7 +138,7 @@ class ValidatevalueMethod extends MethodClass
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!$this->var()->get($id . '_attach_external', }, 'regexp:/^([a-z]*).\/\/(.{7)/', $import, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->get($id . '_attach_external', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/')) {
                     return;
                 }
 
@@ -154,7 +154,7 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_LOCAL:
 
-                if (!$this->var()->get($id . '_attach_trusted', 2}\/, 'list:regexp:/(?<!\.{2)[\w\d]*/', $fileList)) {
+                if (!$this->var()->get($id . '_attach_trusted', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
                     return;
                 }
 

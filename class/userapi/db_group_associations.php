@@ -48,8 +48,8 @@ class DbGroupAssociationsMethod extends MethodClass
         }
 
         // Database information
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
         $fileassoctable = $xartable['file_associations'];
 
         if ($dbconn->databaseType == 'sqlite') {

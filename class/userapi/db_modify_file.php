@@ -117,8 +117,8 @@ class DbModifyFileMethod extends MethodClass
 
         //add to uploads table
         // Get database setup
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
 
         $fileEntry_table = $xartable['file_entry'];
 

@@ -55,8 +55,8 @@ class DbGetFileDataMethod extends MethodClass
         }
 
         // Get database setup
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
 
         // table definition
         $fileData_table = $xartable['file_data'];

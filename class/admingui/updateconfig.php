@@ -95,7 +95,7 @@ class UpdateconfigMethod extends MethodClass
         $isvalid = $data['module_settings']->checkInput();
         if (!$isvalid) {
             $data['context'] ??= $this->getContext();
-            return xarTpl::module('dynamicdata', 'admin', 'modifyconfig', $data);
+            return $this->tpl()->module('dynamicdata', 'admin', 'modifyconfig', $data);
         } else {
             $itemid = $data['module_settings']->updateItem();
         }

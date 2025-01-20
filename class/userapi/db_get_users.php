@@ -49,8 +49,8 @@ class DbGetUsersMethod extends MethodClass
         }
 
         // Get database setup
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
 
         // table and column definitions
         $fileEntry_table = $xartable['file_entry'];

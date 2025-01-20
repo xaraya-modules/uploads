@@ -83,13 +83,13 @@ class GetFilesMethod extends MethodClass
                 break;
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
-                if (!$this->var()->get('import', }, 'regexp:/^([a-z]*).\/\/(.{7)/', $import, 'NULL', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->get('import', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/')) {
                     return;
                 }
                 $args['import'] = $import;
                 break;
             case Defines::GET_LOCAL:
-                if (!$this->var()->get('fileList', 2}\/, 'list:regexp:/(?<!\.{2)[\w\d]*/', $fileList)) {
+                if (!$this->var()->get('fileList', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
                     return;
                 }
                 if (!$this->var()->find('file_all', $file_all, 'checkbox', '')) {
@@ -120,7 +120,7 @@ class GetFilesMethod extends MethodClass
                 break;
             default:
             case Defines::GET_REFRESH_LOCAL:
-                if (!$this->var()->get('inode', 2}\/, 'regexp:/(?<!\.{2)[\w\d]*/', $inode, '', xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->get('inode', $inode, 'regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
                     return;
                 }
 

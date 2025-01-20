@@ -76,7 +76,7 @@ class TransformhookMethod extends MethodClass
                 case 'file':
                     //$replacement = "index.php?module=uploads&func=download&fileId=$id";
                     $list = $userapi->dbGetFile(['fileId' => $id]);
-                    $replacement = xarTpl::module(
+                    $replacement = $this->tpl()->module(
                         'uploads',
                         'user',
                         'attachment-list',
@@ -94,7 +94,7 @@ class TransformhookMethod extends MethodClass
                 case 'ulfn': // ULFN is DEPRECATED
                 case 'fileLinkedIcon':
                     $list = $userapi->dbGetFile(['fileId' => $id]);
-                    $replacement = xarTpl::module(
+                    $replacement = $this->tpl()->module(
                         'uploads',
                         'user',
                         'attachment-list',

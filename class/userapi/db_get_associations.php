@@ -73,8 +73,8 @@ class DbGetAssociationsMethod extends MethodClass
         }
 
         // Get database setup
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
 
         // table and column definitions
         $file_assoc_table = $xartable['file_associations'];

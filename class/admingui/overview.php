@@ -36,6 +36,6 @@ class OverviewMethod extends MethodClass
         $data = [];
         //just return to main function that displays the overview
         $data['context'] = $this->getContext();
-        return xarTpl::module('uploads', 'admin', 'main', $data, 'main');
+        return $this->tpl()->module('uploads', 'admin', 'main', $data, 'main');
     }
 }

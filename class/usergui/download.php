@@ -115,7 +115,7 @@ class DownloadMethod extends MethodClass
                     break;
             }
             if (!$permitted) {
-                return xarController::notFound(null, $this->getContext());
+                return $this->ctl()->notFound(null, $this->getContext());
             }
 
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];

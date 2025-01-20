@@ -31,7 +31,7 @@ class FilePushMethod extends MethodClass
 
     /**
      * Pushes a file to the client browser
-     * Note: on success, the calling GUI function should exit()
+     * Note: on success, the calling GUI function should $this->exit()
      * @author Carl P. Corliss
      * @access   public
      * @param array<mixed> $args

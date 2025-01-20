@@ -211,6 +211,6 @@ class ShowinputMethod extends MethodClass
         }
         $data['context'] ??= $this->getContext();
         // TODO: different formats ?
-        return ($list ?? '') . xarTpl::module('uploads', 'user', 'attach_files', $data, null);
+        return ($list ?? '') . $this->tpl()->module('uploads', 'user', 'attach_files', $data, null);
     }
 }

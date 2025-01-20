@@ -50,7 +50,8 @@ class PurgeFilesMethod extends MethodClass
             );
             throw new Exception($msg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         foreach ($fileList as $fileName => $fileInfo) {
             if ($fileInfo['storeType'] & Defines::STORE_FILESYSTEM) {

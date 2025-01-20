@@ -109,7 +109,9 @@ class FilePushMethod extends MethodClass
         // Close the buffer, saving it's current contents for possible future use
         // then restart the buffer to store the file
         $finished = false;
-        $userapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $pageBuffer = $userapi->flushPageBuffer();
 

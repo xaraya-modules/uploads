@@ -48,7 +48,9 @@ class EncodeShorturlMethod extends MethodClass
         if (!isset($fileId) || empty($fileId)) {
             return;
         } else {
-            $userapi = $this->getParent();
+            /** @var UserApi $userapi */
+            $userapi = $this->userapi();
+
             $fileName = $userapi->dbGetFilename(['fileId' => $fileId]);
 
             if (!isset($fileName) || empty($fileName)) {

@@ -73,7 +73,8 @@ class ValidatevalueMethod extends MethodClass
         if (empty($itemtype)) {
             $itemtype = 0;
         }
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         // Check to see if an old value is present. Old values just file names
         // and do not start with a semicolon (our delimiter)
@@ -94,7 +95,7 @@ class ValidatevalueMethod extends MethodClass
         xarMod::apiLoad('uploads', 'user');
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         if (isset($methods) && count($methods) > 0) {
             $typeCheck = 'enum:0:' . Defines::GET_STORED;

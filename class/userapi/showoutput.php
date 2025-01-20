@@ -50,12 +50,13 @@ class ShowoutputMethod extends MethodClass
             $multiple = false;
         }
 
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $data = [];
 
         /** @var AdminApi $adminapi */
-        $adminapi = $userapi->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
 
         // Check to see if an old value is present. Old values just file names
         // and do not start with a semicolon (our delimiter)

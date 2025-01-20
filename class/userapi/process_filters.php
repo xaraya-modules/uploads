@@ -47,7 +47,8 @@ class ProcessFiltersMethod extends MethodClass
         if (!isset($storeOptions)) {
             $storeOptions = true;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         /** @var MimeApi $mimeapi */
         $mimeapi = $userapi->getMimeAPI();

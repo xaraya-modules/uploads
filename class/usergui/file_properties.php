@@ -61,10 +61,9 @@ class FilePropertiesMethod extends MethodClass
             );
             throw new Exception($msg);
         }
-        $usergui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $usergui->getAPI();
+        $userapi = $this->userapi();
 
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
         if (empty($fileInfo) || !count($fileInfo)) {

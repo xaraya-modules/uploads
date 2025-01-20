@@ -54,10 +54,9 @@ class DownloadMethod extends MethodClass
         if (!$this->var()->find('fileId', $fileId, 'int:1:', 0)) {
             return;
         }
-        $usergui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $usergui->getAPI();
+        $userapi = $this->userapi();
 
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
 

@@ -37,10 +37,8 @@ class WaitingcontentMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $admingui = $this->getParent();
-
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         // Get count of files in submitted state
         $count_submitted = $userapi->dbCount([

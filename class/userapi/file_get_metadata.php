@@ -52,7 +52,8 @@ class FileGetMetadataMethod extends MethodClass
         if (!isset($analyze)) {
             $analyze = true;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (isset($fileLocation) && !empty($fileLocation) && file_exists($fileLocation)) {
             $file = & $fileLocation;

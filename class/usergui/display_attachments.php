@@ -85,10 +85,8 @@ class DisplayAttachmentsMethod extends MethodClass
         // user decides to add / remove attachments for this item
         xarModUserVars::set('uploads', 'save.attachment-info', serialize($args));
 
-        $usergui = $this->getParent();
-
         /** @var UserApi $userapi */
-        $userapi = $usergui->getAPI();
+        $userapi = $this->userapi();
 
         // Run API function
         $associations = $userapi->dbGetAssociations($args);

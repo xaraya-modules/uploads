@@ -107,7 +107,8 @@ class DbAddFileMethod extends MethodClass
         if (!isset($store_type)) {
             $store_type = Defines::STORE_FILESYSTEM;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!isset($fileType)) {
             /** @var MimeApi $mimeapi */

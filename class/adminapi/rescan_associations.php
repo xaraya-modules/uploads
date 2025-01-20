@@ -46,10 +46,9 @@ class RescanAssociationsMethod extends MethodClass
     {
         // FIXME: don't use this as such in the uploads_guimods version, because you'd
         //        loose information about the categories and direct file associations
-        $adminapi = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         // 1. delete any existing associations for these arguments
         if (!$userapi->dbDeleteAssociation($args)) {

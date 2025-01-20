@@ -56,10 +56,9 @@ class PurgeRejectedMethod extends MethodClass
         if (!$this->sec()->confirmAuthKey()) {
             return;
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         if ((isset($confirmation) && $confirmation) || !$this->mod()->getVar('file.delete-confirmation')) {
             $fileList = $userapi->dbGetFile([

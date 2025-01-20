@@ -63,7 +63,8 @@ class TransformhookMethod extends MethodClass
      */
     public function transform($body)
     {
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         while (preg_match('/#(ulid|file|ulidd|ulfn|fileURL|fileIcon|fileName|fileLinkedIcon):([^#]+)#/i', $body, $matches)) {
             $replacement = null;

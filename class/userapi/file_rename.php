@@ -35,7 +35,8 @@ class FileRenameMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         return $userapi->fileMove($args);
     }

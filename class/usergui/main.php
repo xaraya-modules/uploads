@@ -33,7 +33,8 @@ class MainMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $usergui = $this->getParent();
+        /** @var UserGui $usergui */
+        $usergui = $this->usergui();
 
         return $usergui->download($args);
     }

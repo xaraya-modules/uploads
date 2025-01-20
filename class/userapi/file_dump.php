@@ -73,7 +73,8 @@ class FileDumpMethod extends MethodClass
             $msg = $this->ml('Cannot read and/or write to file [#(1)]. File will be read from and deleted afterwards. Please ensure that this application has sufficient access to do so.', $fileSrc);
             throw new Exception($msg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $fileInfo = $userapi->dbGetFile(['fileId' => $fileId]);
         $fileInfo = end($fileInfo);

@@ -43,10 +43,9 @@ class UploadMethod extends MethodClass
         if (!$this->sec()->checkAccess('AddUploads')) {
             return;
         }
-        $usergui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $usergui->getAPI();
+        $userapi = $this->userapi();
 
         $this->var()->find('importFrom', $importFrom, 'str:1:');
 

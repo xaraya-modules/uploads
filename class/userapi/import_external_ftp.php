@@ -58,7 +58,8 @@ class ImportExternalFtpMethod extends MethodClass
         } else {
             $obfuscate_fileName = $this->mod()->getVar('file.obfuscate-on-upload');
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!isset($savePath)) {
             $savePath = $userapi->dbGetDir(['directory' => 'uploads_directory']);

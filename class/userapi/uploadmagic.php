@@ -35,7 +35,8 @@ class UploadmagicMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         // @todo it's still magic then :-)
         $fileUpload = xarMod::apiFunc('uploads', 'user', 'upload', $args);

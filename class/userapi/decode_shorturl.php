@@ -55,7 +55,9 @@ class DecodeShorturlMethod extends MethodClass
             // Note : make sure your encoding/decoding is consistent ! :-)
             $fileId = $matches[1];
 
-            $userapi = $this->getParent();
+            /** @var UserApi $userapi */
+            $userapi = $this->userapi();
+
             $fileExists = $userapi->dbCount(['fileId' => $fileId]);
 
             if (!$fileExists) {

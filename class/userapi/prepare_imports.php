@@ -49,7 +49,8 @@ class PrepareImportsMethod extends MethodClass
             );
             throw new Exception($msg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!isset($import_directory)) {
             $import = $userapi->dbGetDir(['directory' => 'imports_directory']);

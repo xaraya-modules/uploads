@@ -114,10 +114,9 @@ class PrivilegesMethod extends MethodClass
                 return;
             }
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         // Check to see if subtype is set, if not assume 'All'
         if (empty($subtype) || $subtype == 'All' || !is_numeric($subtype)) {

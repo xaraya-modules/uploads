@@ -133,7 +133,8 @@ class ImportGetFilelistMethod extends MethodClass
         } else {
             $type = -1;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         switch ($type) {
             case Defines::TYPE_FILE:

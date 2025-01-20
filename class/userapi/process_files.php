@@ -50,7 +50,8 @@ class ProcessFilesMethod extends MethodClass
             // this is the same as Defines::STORE_DB_ENTRY OR'd with Defines::STORE_FILESYSTEM
             $storeType = Defines::STORE_FSDB;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         // If there is an override['upload']['path'], try to use that
         if (!empty($override['upload']['path'])) {

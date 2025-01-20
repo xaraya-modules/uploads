@@ -64,7 +64,8 @@ class ShowinputMethod extends MethodClass
         if (empty($methods)) {
             $methods = null;
         }
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         // Check to see if an old value is present. Old values just file names
         // and do not start with a semicolon (our delimiter)
@@ -104,10 +105,8 @@ class ShowinputMethod extends MethodClass
 
         $descend = true;
 
-        $adminapi = $this->getParent();
-
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
         $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;

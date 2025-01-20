@@ -98,10 +98,11 @@ class ViewMethod extends MethodClass
         if (!$this->var()->check('catid', $catid, 'str:1:')) {
             return;
         }
-        $admingui = $this->getParent();
+        /** @var AdminGui $admingui */
+        $admingui = $this->admingui();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         /**
          *  Determine the filter settings to use for this view

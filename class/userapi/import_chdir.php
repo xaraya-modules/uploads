@@ -52,7 +52,8 @@ class ImportChdirMethod extends MethodClass
         } else {
             $cwd = sys::root() . "/" . xarModUserVars::get('uploads', 'path.imports-cwd');
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $importDir = $userapi->dbGetDir(['directory' => 'imports_directory']);
 

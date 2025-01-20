@@ -74,10 +74,9 @@ class AssocMethod extends MethodClass
         if (!empty($modid) && empty($itemtype)) {
             $itemtype = 0;
         }
-        $admingui = $this->getParent();
 
         /** @var AdminApi $adminapi */
-        $adminapi = $admingui->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
 
         if (!empty($action)) {
             if ($action == 'rescan') {
@@ -120,7 +119,7 @@ class AssocMethod extends MethodClass
         }
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         $data = [];
         $data['modid'] = $modid;

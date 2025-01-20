@@ -44,7 +44,8 @@ class DdConvertValueMethod extends MethodClass
         if (!isset($value)) {
             return null;
         }
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         if (!isset($basedir)) {
             // try something here in hopes that it works.
@@ -70,7 +71,7 @@ class DdConvertValueMethod extends MethodClass
             xarMod::apiLoad('uploads', 'user');
 
             /** @var UserApi $userapi */
-            $userapi = $adminapi->getAPI();
+            $userapi = $this->userapi();
 
             $args['import'] = 'file://' . $basePath . '/' . $basedir . $value;
             $args['action'] = Defines::GET_EXTERNAL;

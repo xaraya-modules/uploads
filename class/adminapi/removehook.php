@@ -63,10 +63,9 @@ class RemovehookMethod extends MethodClass
             // Return the extra info
             return $extrainfo;
         }
-        $adminapi = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         if (!$userapi->dbDeleteAssociation([
             'modid' => $modid,

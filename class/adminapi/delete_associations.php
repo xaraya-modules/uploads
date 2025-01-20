@@ -265,10 +265,9 @@ class DeleteAssociationsMethod extends MethodClass
                 }
             }
         }
-        $adminapi = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         // 1. delete any existing associations for these arguments
         if (!$userapi->dbDeleteAssociation($args)) {

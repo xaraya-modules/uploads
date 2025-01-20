@@ -62,13 +62,12 @@ class GetFilesMethod extends MethodClass
         if (!$this->var()->find('storeType', $storeType, "enum:$storeTypes", '')) {
             return;
         }
-        $admingui = $this->getParent();
 
         // now make sure someone hasn't tried to change our maxsize on us ;-)
         $file_maxsize = $this->mod()->getVar('file.maxsize');
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         switch ($args['action']) {
             case Defines::GET_UPLOAD:

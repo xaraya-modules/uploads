@@ -73,10 +73,9 @@ class DeletehookMethod extends MethodClass
         } else {
             $itemtype = 0;
         }
-        $adminapi = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         if (!$userapi->dbDeleteAssociation([
             'itemid' => $objectid,

@@ -53,7 +53,8 @@ class ImportExternalFileMethod extends MethodClass
         } else {
             $descend = false;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $fileList = $userapi->importGetFilelist([
             'fileLocation' => $uri['path'],

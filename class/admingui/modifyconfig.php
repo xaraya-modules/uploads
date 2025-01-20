@@ -95,10 +95,9 @@ class ModifyconfigMethod extends MethodClass
         } else {
             $data['hooks'] = $hooks;
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         // Check the validaty of directories
         $location = $userapi->dbGetDir(['directory' => 'uploads_directory']);

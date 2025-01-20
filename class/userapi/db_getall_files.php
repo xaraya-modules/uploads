@@ -152,7 +152,8 @@ class DbGetallFilesMethod extends MethodClass
         if ($result->EOF) {
             return [];
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $importDir = $userapi->dbGetDir(['directory' => 'imports_directory']);
         $uploadDir = $userapi->dbGetDir(['directory' => 'uploads_directory']);

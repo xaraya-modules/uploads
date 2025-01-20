@@ -43,7 +43,8 @@ class GetitemlinksMethod extends MethodClass
 
         $itemlinks = [];
 
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         // get cids for security check in getall
         $fileList = $userapi->dbGetFile(['fileId' => $itemids]);

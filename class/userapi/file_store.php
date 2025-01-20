@@ -47,7 +47,8 @@ class FileStoreMethod extends MethodClass
             );
             throw new Exception($msg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         /** @var MimeApi $mimeapi */
         $mimeapi = $userapi->getMimeAPI();

@@ -99,10 +99,10 @@ class UploadProperty extends FileUploadProperty
     }
 
     /**
-     * Summary of getUserApi
+     * Summary of userapi
      * @return UserApi
      */
-    public function getUserApi()
+    public function userapi()
     {
         /** @var UserApi $userapi */
         $userapi = xarMod::getAPI('uploads');
@@ -152,7 +152,7 @@ class UploadProperty extends FileUploadProperty
 
         xarMod::apiLoad('uploads', 'user');
 
-        $userapi = $this->getUserApi();
+        $userapi = $this->userapi();
 
         $data['action'] = $this->getActiveInputMethod($name);
 

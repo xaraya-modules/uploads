@@ -290,7 +290,7 @@ class UploadProperty extends FileUploadProperty
         $data = $this->propertydata;
         if (!empty($data['action'])) {
             //            if (isset($storeType)) $data['storeType'] = $storeType;
-            $userapi = $this->getUserApi();
+            $userapi = $this->userapi();
 
             // This is where the actual saves happen
             $data['override']['upload']['path'] = $this->initialization_basedirectory;
@@ -345,7 +345,7 @@ class UploadProperty extends FileUploadProperty
      */
     public function sync_associations($moduleid = 0, $itemtype = 0, $itemid = 0, $filelist = [])
     {
-        $userapi = $this->getUserApi();
+        $userapi = $this->userapi();
         $userapi->syncAssociations($moduleid, $itemtype, $itemid, $filelist);
     }
 
@@ -386,7 +386,7 @@ class UploadProperty extends FileUploadProperty
 
         xarMod::apiLoad('uploads', 'user');
 
-        $userapi = $this->getUserApi();
+        $userapi = $this->userapi();
 
         $data['getAction']['LOCAL']       = Defines::GET_LOCAL;
         $data['getAction']['EXTERNAL']    = Defines::GET_EXTERNAL;
@@ -419,7 +419,7 @@ class UploadProperty extends FileUploadProperty
 
         // Set up for the stored input method
         if (in_array(Defines::GET_STORED, $this->initialization_file_input_methods)) {
-            $userapi = $this->getUserApi();
+            $userapi = $this->userapi();
 
             // if there is an override['upload']['path'], try to use that
             if (!empty($this->initialization_basedirectory)) {
@@ -542,7 +542,7 @@ class UploadProperty extends FileUploadProperty
         $data['value'] = array_filter($data['value']);
 
         if (is_array($data['value']) && count($data['value'])) {
-            $userapi = $this->getUserApi();
+            $userapi = $this->userapi();
 
             $data['attachments'] = $userapi->dbGetFile(['fileId' => $data['value']]);
             if (empty($data['attachments'])) {

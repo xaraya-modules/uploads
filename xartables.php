@@ -18,16 +18,18 @@
  * loaded.  It adds in the information
  * Original Author of file: Carl P. corliss
  */
-function uploads_xartables()
+function uploads_xartables(?string $prefix = null)
 {
     // Initialise table array
     $xartable = [];
 
+    $prefix ??= xarDB::getPrefix();
+
     // Get the name for the uploads item table.  This is not necessary
     // but helps in the following statements and keeps them readable
-    $fileEntry_table = xarDB::getPrefix() . '_file_entry';
-    $fileData_table  = xarDB::getPrefix() . '_file_data';
-    $fileAssoc_table = xarDB::getPrefix() . '_file_assoc';
+    $fileEntry_table = $prefix . '_file_entry';
+    $fileData_table  = $prefix . '_file_data';
+    $fileAssoc_table = $prefix . '_file_assoc';
 
     // Set the table name
     $xartable['file_entry']         = $fileEntry_table;

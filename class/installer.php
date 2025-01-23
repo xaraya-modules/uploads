@@ -124,9 +124,9 @@ class Installer extends InstallerClass
         $this->mod()->setVar('file.allow-duplicate-upload', 0);
 
         // Get datbase setup
-        $dbconn = xarDB::getConn();
+        $dbconn = $this->db()->getConn();
 
-        $xartable = xarDB::getTables();
+        $xartable = $this->db()->getTables();
 
         $file_entry_table = $xartable['file_entry'];
         $file_data_table  = $xartable['file_data'];

@@ -96,10 +96,10 @@
               <div class="xar-norm">
                 <xar:var name="label">Add Files</xar:var>
                 <xar:button type="submit" name="addbutton" id="addbutton" label="$label"/>
-                <!--
+                <xar:comment><!--
                 <xar:var name="label">Delete Files</xar:var>
                 <xar:button type="submit" name="delbutton" id="delbutton" label="$label"/>
-                -->
+                --></xar:comment>
                 <input type="hidden" name="action" id="action" value="#$getAction['LOCAL']#"/>
                 <input type="hidden" name="authid" value="#$authid#"/>
               </div>

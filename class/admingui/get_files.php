@@ -71,7 +71,7 @@ class GetFilesMethod extends MethodClass
 
         switch ($args['action']) {
             case Defines::GET_UPLOAD:
-                $uploads = DataPropertyMaster::getProperty(['name' => 'uploads']);
+                $uploads = $this->prop()->getProperty(['name' => 'uploads']);
                 $uploads->initialization_initial_method = $args['action'];
                 $uploads->checkInput('upload');
                 // UploadProperty()->propertydata contains ['action' => ..., 'upload' => [...]]

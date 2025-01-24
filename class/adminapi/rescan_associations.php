@@ -69,7 +69,7 @@ class RescanAssociationsMethod extends MethodClass
         // 3. get the list of dynamic objects we're interesting in
         if (!empty($modid)) {
             $objectinfolist = [];
-            $objectinfolist[] = DataObjectFactory::getObjectInfo(
+            $objectinfolist[] = $this->data()->getObjectInfo(
                 ['modid' => $modid,
                     'itemtype' => $itemtype ?? null, ]
             );

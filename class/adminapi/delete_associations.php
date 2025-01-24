@@ -70,7 +70,7 @@ class DeleteAssociationsMethod extends MethodClass
 
         // 3. get the list of dynamic objects we're interesting in
         $objectinfolist = [];
-        $objectinfolist[] = DataObjectFactory::getObjectInfo(
+        $objectinfolist[] = $this->data()->getObjectInfo(
             ['modid' => $modid,
                 'itemtype' => $itemtype ?? null, ]
         );

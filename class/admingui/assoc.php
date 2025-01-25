@@ -257,7 +257,7 @@ class AssocMethod extends MethodClass
             */
             if ($numstats < $data['numlinks']) {
                 sys::import('modules.base.class.pager');
-                $data['pager'] = xarTplPager::getPager(
+                $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $data['numlinks'],
                     $this->mod()->getURL(

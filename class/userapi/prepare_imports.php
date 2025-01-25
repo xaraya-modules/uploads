@@ -39,6 +39,8 @@ class PrepareImportsMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         extract($args);
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!isset($importFrom)) {
             $msg = $this->ml(
@@ -78,11 +80,7 @@ class PrepareImportsMethod extends MethodClass
         ]);
         if ($imports) {
             // @todo what's this about then, and where can we find it?
-            $imports = xarMod::apiFunc(
-                'uploads',
-                'user',
-                'import_prepare_files',
-                ['fileList'  => $imports,
+            $imports = $userapi->import_prepare_files(['fileList'  => $imports,
                     'savePath'  => $import_directory,
                     'obfuscate' => $import_obfuscate, ]
             );

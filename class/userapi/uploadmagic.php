@@ -37,9 +37,11 @@ class UploadmagicMethod extends MethodClass
     {
         /** @var UserApi $userapi */
         $userapi = $this->userapi();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         // @todo it's still magic then :-)
-        $fileUpload = xarMod::apiFunc('uploads', 'user', 'upload', $args);
+        $fileUpload = $userapi->upload($args);
 
         if (is_array($fileUpload)) {
             return '#file:' . $fileUpload['ulid'] . '#';

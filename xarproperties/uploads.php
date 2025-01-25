@@ -91,8 +91,8 @@ class UploadProperty extends FileUploadProperty
                 $this->initialization_import_directory = preg_replace('/\{user\}/', $udir, $this->initialization_import_directory);
             }
         }
-        $this->validation_max_file_size = xarModVars::get('uploads', 'file.maxsize');
-        $this->initialization_import_directory = sys::root() . "/" . xarModVars::get('uploads', 'imports_directory');
+        $this->validation_max_file_size = $this->mod()->getVar('file.maxsize');
+        $this->initialization_import_directory = sys::root() . "/" . $this->mod()->getVar('imports_directory');
         $this->initialization_basedirectory    = sys::root() . "/" . $this->initialization_basedirectory;
 
         // Save the value in a separate var that won't be changed with this->value
@@ -117,10 +117,10 @@ class UploadProperty extends FileUploadProperty
             $name = 'dd_' . $this->id;
         }
 
-        if (!xarVar::fetch($name . '_dbvalue', 'str', $dbvalue, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->fetch($name . '_dbvalue', 'str', $dbvalue, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch($name . '_clear', 'checkbox', $clear, 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->fetch($name . '_clear', 'checkbox', $clear, 0, xarVar::NOT_REQUIRED)) {
             return;
         }
         //        echo $name . '_dbvalue';
@@ -145,8 +145,8 @@ class UploadProperty extends FileUploadProperty
         }
 
         // retrieve new value for preview + new/modify combinations
-        if (xarVar::isCached('DynamicData.Upload', $name)) {
-            $this->value = xarVar::getCached('DynamicData.Upload', $name);
+        if ($this->var()->isCached('DynamicData.Upload', $name)) {
+            $this->value = $this->var()->getCached('DynamicData.Upload', $name);
             return true;
         }
 
@@ -158,7 +158,7 @@ class UploadProperty extends FileUploadProperty
 
         switch ($data['action']) {
             case Defines::GET_UPLOAD:
-                if (!xarVar::fetch($name . '_max_file_size', "int::$this->validation_max_file_size", $this->validation_max_file_size)) {
+                if (!$this->var()->fetch($name . '_max_file_size', "int::$this->validation_max_file_size", $this->validation_max_file_size)) {
                     return;
                 }
                 if (!xarVar::validate('array', $_FILES[$name . '_attach_upload'])) {
@@ -172,7 +172,7 @@ class UploadProperty extends FileUploadProperty
                     $this->value = '';
                     return true;
                 } elseif (!$this->validateExtension($data['upload']['name'])) {
-                    $this->invalid = xarMLS::translate('The file type is not allowed');
+                    $this->invalid = $this->ml('The file type is not allowed');
                     $this->value = null;
                     return false;
                 }
@@ -180,7 +180,7 @@ class UploadProperty extends FileUploadProperty
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!xarVar::fetch($name . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->fetch($name . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -191,7 +191,7 @@ class UploadProperty extends FileUploadProperty
                         $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
-                    xarVar::setCached('DynamicData.Upload', $name, $this->value);
+                    $this->var()->setCached('DynamicData.Upload', $name, $this->value);
                     return true;
                 }
 
@@ -199,7 +199,7 @@ class UploadProperty extends FileUploadProperty
                 break;
             case Defines::GET_LOCAL:
 
-                if (!xarVar::fetch($name . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList, [], xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->fetch($name . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList, [], xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -219,7 +219,7 @@ class UploadProperty extends FileUploadProperty
                 break;
             case Defines::GET_STORED:
 
-                if (!xarVar::fetch($name . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->fetch($name . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
                     return;
                 }
 
@@ -232,7 +232,7 @@ class UploadProperty extends FileUploadProperty
                         $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
-                    xarVar::setCached('DynamicData.Upload', $name, $this->value);
+                    $this->var()->setCached('DynamicData.Upload', $name, $this->value);
                     return true;
                 }
 
@@ -253,7 +253,7 @@ class UploadProperty extends FileUploadProperty
             case '-2':
                 // clear stored value
                 $this->value = '';
-                xarVar::setCached('DynamicData.Upload', $name, $this->value);
+                $this->var()->setCached('DynamicData.Upload', $name, $this->value);
                 return true;
             default:
                 if (isset($value)) {
@@ -276,7 +276,7 @@ class UploadProperty extends FileUploadProperty
 
         // Store the particulares so the createValue method can find them
         $this->propertydata = $data;
-        xarVar::setCached('DynamicData.Upload', $name, $this->value);
+        $this->var()->setCached('DynamicData.Upload', $name, $this->value);
         return true;
     }
 
@@ -305,7 +305,7 @@ class UploadProperty extends FileUploadProperty
                     $storeList[] = $fileInfo['fileId'];
                     $storeListData[] = $fileInfo;
                 } else {
-                    $this->invalid .= xarMLS::translate('Invalid upload: #(1)', $fileInfo['fileName'] . " " . $fileInfo['errors'][0]['errorMesg']);
+                    $this->invalid .= $this->ml('Invalid upload: #(1)', $fileInfo['fileName'] . " " . $fileInfo['errors'][0]['errorMesg']);
                 }
             }
             if (!empty($this->invalid)) {
@@ -356,7 +356,7 @@ class UploadProperty extends FileUploadProperty
     {
         // inform anyone that we're showing a file upload field, and that they need to use
         // <form ... enctype="multipart/form-data" ... > in their input form
-        xarVar::setCached('Hooks.dynamicdata', 'withupload', 1);
+        $this->var()->setCached('Hooks.dynamicdata', 'withupload', 1);
 
         if (!empty($data['name'])) {
             $this->name = $data['name'];
@@ -398,10 +398,10 @@ class UploadProperty extends FileUploadProperty
         // Set up for the trusted input method
         if (in_array(Defines::GET_LOCAL, $this->initialization_file_input_methods)) {
             if (!file_exists($this->initialization_import_directory)) {
-                $msg = xarMLS::translate('Unable to find trusted directory #(1)', $this->initialization_import_directory);
+                $msg = $this->ml('Unable to find trusted directory #(1)', $this->initialization_import_directory);
                 throw new Exception($msg);
             }
-            $cacheExpire = xarModVars::get('uploads', 'file.cache-expire');
+            $cacheExpire = $this->mod()->getVar('file.cache-expire');
 
             // CHECKME: use 'imports' name like in db_get_file() ?
             // Note: for relativePath, the (main) import directory is replaced by /trusted in file_get_metadata()
@@ -439,7 +439,7 @@ class UploadProperty extends FileUploadProperty
                     } else {
                         // CHECKME: fall back to common uploads directory, or fail here ?
                         //  $data['storedList']   = $userapi->dbGetallFiles();
-                        $msg = xarMLS::translate('Unable to create an upload directory #(1)', $this->initialization_basedirectory);
+                        $msg = $this->ml('Unable to create an upload directory #(1)', $this->initialization_basedirectory);
                         throw new Exception($msg);
                     }
                 }
@@ -583,7 +583,7 @@ class UploadProperty extends FileUploadProperty
             $typeCheck .= (in_array(Defines::GET_UPLOAD, $this->initialization_file_input_methods)) ? ':' . Defines::GET_UPLOAD : '';
             $typeCheck .= (in_array(Defines::GET_STORED, $this->initialization_file_input_methods)) ? ':' . Defines::GET_STORED : '';
             $typeCheck .= ':-2'; // clear value
-            xarVar::fetch($name . '_active_method', $typeCheck, $activemethod, current($this->initialization_file_input_methods), xarVar::NOT_REQUIRED);
+            $this->var()->fetch($name . '_active_method', $typeCheck, $activemethod, current($this->initialization_file_input_methods), xarVar::NOT_REQUIRED);
         }
         return $activemethod;
     }
@@ -628,7 +628,7 @@ class UploadProperty extends FileUploadProperty
             $this->initialization_methods = $methods;
             $this->initialization_basedirectory = $basedir;
             $this->initialization_import_directory = $importdir;
-            $this->maxsize = xarModVars::get('uploads', 'file.maxsize');
+            $this->maxsize = $this->mod()->getVar('file.maxsize');
         }
 
         function showValidation(Array $args = array())
@@ -639,7 +639,7 @@ class UploadProperty extends FileUploadProperty
             $data['name']       = !empty($name) ? $name : 'dd_'.$this->id;
             $data['id']         = !empty($id)   ? $id   : 'dd_'.$this->id;
             $data['tabindex']   = !empty($tabindex) ? $tabindex : 0;
-            $data['invalid']    = !empty($this->invalid) ? xarMLS::translate('Invalid #(1)', $this->invalid) :'';
+            $data['invalid']    = !empty($this->invalid) ? $this->ml('Invalid #(1)', $this->invalid) :'';
 
             $data['size']       = !empty($size) ? $size : 50;
             $data['maxlength']  = !empty($maxlength) ? $maxlength : 254;
@@ -659,7 +659,7 @@ class UploadProperty extends FileUploadProperty
             if (!isset($template)) {
                 $template = '';
             }
-            return xarTpl::property('uploads', 'upload', 'validation', $data);
+            return $this->tpl()->property('uploads', 'upload', 'validation', $data);
         }
 
         function updateValidation(Array $args = array())

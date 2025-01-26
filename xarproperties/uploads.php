@@ -117,10 +117,10 @@ class UploadProperty extends FileUploadProperty
             $name = 'dd_' . $this->id;
         }
 
-        if (!$this->var()->fetch($name . '_dbvalue', 'str', $dbvalue, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find($name . '_dbvalue', $dbvalue, 'str', '')) {
             return;
         }
-        if (!$this->var()->fetch($name . '_clear', 'checkbox', $clear, 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find($name . '_clear', $clear, 'checkbox', 0)) {
             return;
         }
         //        echo $name . '_dbvalue';
@@ -158,7 +158,7 @@ class UploadProperty extends FileUploadProperty
 
         switch ($data['action']) {
             case Defines::GET_UPLOAD:
-                if (!$this->var()->fetch($name . '_max_file_size', "int::$this->validation_max_file_size", $this->validation_max_file_size)) {
+                if (!$this->var()->get($name . '_max_file_size', $this->validation_max_file_size, "int::$this->validation_max_file_size")) {
                     return;
                 }
                 if (!xarVar::validate('array', $_FILES[$name . '_attach_upload'])) {
@@ -180,7 +180,7 @@ class UploadProperty extends FileUploadProperty
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!$this->var()->fetch($name . '_attach_external', 'regexp:/^([a-z]*).\/\/(.{7,})/', $import, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find($name . '_attach_external', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/', 0)) {
                     return;
                 }
 
@@ -199,7 +199,7 @@ class UploadProperty extends FileUploadProperty
                 break;
             case Defines::GET_LOCAL:
 
-                if (!$this->var()->fetch($name . '_attach_trusted', 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', $fileList, [], xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find($name . '_attach_trusted', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', [])) {
                     return;
                 }
 
@@ -219,7 +219,7 @@ class UploadProperty extends FileUploadProperty
                 break;
             case Defines::GET_STORED:
 
-                if (!$this->var()->fetch($name . '_attach_stored', 'list:int:1:', $fileList, 0, xarVar::NOT_REQUIRED)) {
+                if (!$this->var()->find($name . '_attach_stored', $fileList, 'list:int:1:', 0)) {
                     return;
                 }
 
@@ -583,7 +583,7 @@ class UploadProperty extends FileUploadProperty
             $typeCheck .= (in_array(Defines::GET_UPLOAD, $this->initialization_file_input_methods)) ? ':' . Defines::GET_UPLOAD : '';
             $typeCheck .= (in_array(Defines::GET_STORED, $this->initialization_file_input_methods)) ? ':' . Defines::GET_STORED : '';
             $typeCheck .= ':-2'; // clear value
-            $this->var()->fetch($name . '_active_method', $typeCheck, $activemethod, current($this->initialization_file_input_methods), xarVar::NOT_REQUIRED);
+            $this->var()->find($name . '_active_method', $activemethod, $typeCheck, current($this->initialization_file_input_methods));
         }
         return $activemethod;
     }
@@ -631,11 +631,11 @@ class UploadProperty extends FileUploadProperty
             $this->maxsize = $this->mod()->getVar('file.maxsize');
         }
 
-        function showValidation(Array $args = array())
+        function showValidation(array $args = [])
         {
             extract($args);
 
-            $data = array();
+            $data = [];
             $data['name']       = !empty($name) ? $name : 'dd_'.$this->id;
             $data['id']         = !empty($id)   ? $id   : 'dd_'.$this->id;
             $data['tabindex']   = !empty($tabindex) ? $tabindex : 0;
@@ -662,7 +662,7 @@ class UploadProperty extends FileUploadProperty
             return $this->tpl()->property('uploads', 'upload', 'validation', $data);
         }
 
-        function updateValidation(Array $args = array())
+        function updateValidation(array $args = [])
         {
             extract($args);
 
@@ -685,7 +685,7 @@ class UploadProperty extends FileUploadProperty
                         }
     // CHECKME: verify format of methods(...) part
                         if (!empty($validation['methods'])) {
-                            $todo = array();
+                            $todo = [];
                             foreach (array_keys($this->methods) as $method) {
                                 if (!empty($validation['methods'][$method])) {
                                     $todo[] = '+' .$method;

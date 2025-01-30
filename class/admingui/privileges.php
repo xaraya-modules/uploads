@@ -142,16 +142,16 @@ class PrivilegesMethod extends MethodClass
             if (!strcasecmp('myself', $userName)) {
                 $userId = 'myself';
             } else {
-                $user = xarMod::apiFunc(
+                $user = $this->mod()->apiFunc(
                     'roles',
                     'user',
                     'get',
                     ['uname' => $userName]
                 );
                 if (!empty($user)) {
-                    $userNameList[$user['uid']]['userId'] = $user['uid'];
-                    $userNameList[$user['uid']]['userName'] = $user['uname'];
-                    $userId = $user['uid'];
+                    $userNameList[$user['id']]['userId'] = $user['id'];
+                    $userNameList[$user['id']]['userName'] = $user['uname'];
+                    $userId = $user['id'];
                     $userName = '';
                 } else {
                     $userName = '';
@@ -166,16 +166,16 @@ class PrivilegesMethod extends MethodClass
                 $userId = 0;
             }
         } else {
-            $user = xarMod::apiFunc(
+            $user = $this->mod()->apiFunc(
                 'roles',
                 'user',
                 'get',
-                ['uid' => $userId]
+                ['id' => $userId]
             );
             if (!empty($user)) {
-                $userNameList[$user['uid']]['userId'] = $user['uid'];
-                $userNameList[$user['uid']]['userName'] = $user['uname'];
-                $userId = $user['uid'];
+                $userNameList[$user['id']]['userId'] = $user['id'];
+                $userNameList[$user['id']]['userName'] = $user['uname'];
+                $userId = $user['id'];
                 $userName = '';
             } else {
                 $userName = '';

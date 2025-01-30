@@ -75,7 +75,7 @@ class UploadProperty extends FileUploadProperty
         // this is used by DD's importpropertytypes() function
         if (empty($args['skipInit'])) {                            // this parameter is not found in the core code
             // Note : {user} will be replaced by the current user uploading the file - e.g. var/uploads/{user} -> var/uploads/myusername_123
-            $uid = xarSession::getVar('role_id');
+            $uid = $this->session()->getUserId();
             if (!empty($this->initialization_basedirectory) && preg_match('/\{user\}/', $this->initialization_basedirectory)) {
                 // Note: we add the userid just to make sure it's unique e.g. when filtering
                 // out unwanted characters through xarVar::prepForOS, or if the database makes
@@ -150,7 +150,7 @@ class UploadProperty extends FileUploadProperty
             return true;
         }
 
-        xarMod::apiLoad('uploads', 'user');
+        $this->mod()->apiLoad('uploads', 'user');
 
         $userapi = $this->userapi();
 
@@ -384,7 +384,7 @@ class UploadProperty extends FileUploadProperty
         }
         $descend = true;
 
-        xarMod::apiLoad('uploads', 'user');
+        $this->mod()->apiLoad('uploads', 'user');
 
         $userapi = $this->userapi();
 
@@ -622,7 +622,7 @@ class UploadProperty extends FileUploadProperty
     /*
         function parseValidation($validation = '')
         {
-            list($multiple, $methods, $basedir, $importdir) = xarMod::apiFunc('uploads', 'admin', 'dd_configure', $validation);
+            list($multiple, $methods, $basedir, $importdir) = $this->mod()->apiMethod('uploads', 'admin', 'dd_configure', $validation);
 
             $this->initialization_multiple_files = $multiple;
             $this->initialization_methods = $methods;

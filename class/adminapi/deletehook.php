@@ -56,12 +56,12 @@ class DeletehookMethod extends MethodClass
         // When called via hooks, the module name may be empty, so we get it from
         // the current module
         if (empty($extrainfo['module'])) {
-            $modname = xarMod::getName();
+            $modname = $this->mod()->getName();
         } else {
             $modname = $extrainfo['module'];
         }
 
-        $modid = xarMod::getRegID($modname);
+        $modid = $this->mod()->getRegID($modname);
         if (empty($modid)) {
             $msg = $this->ml('Invalid #(1) for #(2) function #(3)() in module #(4)', 'module name', 'admin', 'deletehook', 'uploads');
             //throw new BadParameterException(null, $msg);

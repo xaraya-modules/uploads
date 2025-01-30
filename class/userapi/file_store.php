@@ -57,7 +57,7 @@ class FileStoreMethod extends MethodClass
         $instance = [];
         $instance[0] = $typeInfo['typeId'];
         $instance[1] = $typeInfo['subtypeId'];
-        $instance[2] = xarSession::getVar('uid');
+        $instance[2] = $this->session()->getUserId();
         $instance[3] = 'All';
 
         $instance = implode(':', $instance);

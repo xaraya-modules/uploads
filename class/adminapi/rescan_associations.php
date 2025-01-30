@@ -58,7 +58,7 @@ class RescanAssociationsMethod extends MethodClass
         extract($args);
 
         // 2. get the upload-related property types
-        $proptypes = xarMod::apiFunc('dynamicdata', 'user', 'getproptypes');
+        $proptypes = $this->mod()->apiFunc('dynamicdata', 'user', 'getproptypes');
         $proptypelist = [];
         foreach ($proptypes as $typeid => $proptype) {
             if ($proptype['name'] == 'uploads' || $proptype['name'] == 'fileupload' || $proptype['name'] == 'textupload') {
@@ -74,7 +74,7 @@ class RescanAssociationsMethod extends MethodClass
                     'itemtype' => $itemtype ?? null, ]
             );
         } else {
-            $objectinfolist = xarMod::apiFunc('dynamicdata', 'user', 'getobjects');
+            $objectinfolist = $this->mod()->apiFunc('dynamicdata', 'user', 'getobjects');
         }
 
         // 4. for each dynamic object
@@ -88,7 +88,7 @@ class RescanAssociationsMethod extends MethodClass
             $modid = $objectinfo['moduleid'];
             $itemtype = $objectinfo['itemtype'];
             if (!isset($modnames[$modid])) {
-                $modinfo = xarMod::getInfo($modid);
+                $modinfo = $this->mod()->getInfo($modid);
                 if (empty($modinfo)) {
                     return;
                 }
@@ -96,7 +96,7 @@ class RescanAssociationsMethod extends MethodClass
             }
 
             // 6. get a dynamic object list
-            $object = xarMod::apiFunc('dynamicdata', 'user', 'getobjectlist', $objectinfo);
+            $object = $this->mod()->apiFunc('dynamicdata', 'user', 'getobjectlist', $objectinfo);
 
             // 7. build the list of properties we're interested in
             $proplist = [];
@@ -108,7 +108,7 @@ class RescanAssociationsMethod extends MethodClass
                 }
                 // see if uploads is hooked where necessary
                 if (($proptypelist[$proptype] == 'fileupload' || $proptypelist[$proptype] == 'textupload') &&
-                    !xarModHooks::isHooked('uploads', $modnames[$modid], $itemtype)) {
+                    !$this->mod()->isHooked('uploads', $modnames[$modid], $itemtype)) {
                     // skip this property
                     continue;
                 }
@@ -170,17 +170,17 @@ class RescanAssociationsMethod extends MethodClass
         if (!$this->mod()->isAvailable('articles')) {
             return true;
         }
-        $artmodid = xarMod::getRegID('articles');
+        $artmodid = $this->mod()->getRegID('articles');
         if (!empty($args['modid']) && $args['modid'] != $artmodid) {
             return true;
         }
 
-        $pubtypes = xarMod::apiFunc('articles', 'user', 'getpubtypes');
+        $pubtypes = $this->mod()->apiFunc('articles', 'user', 'getpubtypes');
         foreach ($pubtypes as $pubtypeid => $pubtypeinfo) {
             if (!empty($args['itemtype']) && $args['itemtype'] != $pubtypeid) {
                 continue;
             }
-            if (!xarModHooks::isHooked('uploads', 'articles', $pubtypeid)) {
+            if (!$this->mod()->isHooked('uploads', 'articles', $pubtypeid)) {
                 continue;
             }
             $fieldlist = [];
@@ -192,7 +192,7 @@ class RescanAssociationsMethod extends MethodClass
             if (empty($fieldlist)) {
                 continue;
             }
-            $articles = xarMod::apiFunc(
+            $articles = $this->mod()->apiFunc(
                 'articles',
                 'user',
                 'getall',

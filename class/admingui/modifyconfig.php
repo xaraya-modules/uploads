@@ -39,7 +39,7 @@ class ModifyconfigMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        xarMod::apiLoad('uploads', 'user');
+        $this->mod()->apiLoad('uploads', 'user');
 
         // Security check
         if (!$this->sec()->checkAccess('AdminUploads')) {
@@ -117,7 +117,7 @@ class ModifyconfigMethod extends MethodClass
         }
 
         // Define the module settings
-        $data['module_settings'] = xarMod::apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'uploads']);
+        $data['module_settings'] = $this->mod()->apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'uploads']);
         $data['module_settings']->setFieldList('items_per_page, use_module_alias, use_module_icons');
         $data['module_settings']->getItem();
 

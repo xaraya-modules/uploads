@@ -75,7 +75,7 @@ class FilePropertiesMethod extends MethodClass
 
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
             $instance[1] = $fileInfo['fileTypeInfo']['subtypeId'];
-            $instance[2] = xarSession::getVar('uid');
+            $instance[2] = $this->session()->getUserId();
             $instance[3] = $fileId;
 
             $instance = implode(':', $instance);

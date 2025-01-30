@@ -92,7 +92,7 @@ class ValidatevalueMethod extends MethodClass
             }
         }
 
-        xarMod::apiLoad('uploads', 'user');
+        $this->mod()->apiLoad('uploads', 'user');
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();

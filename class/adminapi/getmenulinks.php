@@ -34,6 +34,6 @@ class GetmenulinksMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        return xarMod::apiFunc('base', 'admin', 'loadmenuarray', ['modname' => 'uploads', 'modtype' => 'admin']);
+        return $this->mod()->apiFunc('base', 'admin', 'loadmenuarray', ['modname' => 'uploads', 'modtype' => 'admin']);
     }
 }

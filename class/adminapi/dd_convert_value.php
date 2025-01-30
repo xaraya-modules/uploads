@@ -68,7 +68,7 @@ class DdConvertValueMethod extends MethodClass
         }
 
         if (file_exists($basedir . $value) && !is_file($basedir . $value)) {
-            xarMod::apiLoad('uploads', 'user');
+            $this->mod()->apiLoad('uploads', 'user');
 
             /** @var UserApi $userapi */
             $userapi = $this->userapi();

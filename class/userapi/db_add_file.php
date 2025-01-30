@@ -76,7 +76,7 @@ class DbAddFileMethod extends MethodClass
         }
 
         if (!isset($userId)) {
-            $userId = xarSession::getVar('role_id');
+            $userId = $this->session()->getUserId();
         }
 
         if (!isset($fileStatus)) {

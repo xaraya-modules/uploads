@@ -66,7 +66,7 @@ class DownloadMethod extends MethodClass
         }
 
         if (!empty($fileName)) {
-            $fileInfo = xarSession::getVar($fileName);
+            $fileInfo = $this->session()->getVar($fileName);
 
             try {
                 $result = $userapi->filePush($fileInfo);
@@ -94,7 +94,7 @@ class DownloadMethod extends MethodClass
                     break;
                     // Personally files only
                 case 1:
-                    $permitted = $fileInfo['userId'] == xarSession::getVar('role_id') ? true : false;
+                    $permitted = $fileInfo['userId'] == $this->session()->getUserId() ? true : false;
                     break;
                     // Group files only
                 case 2:
@@ -104,7 +104,7 @@ class DownloadMethod extends MethodClass
                     }
                     $funcparts = explode(',', $rawfunction);
                     try {
-                        $permitted = xarMod::apiFunc($funcparts[0], $funcparts[1], $funcparts[2], ['fileInfo' => $fileInfo]);
+                        $permitted = $this->mod()->apiFunc($funcparts[0], $funcparts[1], $funcparts[2], ['fileInfo' => $fileInfo]);
                     } catch (Exception $e) {
                         $permitted = false;
                     }
@@ -120,7 +120,7 @@ class DownloadMethod extends MethodClass
 
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
             $instance[1] = $fileInfo['fileTypeInfo']['subtypeId'];
-            $instance[2] = xarSession::getVar('uid');
+            $instance[2] = $this->session()->getUserId();
             $instance[3] = $fileId;
 
             $instance = implode(':', $instance);

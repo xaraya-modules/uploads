@@ -236,7 +236,7 @@ class ViewMethod extends MethodClass
             unset($instance);
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
             $instance[1] = $fileInfo['fileTypeInfo']['subtypeId'];
-            $instance[2] = xarSession::getVar('uid');
+            $instance[2] = $this->session()->getUserId();
             $instance[3] = $fileInfo['fileId'];
 
             if (is_array($instance)) {

@@ -89,7 +89,7 @@ class UpdateconfigMethod extends MethodClass
             }
         }
 
-        $data['module_settings'] = xarMod::apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'uploads']);
+        $data['module_settings'] = $this->mod()->apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'uploads']);
         $data['module_settings']->setFieldList('items_per_page, use_module_alias, use_module_icons');
         $data['module_settings']->getItem();
         $isvalid = $data['module_settings']->checkInput();
@@ -128,7 +128,7 @@ class UpdateconfigMethod extends MethodClass
         // Now update the 'current working imports directory' in case the
         // imports directory was changed. We do this by first deleting the modvar
         // and then recreating it to ensure that the user's version is cleared
-        // xarModVars::delete('uploads', 'path.imports-cwd');
+        // $this->mod()->delVar('path.imports-cwd');
         $this->mod()->setVar('path.imports-cwd', $this->mod()->getVar('imports_directory'));
 
         xarModHooks::call(

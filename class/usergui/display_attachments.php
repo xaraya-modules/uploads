@@ -73,11 +73,11 @@ class DisplayAttachmentsMethod extends MethodClass
         }
 
         if (empty($modname)) {
-            $modname = xarMod::getName();
+            $modname = $this->mod()->getName();
         }
 
         $args['modName']  = $modname;
-        $args['modid']    = xarMod::getRegId($modname);
+        $args['modid']    = $this->mod()->getRegID($modname);
         $args['itemtype'] = $itemtype ?? 0;
         $args['itemid']   = $objectid;
 

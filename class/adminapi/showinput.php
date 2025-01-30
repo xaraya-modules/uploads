@@ -85,7 +85,7 @@ class ShowinputMethod extends MethodClass
 
         $data = [];
 
-        xarMod::apiLoad('uploads', 'user');
+        $this->mod()->apiLoad('uploads', 'user');
 
         if (isset($methods) && count($methods) == 4) {
             $data['methods'] = [

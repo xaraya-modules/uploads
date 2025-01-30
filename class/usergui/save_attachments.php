@@ -60,7 +60,7 @@ class SaveAttachmentsMethod extends MethodClass
         }
 
         // Pass to API
-        $newrating = xarMod::apiFunc(
+        $newrating = $this->mod()->apiFunc(
             'ratings',
             'user',
             'rate',

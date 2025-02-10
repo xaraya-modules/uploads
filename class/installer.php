@@ -112,7 +112,7 @@ class Installer extends InstallerClass
         $mimetypes = & $data['filters']['mimetypes'];
 
         /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::getAPI('mime');
+        $mimeapi = xarMod::userapi('mime');
 
         $mimetypes += $mimeapi->getallTypes();
 

@@ -122,7 +122,7 @@ class UserApi extends UserApiClass
     public function getMimeAPI()
     {
         /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::getAPI('mime');
+        $mimeapi = xarMod::userapi('mime');
         return $mimeapi;
     }
 

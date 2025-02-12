@@ -15,7 +15,7 @@ use Xaraya\Modules\AdminGuiClass;
 use sys;
 
 sys::import('xaraya.modules.admingui');
-sys::import('modules.uploads.class.adminapi');
+sys::import('modules.uploads.adminapi');
 
 /**
  * Handle the uploads admin GUI

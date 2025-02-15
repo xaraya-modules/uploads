@@ -80,14 +80,14 @@ class UploadProperty extends FileUploadProperty
                 // Note: we add the userid just to make sure it's unique e.g. when filtering
                 // out unwanted characters through xarVar::prepForOS, or if the database makes
                 // a difference between upper-case and lower-case and the OS doesn't...
-                $udir = xarVar::prepForOS($this->initialization_directory_name) . $uid;
+                $udir = $this->var()->prepPath($this->initialization_directory_name) . $uid;
                 $this->initialization_basedirectory = preg_replace('/\{user\}/', $udir, $this->initialization_basedirectory);
             }
             if (!empty($this->initialization_import_directory) && preg_match('/\{user\}/', $this->initialization_import_directory)) {
                 // Note: we add the userid just to make sure it's unique e.g. when filtering
                 // out unwanted characters through xarVar::prepForOS, or if the database makes
                 // a difference between upper-case and lower-case and the OS doesn't...
-                $udir = xarVar::prepForOS($this->initialization_directory_name) . $uid;
+                $udir = $this->var()->prepPath($this->initialization_directory_name) . $uid;
                 $this->initialization_import_directory = preg_replace('/\{user\}/', $udir, $this->initialization_import_directory);
             }
         }

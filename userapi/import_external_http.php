@@ -181,7 +181,7 @@ class ImportExternalHttpMethod extends MethodClass
         } else {
             // if we're not obfuscating it,
             // just use the name of the uploaded file
-            $fileInfo['fileDest'] = $savePath . '/' . xarVar::prepForOS($fileInfo['fileName']);
+            $fileInfo['fileDest'] = $savePath . '/' . $this->var()->prepPath($fileInfo['fileName']);
         }
         $fileInfo['fileLocation'] = $fileInfo['fileDest'];
 

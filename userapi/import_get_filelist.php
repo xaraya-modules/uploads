@@ -192,7 +192,7 @@ class ImportGetFilelistMethod extends MethodClass
                                         'fileLocation' => $fileName,
                                     ]);
                                     if (count($file)) {
-                                        continue;
+                                        continue 2;
                                     }
                                 }
 

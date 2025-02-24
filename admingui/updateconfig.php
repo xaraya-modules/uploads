@@ -42,27 +42,13 @@ class UpdateconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get parameters
-        if (!$this->var()->find('file', $file, 'list:str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('imports_directory', $imports_directory, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('uploads_directory', $uploads_directory, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('view', $view, 'list:str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('ddprop', $ddprop, 'array:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('permit_download', $permit_download, 'int', 0)) {
-            return;
-        }
-        if (!$this->var()->find('permit_download_function', $permit_download_function, 'str', '')) {
-            return;
-        }
+        $this->var()->find('file', $file, 'list:str:1:', '');
+        $this->var()->find('imports_directory', $imports_directory, 'str:1:', '');
+        $this->var()->find('uploads_directory', $uploads_directory, 'str:1:', '');
+        $this->var()->find('view', $view, 'list:str:1:', '');
+        $this->var()->find('ddprop', $ddprop, 'array:1:', '');
+        $this->var()->find('permit_download', $permit_download, 'int', 0);
+        $this->var()->find('permit_download_function', $permit_download_function, 'str', '');
 
         // Confirm authorisation code.
         if (!$this->sec()->confirmAuthKey()) {

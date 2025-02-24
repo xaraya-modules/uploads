@@ -46,9 +46,7 @@ class DisplayAttachmentsMethod extends MethodClass
     {
         extract($args);
 
-        if (!$this->var()->get('inode', $inode, 'regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
-            return;
-        }
+        $this->var()->get('inode', $inode, 'regexp:/(?<!\.{2,2}\/)[\w\d]*/');
 
         $data = [];
 

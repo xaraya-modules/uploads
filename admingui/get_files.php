@@ -53,15 +53,11 @@ class GetFilesMethod extends MethodClass
         $actionList = 'enum:' . implode(':', $actionList);
 
         // What action are we performing?
-        if (!$this->var()->find('action', $args['action'], $actionList)) {
-            return;
-        }
+        $this->var()->find('action', $args['action'], $actionList);
 
         // StoreType can -only- be one of FSDB or DB_FULL
         $storeTypes = Defines::STORE_FSDB . ':' . Defines::STORE_DB_FULL;
-        if (!$this->var()->find('storeType', $storeType, "enum:$storeTypes", '')) {
-            return;
-        }
+        $this->var()->find('storeType', $storeType, "enum:$storeTypes", '');
 
         // now make sure someone hasn't tried to change our maxsize on us ;-)
         $file_maxsize = $this->mod()->getVar('file.maxsize');
@@ -83,24 +79,14 @@ class GetFilesMethod extends MethodClass
                 break;
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
-                if (!$this->var()->get('import', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/')) {
-                    return;
-                }
+                $this->var()->get('import', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/');
                 $args['import'] = $import;
                 break;
             case Defines::GET_LOCAL:
-                if (!$this->var()->get('fileList', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
-                    return;
-                }
-                if (!$this->var()->find('file_all', $file_all, 'checkbox', '')) {
-                    return;
-                }
-                if (!$this->var()->find('addbutton', $addbutton, 'str:1', '')) {
-                    return;
-                }
-                if (!$this->var()->find('delbutton', $delbutton, 'str:1', '')) {
-                    return;
-                }
+                $this->var()->get('fileList', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/');
+                $this->var()->find('file_all', $file_all, 'checkbox', '');
+                $this->var()->find('addbutton', $addbutton, 'str:1', '');
+                $this->var()->find('delbutton', $delbutton, 'str:1', '');
 
                 if (empty($addbutton) && empty($delbutton)) {
                     $msg = $this->ml('Unsure how to proceed - missing button action!');
@@ -120,9 +106,7 @@ class GetFilesMethod extends MethodClass
                 break;
             default:
             case Defines::GET_REFRESH_LOCAL:
-                if (!$this->var()->get('inode', $inode, 'regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
-                    return;
-                }
+                $this->var()->get('inode', $inode, 'regexp:/(?<!\.{2,2}\/)[\w\d]*/');
 
                 $cwd = $userapi->importChdir(['dirName' => $inode ?? null]);
 

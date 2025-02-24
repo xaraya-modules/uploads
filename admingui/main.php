@@ -41,7 +41,7 @@ class MainMethod extends MethodClass
             return;
         }
 
-        if (xarModVars::get('modules', 'disableoverview') == 0) {
+        if ($this->mod('modules')->getVar('disableoverview') == 0) {
             return [];
         } else {
             $this->ctl()->redirect($this->mod()->getURL('admin', 'view'));

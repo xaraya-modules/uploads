@@ -40,15 +40,9 @@ class ErrorsMethod extends MethodClass
             return;
         }
 
-        if (!$this->var()->find('layout', $data['layout'], 'str:1:100', '')) {
-            return;
-        }
-        if (!$this->var()->find('maxallowed', $data['maxallowed'], 'str:1:100', '')) {
-            return;
-        }
-        if (!$this->var()->find('location', $data['location'], 'str:1:100', '')) {
-            return;
-        }
+        $this->var()->find('layout', $data['layout'], 'str:1:100', '');
+        $this->var()->find('maxallowed', $data['maxallowed'], 'str:1:100', '');
+        $this->var()->find('location', $data['location'], 'str:1:100', '');
 
         return $data;
     }

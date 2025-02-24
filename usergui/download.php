@@ -48,12 +48,8 @@ class DownloadMethod extends MethodClass
             return;
         }
 
-        if (!$this->var()->find('file', $fileName, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('fileId', $fileId, 'int:1:', 0)) {
-            return;
-        }
+        $this->var()->find('file', $fileName, 'str:1:', '');
+        $this->var()->find('fileId', $fileId, 'int:1:', 0);
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();

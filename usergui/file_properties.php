@@ -45,12 +45,8 @@ class FilePropertiesMethod extends MethodClass
         if (!$this->sec()->checkAccess('ViewUploads')) {
             return;
         }
-        if (!$this->var()->get('fileId', $fileId, 'int:1')) {
-            return;
-        }
-        if (!$this->var()->find('fileName', $fileName, 'str:1:64', '')) {
-            return;
-        }
+        $this->var()->get('fileId', $fileId, 'int:1');
+        $this->var()->find('fileName', $fileName, 'str:1:64', '');
 
         if (!isset($fileId)) {
             $msg = $this->ml(

@@ -124,9 +124,7 @@ class ValidatevalueMethod extends MethodClass
                 $file_maxsize = $this->mod()->getVar('file.maxsize');
                 $file_maxsize = $file_maxsize > 0 ? $file_maxsize : $maxsize;
 
-                if (!$this->var()->get('MAX_FILE_SIZE', $maxsize, "int::$file_maxsize")) {
-                    return;
-                }
+                $this->var()->get('MAX_FILE_SIZE', $maxsize, "int::$file_maxsize");
 
                 if (!$this->var()->validate('array:1:', $_FILES[$id . '_attach_upload'])) {
                     return;
@@ -138,9 +136,7 @@ class ValidatevalueMethod extends MethodClass
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!$this->var()->get($id . '_attach_external', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/')) {
-                    return;
-                }
+                $this->var()->get($id . '_attach_external', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/');
 
                 if (empty($import)) {
                     // synchronize file associations with empty list
@@ -154,9 +150,7 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_LOCAL:
 
-                if (!$this->var()->get($id . '_attach_trusted', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/')) {
-                    return;
-                }
+                $this->var()->get($id . '_attach_trusted', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/');
 
                 // CHECKME: use 'imports' name like in db_get_file() ?
                 // replace /trusted coming from showinput() again
@@ -171,9 +165,7 @@ class ValidatevalueMethod extends MethodClass
                 break;
             case Defines::GET_STORED:
 
-                if (!$this->var()->find($id . '_attach_stored', $fileList, 'list:int:1:', 0)) {
-                    return;
-                }
+                $this->var()->find($id . '_attach_stored', $fileList, 'list:int:1:', 0);
 
 
                 // If we've made it this far, then fileList was empty to start,

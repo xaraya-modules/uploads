@@ -38,21 +38,11 @@ class SaveAttachmentsMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get parameters
-        if (!$this->var()->check('modname', $modname)) {
-            return;
-        }
-        if (!$this->var()->check('itemtype', $itemtype)) {
-            return;
-        }
-        if (!$this->var()->check('objectid', $objectid)) {
-            return;
-        }
-        if (!$this->var()->check('returnurl', $returnurl)) {
-            return;
-        }
-        if (!$this->var()->check('rating', $rating)) {
-            return;
-        }
+        $this->var()->check('modname', $modname);
+        $this->var()->check('itemtype', $itemtype);
+        $this->var()->check('objectid', $objectid);
+        $this->var()->check('returnurl', $returnurl);
+        $this->var()->check('rating', $rating);
 
         // Confirm authorisation code
         if (!$this->sec()->confirmAuthKey()) {

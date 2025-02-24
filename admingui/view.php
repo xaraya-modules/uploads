@@ -65,39 +65,17 @@ class ViewMethod extends MethodClass
          *  Validate variables passed back
          */
 
-        if (!$this->var()->check('mimetype', $mimetype, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('subtype', $subtype, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('status', $status, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('inverse', $inverse, 'checkbox')) {
-            return;
-        }
-        if (!$this->var()->check('fileId', $fileId, 'list:int:1')) {
-            return;
-        }
-        if (!$this->var()->check('fileDo', $fileDo, 'str:5:')) {
-            return;
-        }
-        if (!$this->var()->check('action', $action, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('sort', $sort, 'enum:id:name:size:user:status')) {
-            return;
-        }
-        if (!$this->var()->check('catid', $catid, 'str:1:')) {
-            return;
-        }
+        $this->var()->check('mimetype', $mimetype, 'int:0:');
+        $this->var()->check('subtype', $subtype, 'int:0:');
+        $this->var()->check('status', $status, 'int:0:');
+        $this->var()->check('inverse', $inverse, 'checkbox');
+        $this->var()->check('fileId', $fileId, 'list:int:1');
+        $this->var()->check('fileDo', $fileDo, 'str:5:');
+        $this->var()->check('action', $action, 'int:0:');
+        $this->var()->check('startnum', $startnum, 'int:0:');
+        $this->var()->check('numitems', $numitems, 'int:0:');
+        $this->var()->check('sort', $sort, 'enum:id:name:size:user:status');
+        $this->var()->check('catid', $catid, 'str:1:');
         /** @var AdminGui $admingui */
         $admingui = $this->admingui();
 

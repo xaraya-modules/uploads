@@ -76,7 +76,7 @@ class ImportExternalFtpMethod extends MethodClass
             $uri['user'] = 'anonymous';
             $uri['pass'] = xarUser::getVar('email');
             if (empty($uri['pass'])) {
-                $uri['pass'] = xarModVars::get('mail', 'adminmail');
+                $uri['pass'] = $this->mod('mail')->getVar('adminmail');
             }
         } else {
             // otherwise, if the uname is there but the

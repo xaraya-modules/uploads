@@ -117,12 +117,8 @@ class UploadProperty extends FileUploadProperty
             $name = 'dd_' . $this->id;
         }
 
-        if (!$this->var()->find($name . '_dbvalue', $dbvalue, 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find($name . '_clear', $clear, 'checkbox', 0)) {
-            return;
-        }
+        $this->var()->find($name . '_dbvalue', $dbvalue, 'str', '');
+        $this->var()->find($name . '_clear', $clear, 'checkbox', 0);
         //        echo $name . '_dbvalue';
         $this->dbvalue = $dbvalue;
         $this->upload_clear = $clear;
@@ -158,9 +154,7 @@ class UploadProperty extends FileUploadProperty
 
         switch ($data['action']) {
             case Defines::GET_UPLOAD:
-                if (!$this->var()->get($name . '_max_file_size', $this->validation_max_file_size, "int::$this->validation_max_file_size")) {
-                    return;
-                }
+                $this->var()->get($name . '_max_file_size', $this->validation_max_file_size, "int::$this->validation_max_file_size");
                 if (!xarVar::validate('array', $_FILES[$name . '_attach_upload'])) {
                     return;
                 }
@@ -180,9 +174,7 @@ class UploadProperty extends FileUploadProperty
             case Defines::GET_EXTERNAL:
                 // minimum external import link must be: ftp://a.ws  <-- 10 characters total
 
-                if (!$this->var()->find($name . '_attach_external', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/', 0)) {
-                    return;
-                }
+                $this->var()->find($name . '_attach_external', $import, 'regexp:/^([a-z]*).\/\/(.{7,})/', 0);
 
                 if (empty($import)) {
                     // synchronize file associations with empty list
@@ -199,9 +191,7 @@ class UploadProperty extends FileUploadProperty
                 break;
             case Defines::GET_LOCAL:
 
-                if (!$this->var()->find($name . '_attach_trusted', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', [])) {
-                    return;
-                }
+                $this->var()->find($name . '_attach_trusted', $fileList, 'list:regexp:/(?<!\.{2,2}\/)[\w\d]*/', []);
 
                 // CHECKME: use 'imports' name like in db_get_file() ?
                 // replace /trusted coming from showinput() again
@@ -219,9 +209,7 @@ class UploadProperty extends FileUploadProperty
                 break;
             case Defines::GET_STORED:
 
-                if (!$this->var()->find($name . '_attach_stored', $fileList, 'list:int:1:', 0)) {
-                    return;
-                }
+                $this->var()->find($name . '_attach_stored', $fileList, 'list:int:1:', 0);
 
                 // If we've made it this far, then fileList was empty to start,
                 // so don't complain about it being empty now

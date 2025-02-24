@@ -44,45 +44,19 @@ class PrivilegesMethod extends MethodClass
         extract($args);
 
         // fixed params
-        if (!$this->var()->check('mimetype', $mimetype, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('subtype', $subtype, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('userId', $userId, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('fileId', $fileId, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('userName', $userName)) {
-            return;
-        }
-        if (!$this->var()->check('apply', $apply)) {
-            return;
-        }
-        if (!$this->var()->check('extpid', $extpid)) {
-            return;
-        }
-        if (!$this->var()->check('extname', $extname)) {
-            return;
-        }
-        if (!$this->var()->check('extrealm', $extrealm)) {
-            return;
-        }
-        if (!$this->var()->check('extmodule', $extmodule)) {
-            return;
-        }
-        if (!$this->var()->check('extcomponent', $extcomponent)) {
-            return;
-        }
-        if (!$this->var()->check('extinstance', $extinstance)) {
-            return;
-        }
-        if (!$this->var()->check('extlevel', $extlevel)) {
-            return;
-        }
+        $this->var()->check('mimetype', $mimetype, 'int:0:');
+        $this->var()->check('subtype', $subtype, 'int:0:');
+        $this->var()->check('userId', $userId, 'int:0:');
+        $this->var()->check('fileId', $fileId, 'int:0:');
+        $this->var()->check('userName', $userName);
+        $this->var()->check('apply', $apply);
+        $this->var()->check('extpid', $extpid);
+        $this->var()->check('extname', $extname);
+        $this->var()->check('extrealm', $extrealm);
+        $this->var()->check('extmodule', $extmodule);
+        $this->var()->check('extcomponent', $extcomponent);
+        $this->var()->check('extinstance', $extinstance);
+        $this->var()->check('extlevel', $extlevel);
 
         $userNameList = [];
 

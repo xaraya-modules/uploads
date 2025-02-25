@@ -160,7 +160,7 @@ class ProcessFilesMethod extends MethodClass
 
                 if (isset($getAll) && !empty($getAll)) {
                     // current working directory for the user, set by import_chdir() when using the get_files() GUI
-                    $cwd = xarModUserVars::get('uploads', 'path.imports-cwd');
+                    $cwd = $this->mod()->getUserVar('path.imports-cwd');
 
                     $fileList = $userapi->importGetFilelist(['fileLocation' => $cwd, 'descend' => true]);
                 } else {

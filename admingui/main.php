@@ -41,7 +41,7 @@ class MainMethod extends MethodClass
             return;
         }
 
-        if ($this->mod('modules')->getVar('disableoverview') == 0) {
+        if (!$this->mod()->disableOverview()) {
             return [];
         } else {
             $this->ctl()->redirect($this->mod()->getURL('admin', 'view'));

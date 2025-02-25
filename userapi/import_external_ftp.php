@@ -74,7 +74,7 @@ class ImportExternalFtpMethod extends MethodClass
         // at the password based on the user's email address
         if (!isset($uri['user'])) {
             $uri['user'] = 'anonymous';
-            $uri['pass'] = xarUser::getVar('email');
+            $uri['pass'] = $this->user()->getEmail();
             if (empty($uri['pass'])) {
                 $uri['pass'] = $this->mod('mail')->getVar('adminmail');
             }
@@ -82,7 +82,7 @@ class ImportExternalFtpMethod extends MethodClass
             // otherwise, if the uname is there but the
             // pass isn't, try to use the user's email address
             if (!isset($uri['pass'])) {
-                xarUser::getVar('email');
+                $this->user()->getEmail();
             }
         }
 

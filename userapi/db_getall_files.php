@@ -162,10 +162,10 @@ class DbGetallFilesMethod extends MethodClass
         $importDir = str_replace('/$', '', $importDir);
         $uploadDir = str_replace('/$', '', $uploadDir);
 
-        if (xarServer::getVar('PATH_TRANSLATED')) {
-            $base_directory = dirname(realpath(xarServer::getVar('PATH_TRANSLATED')));
-        } elseif (xarServer::getVar('SCRIPT_FILENAME')) {
-            $base_directory = dirname(realpath(xarServer::getVar('SCRIPT_FILENAME')));
+        if ($this->ctl()->getServerVar('PATH_TRANSLATED')) {
+            $base_directory = dirname(realpath($this->ctl()->getServerVar('PATH_TRANSLATED')));
+        } elseif ($this->ctl()->getServerVar('SCRIPT_FILENAME')) {
+            $base_directory = dirname(realpath($this->ctl()->getServerVar('SCRIPT_FILENAME')));
         } else {
             $base_directory = './';
         }
@@ -186,7 +186,7 @@ class DbGetallFilesMethod extends MethodClass
             $fileInfo['fileId']        = $row['xar_fileEntry_id'];
             $fileInfo['userId']        = $row['xar_user_id'];
             if (!isset($usercache[$fileInfo['userId']])) {
-                $usercache[$fileInfo['userId']] = xarUser::getVar('name', $fileInfo['userId']);
+                $usercache[$fileInfo['userId']] = $this->user($fileInfo['userId'])->getName();
             }
             $fileInfo['userName']      = $usercache[$fileInfo['userId']];
             $fileInfo['fileName']      = $row['xar_filename'];
@@ -246,7 +246,7 @@ class DbGetallFilesMethod extends MethodClass
             $instance = [];
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
             $instance[1] = $fileInfo['fileTypeInfo']['subtypeId'];
-            $instance[2] = $this->session()->getUserId();
+            $instance[2] = $this->user()->getId();
             $instance[3] = $fileInfo['fileId'];
 
             $instance = implode(':', $instance);

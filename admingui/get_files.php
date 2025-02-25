@@ -95,7 +95,7 @@ class GetFilesMethod extends MethodClass
                     $args['bAction'] = (!empty($addbutton)) ? $addbutton : $delbutton;
                 }
 
-                $cwd = xarModUserVars::get('uploads', 'path.imports-cwd');
+                $cwd = $this->mod()->getUserVar('path.imports-cwd');
                 foreach ($fileList as $file) {
                     $args['fileList']["$cwd/$file"] = $userapi->fileGetMetadata([
                         'fileLocation' => "$cwd/$file",

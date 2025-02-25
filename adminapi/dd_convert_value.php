@@ -58,8 +58,8 @@ class DdConvertValueMethod extends MethodClass
         }
 
         if (!isset($basePath)) {
-            if (xarServer::getVar('SCRIPT_FILENAME')) {
-                $base_directory = dirname(realpath(xarServer::getVar('SCRIPT_FILENAME')));
+            if ($this->ctl()->getServerVar('SCRIPT_FILENAME')) {
+                $base_directory = dirname(realpath($this->ctl()->getServerVar('SCRIPT_FILENAME')));
             } else {
                 $base_directory = './';
             }

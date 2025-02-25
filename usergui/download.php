@@ -90,7 +90,7 @@ class DownloadMethod extends MethodClass
                     break;
                     // Personally files only
                 case 1:
-                    $permitted = $fileInfo['userId'] == $this->session()->getUserId() ? true : false;
+                    $permitted = $fileInfo['userId'] == $this->user()->getId() ? true : false;
                     break;
                     // Group files only
                 case 2:
@@ -116,7 +116,7 @@ class DownloadMethod extends MethodClass
 
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
             $instance[1] = $fileInfo['fileTypeInfo']['subtypeId'];
-            $instance[2] = $this->session()->getUserId();
+            $instance[2] = $this->user()->getId();
             $instance[3] = $fileId;
 
             $instance = implode(':', $instance);

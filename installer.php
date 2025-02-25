@@ -74,8 +74,8 @@ class Installer extends InstallerClass
         // load the predefined constants
         xarMod::apiLoad('uploads', 'user');
 
-        if (xarServer::getVar('SCRIPT_FILENAME')) {
-            $base_directory = dirname(realpath(xarServer::getVar('SCRIPT_FILENAME')));
+        if ($this->ctl()->getServerVar('SCRIPT_FILENAME')) {
+            $base_directory = dirname(realpath($this->ctl()->getServerVar('SCRIPT_FILENAME')));
         } else {
             $base_directory = './';
         }

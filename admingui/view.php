@@ -88,7 +88,7 @@ class ViewMethod extends MethodClass
         if (!isset($mimetype) || !isset($subtype) || !isset($status) || !isset($inverse)) {
             // if the filter settings are empty, then
             // grab the users last view filter
-            $options  = unserialize(xarModUserVars::get('uploads', 'view.filter'));
+            $options  = unserialize($this->mod()->getUserVar('view.filter'));
             $data     = $options['data'];
             $filter   = $options['filter'];
             unset($options);
@@ -214,7 +214,7 @@ class ViewMethod extends MethodClass
             unset($instance);
             $instance[0] = $fileInfo['fileTypeInfo']['typeId'];
             $instance[1] = $fileInfo['fileTypeInfo']['subtypeId'];
-            $instance[2] = $this->session()->getUserId();
+            $instance[2] = $this->user()->getId();
             $instance[3] = $fileInfo['fileId'];
 
             if (is_array($instance)) {

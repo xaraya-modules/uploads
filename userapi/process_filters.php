@@ -156,7 +156,7 @@ class ProcessFiltersMethod extends MethodClass
 
         if ($storeOptions) {
             // Save the filter settings for later use
-            xarModUserVars::set('uploads', 'view.filter', serialize($filterInfo));
+            $this->mod()->setUserVar('view.filter', serialize($filterInfo));
         }
 
         return $filterInfo;

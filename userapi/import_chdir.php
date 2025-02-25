@@ -48,9 +48,9 @@ class ImportChdirMethod extends MethodClass
 
         $root = sys::root();
         if (empty($root)) {
-            $cwd = xarModUserVars::get('uploads', 'path.imports-cwd');
+            $cwd = $this->mod()->getUserVar('path.imports-cwd');
         } else {
-            $cwd = sys::root() . "/" . xarModUserVars::get('uploads', 'path.imports-cwd');
+            $cwd = sys::root() . "/" . $this->mod()->getUserVar('path.imports-cwd');
         }
         /** @var UserApi $userapi */
         $userapi = $this->userapi();
@@ -61,23 +61,23 @@ class ImportChdirMethod extends MethodClass
             if ($dirName == '...') {
                 if (stristr($cwd, $importDir) && strlen($cwd) > strlen($importDir)) {
                     $cwd = dirname($cwd);
-                    xarModUserVars::set('uploads', 'path.imports-cwd', $cwd);
+                    $this->mod()->setUserVar('path.imports-cwd', $cwd);
                 }
             } else {
                 if (file_exists("$cwd/$dirName") && is_dir("$cwd/$dirName")) {
                     $cwd = "$cwd/$dirName";
-                    xarModUserVars::set('uploads', 'path.imports-cwd', $cwd);
+                    $this->mod()->setUserVar('path.imports-cwd', $cwd);
                 }
             }
         } else {
             // if dirName is empty, then reset the cwd to the top level directory
             $cwd = $this->mod()->getVar('imports_directory');
-            xarModUserVars::set('uploads', 'path.imports-cwd', $cwd);
+            $this->mod()->setUserVar('path.imports-cwd', $cwd);
         }
 
         if (!stristr($cwd, $importDir)) {
             $cwd = $importDir;
-            xarModUserVars::set('uploads', 'path.imports-cwd', $importDir);
+            $this->mod()->setUserVar('path.imports-cwd', $importDir);
         }
 
         return $cwd;

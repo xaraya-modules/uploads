@@ -76,7 +76,7 @@ class DbAddFileMethod extends MethodClass
         }
 
         if (!isset($userId)) {
-            $userId = $this->session()->getUserId();
+            $userId = $this->user()->getId();
         }
 
         if (!isset($fileStatus)) {

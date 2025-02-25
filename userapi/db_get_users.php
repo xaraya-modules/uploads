@@ -78,7 +78,7 @@ class DbGetUsersMethod extends MethodClass
             }
 
             $userInfo['userId']   = $row['xar_user_id'];
-            $userInfo['userName'] = xarUser::getVar('name', $row['xar_user_id']);
+            $userInfo['userName'] = $this->user($row['xar_user_id'])->getName();
 
             $userList[$userInfo['userId']] = $userInfo;
 

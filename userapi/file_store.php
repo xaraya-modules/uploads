@@ -57,7 +57,7 @@ class FileStoreMethod extends MethodClass
         $instance = [];
         $instance[0] = $typeInfo['typeId'];
         $instance[1] = $typeInfo['subtypeId'];
-        $instance[2] = $this->session()->getUserId();
+        $instance[2] = $this->user()->getId();
         $instance[3] = 'All';
 
         $instance = implode(':', $instance);

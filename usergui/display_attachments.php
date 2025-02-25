@@ -81,7 +81,7 @@ class DisplayAttachmentsMethod extends MethodClass
 
         // save the current attachment info for use later on if the
         // user decides to add / remove attachments for this item
-        xarModUserVars::set('uploads', 'save.attachment-info', serialize($args));
+        $this->mod()->setUserVar('save.attachment-info', serialize($args));
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();

@@ -75,7 +75,7 @@ class UploadProperty extends FileUploadProperty
         // this is used by DD's importpropertytypes() function
         if (empty($args['skipInit'])) {                            // this parameter is not found in the core code
             // Note : {user} will be replaced by the current user uploading the file - e.g. var/uploads/{user} -> var/uploads/myusername_123
-            $uid = $this->session()->getUserId();
+            $uid = $this->user()->getId();
             if (!empty($this->initialization_basedirectory) && preg_match('/\{user\}/', $this->initialization_basedirectory)) {
                 // Note: we add the userid just to make sure it's unique e.g. when filtering
                 // out unwanted characters through xarVar::prepForOS, or if the database makes

@@ -63,7 +63,7 @@ class FileStoreMethod extends MethodClass
         $instance = implode(':', $instance);
 
         if ((isset($fileInfo['fileStatus']) && $fileInfo['fileStatus'] == Defines::STATUS_APPROVED) ||
-             xarSecurity::check('AddUploads', 1, 'File', $instance)) {
+             $this->sec()->check('AddUploads', 1, 'File', $instance)) {
             if (!isset($storeType)) {
                 $storeType = Defines::STORE_FSDB;
             }

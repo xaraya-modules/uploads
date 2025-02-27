@@ -122,11 +122,11 @@ class DownloadMethod extends MethodClass
             $instance = implode(':', $instance);
 
             // If you are an administrator OR the file is approved, continue
-            if ($fileInfo['fileStatus'] != Defines::STATUS_APPROVED && !xarSecurity::check('EditUploads', 0, 'File', $instance)) {
+            if ($fileInfo['fileStatus'] != Defines::STATUS_APPROVED && !$this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 return $this->mod()->template('errors', ['layout' => 'no_permission']);
             }
 
-            if (xarSecurity::check('ViewUploads', 1, 'File', $instance)) {
+            if ($this->sec()->check('ViewUploads', 1, 'File', $instance)) {
                 if ($fileInfo['storeType'] & Defines::STORE_FILESYSTEM || ($fileInfo['storeType'] == Defines::STORE_DB_ENTRY)) {
                     if (!file_exists($fileInfo['fileLocation'])) {
                         return $this->mod()->template('errors', ['layout' => 'not_accessible']);

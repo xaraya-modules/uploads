@@ -220,7 +220,7 @@ class ViewMethod extends MethodClass
             if (is_array($instance)) {
                 $instance = implode(':', $instance);
             }
-            if (!xarSecurity::check('EditUploads', 0, 'File', $instance)) {
+            if (!$this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 unset($items[$key]);
             }
         }

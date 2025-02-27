@@ -84,7 +84,7 @@ class PrivilegesMethod extends MethodClass
                 return;
             }
         } else {
-            if (!xarSecurity::check('AdminUploads', 1, 'Upload', "$mimetype:All:All:All")) {
+            if (!$this->sec()->check('AdminUploads', 1, 'Upload', "$mimetype:All:All:All")) {
                 return;
             }
         }

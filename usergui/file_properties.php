@@ -75,7 +75,7 @@ class FilePropertiesMethod extends MethodClass
             $instance[3] = $fileId;
 
             $instance = implode(':', $instance);
-            if (xarSecurity::check('EditUploads', 0, 'File', $instance)) {
+            if ($this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 $data['allowedit'] = 1;
                 $data['hooks'] = xarModHooks::call(
                     'item',
@@ -113,7 +113,7 @@ class FilePropertiesMethod extends MethodClass
                 }
             }
 
-            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED || xarSecurity::check('ViewUploads', 1, 'File', $instance)) {
+            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED || $this->sec()->check('ViewUploads', 1, 'File', $instance)) {
                 // we don't want the theme to show up, so
                 // get rid of everything in the buffer
                 ob_end_clean();

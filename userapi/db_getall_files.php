@@ -252,7 +252,7 @@ class DbGetallFilesMethod extends MethodClass
             $instance = implode(':', $instance);
 
             if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED ||
-                xarSecurity::check('EditUploads', 0, 'File', $instance)) {
+                $this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 $fileList[$fileInfo['fileId']] = $fileInfo;
             }
             $result->MoveNext();

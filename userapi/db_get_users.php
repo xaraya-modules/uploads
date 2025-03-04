@@ -71,7 +71,7 @@ class DbGetUsersMethod extends MethodClass
             return [];
         }
 
-        while (!$result->EOF) {
+        while ($result->next()) {
             $row = $result->GetRowAssoc(false);
             if (empty($row)) {
                 break;
@@ -83,7 +83,6 @@ class DbGetUsersMethod extends MethodClass
             $userList[$userInfo['userId']] = $userInfo;
 
             unset($userinfo);
-            $result->MoveNext();
         }
 
         return $userList;

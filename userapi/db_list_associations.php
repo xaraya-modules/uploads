@@ -111,7 +111,7 @@ class DbListAssociationsMethod extends MethodClass
         }
 
         $list = [];
-        while (!$result->EOF) {
+        while ($result->next()) {
             if (empty($result->fields)) {
                 break;
             }
@@ -121,7 +121,6 @@ class DbListAssociationsMethod extends MethodClass
                 $list[$itemid] = [];
             }
             $list[$itemid][] = (int) $fileId;
-            $result->MoveNext();
         }
         return $list;
     }

@@ -160,7 +160,7 @@ class DbCountMethod extends MethodClass
         }
 
         // if no record found, return an empty array
-        if ($result->EOF) {
+        if (!$result->first()) {
             return [];
         }
 

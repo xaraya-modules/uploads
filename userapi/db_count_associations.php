@@ -97,7 +97,7 @@ class DbCountAssociationsMethod extends MethodClass
             }
 
             // if no record found, return zero
-            if ($result->EOF) {
+            if (!$result->first()) {
                 return 0;
             }
 
@@ -117,14 +117,13 @@ class DbCountAssociationsMethod extends MethodClass
             }
 
             $count = [];
-            while (!$result->EOF) {
+            while ($result->next()) {
                 if (empty($result->fields)) {
                     break;
                 }
                 [$file, $total] = $result->fields;
                 $count[$file] = $total;
 
-                $result->MoveNext();
             }
 
             return $count;

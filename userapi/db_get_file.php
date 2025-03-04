@@ -326,7 +326,7 @@ class DbGetFileMethod extends MethodClass
         $usercache = [];
 
         $fileList = [];
-        while (!$result->EOF) {
+        while ($result->next()) {
             $row = $result->GetRowAssoc(false);
             if (empty($row)) {
                 break;
@@ -404,7 +404,6 @@ class DbGetFileMethod extends MethodClass
                 $this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 $fileList[$fileInfo['fileId']] = $fileInfo;
             }
-            $result->MoveNext();
         }
 
         return $fileList;

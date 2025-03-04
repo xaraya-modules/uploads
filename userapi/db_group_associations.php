@@ -71,7 +71,7 @@ class DbGroupAssociationsMethod extends MethodClass
             }
 
             $modlist = [];
-            while (!$result->EOF) {
+            while ($result->next()) {
                 if (empty($result->fields)) {
                     break;
                 }
@@ -80,7 +80,6 @@ class DbGroupAssociationsMethod extends MethodClass
                     $modlist[$modid] = [];
                 }
                 $modlist[$modid][$itemtype] = ['items' => 0, 'files' => 0, 'links' => $numlinks];
-                $result->MoveNext();
             }
             $result->close();
 
@@ -99,13 +98,12 @@ class DbGroupAssociationsMethod extends MethodClass
                 return;
             }
 
-            while (!$result->EOF) {
+            while ($result->next()) {
                 if (empty($result->fields)) {
                     break;
                 }
                 [$modid, $itemtype, $numitems] = $result->fields;
                 $modlist[$modid][$itemtype]['items'] = $numitems;
-                $result->MoveNext();
             }
             $result->close();
 
@@ -124,13 +122,12 @@ class DbGroupAssociationsMethod extends MethodClass
                 return;
             }
 
-            while (!$result->EOF) {
+            while ($result->next()) {
                 if (empty($result->fields)) {
                     break;
                 }
                 [$modid, $itemtype, $numfiles] = $result->fields;
                 $modlist[$modid][$itemtype]['files'] = $numfiles;
-                $result->MoveNext();
             }
             $result->close();
         } else {
@@ -150,7 +147,7 @@ class DbGroupAssociationsMethod extends MethodClass
             }
 
             $modlist = [];
-            while (!$result->EOF) {
+            while ($result->next()) {
                 if (empty($result->fields)) {
                     break;
                 }
@@ -159,7 +156,6 @@ class DbGroupAssociationsMethod extends MethodClass
                     $modlist[$modid] = [];
                 }
                 $modlist[$modid][$itemtype] = ['items' => $numitems, 'files' => $numfiles, 'links' => $numlinks];
-                $result->MoveNext();
             }
             $result->close();
         }

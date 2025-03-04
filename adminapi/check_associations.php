@@ -64,7 +64,7 @@ class CheckAssociationsMethod extends MethodClass
         }
 
         $list = [];
-        while (!$result->EOF) {
+        while ($result->next()) {
             if (empty($result->fields)) {
                 break;
             }
@@ -74,7 +74,6 @@ class CheckAssociationsMethod extends MethodClass
                 $list[$fileId] = 0;
             }
             $list[$fileId]++;
-            $result->MoveNext();
         }
         return $list;
     }

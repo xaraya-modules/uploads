@@ -99,7 +99,7 @@ class DbGetAssociationsMethod extends MethodClass
         }
 
         $fileList = [];
-        while (!$result->EOF) {
+        while ($result->next()) {
             $row = $result->GetRowAssoc(false);
             if (empty($row)) {
                 break;
@@ -112,7 +112,6 @@ class DbGetAssociationsMethod extends MethodClass
 
             // Note: only one association is returned per file here !
             $fileList[$fileAssoc['fileId']] = $fileAssoc;
-            $result->MoveNext();
         }
         return $fileList;
     }

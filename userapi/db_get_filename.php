@@ -76,13 +76,12 @@ class DbGetFilenameMethod extends MethodClass
         }
         $fileName = false;
 
-        while (!$result->EOF) {
+        while ($result->next()) {
             $row = $result->GetRowAssoc(false);
             if (empty($row)) {
                 break;
             }
             $fileName = $row['xar_filename'];
-            $result->MoveNext();
         }
         return $fileName;
     }

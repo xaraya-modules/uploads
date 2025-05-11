@@ -47,9 +47,10 @@ class DownloadMethod extends MethodClass
         if (!$this->sec()->checkAccess('ViewUploads')) {
             return;
         }
+        extract($args);
 
-        $this->var()->find('file', $fileName, 'str:1:', '');
-        $this->var()->find('fileId', $fileId, 'int:1:', 0);
+        $this->var()->check('file', $fileName, 'str:1:', '');
+        $this->var()->check('fileId', $fileId, 'int:1:', 0);
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();

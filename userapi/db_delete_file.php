@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarDB;
 use xarModHooks;
 use sys;
 use Exception;

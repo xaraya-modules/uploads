@@ -15,11 +15,7 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use xarModVars;
-use xarMod;
-use xarModUserVars;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

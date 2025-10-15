@@ -14,10 +14,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use xarModVars;
-use xarMod;
-use xarUser;
-use xarVar;
 use sys;
 use Exception;
 

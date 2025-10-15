@@ -14,11 +14,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModVars;
-use xarController;
-use xarMod;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

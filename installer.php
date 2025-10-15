@@ -13,15 +13,10 @@
 
 namespace Xaraya\Modules\Uploads;
 
-use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\InstallerClass;
 use xarMod;
-use xarServer;
-use xarModVars;
-use xarDB;
 use xarTableDDL;
-use xarController;
 use xarPrivileges;
 use xarMasks;
 use xarModHooks;

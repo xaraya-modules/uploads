@@ -14,7 +14,6 @@ namespace Xaraya\Modules\Uploads;
 use Xaraya\Modules\UserApiClass;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use xarMod;
-use xarVar;
 use sys;
 
 sys::import('xaraya.modules.userapi');

@@ -13,11 +13,7 @@ namespace Xaraya\Modules\Uploads\UserGui;
 
 use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\MethodClass;
-use xarSecurity;
-use xarSec;
-use xarModVars;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

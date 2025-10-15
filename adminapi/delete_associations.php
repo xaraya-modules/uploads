@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
-use xarModHooks;
-use DataObjectFactory;
 use sys;
 use Exception;
 

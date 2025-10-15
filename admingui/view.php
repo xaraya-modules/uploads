@@ -15,17 +15,7 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
-use xarSecurity;
-use xarVar;
-use xarModUserVars;
-use xarModVars;
-use xarSec;
-use xarSession;
-use xarTplPager;
-use xarController;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

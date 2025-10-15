@@ -15,12 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
-use xarSecurity;
-use xarVar;
-use xarSec;
-use xarModVars;
-use xarController;
 use sys;
 use Exception;
 

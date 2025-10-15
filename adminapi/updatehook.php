@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
 use sys;
 use BadParameterException;
 

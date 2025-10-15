@@ -15,14 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use xarDB;
-use xarMod;
-use xarModHooks;
-use xarServer;
-use xarUser;
-use xarController;
-use xarSession;
-use xarSecurity;
 use sys;
 use Exception;
 

@@ -13,11 +13,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
-use xarController;
-use xarVar;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

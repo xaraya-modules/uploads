@@ -15,13 +15,6 @@ use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarSecurity;
-use xarVar;
-use xarMod;
-use xarSec;
-use xarController;
-use xarModVars;
-use xarTplPager;
 use sys;
 use Exception;
 

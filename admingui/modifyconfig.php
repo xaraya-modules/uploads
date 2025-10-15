@@ -15,13 +15,8 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
-use xarSecurity;
-use xarModVars;
-use xarSec;
 use xarModHooks;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

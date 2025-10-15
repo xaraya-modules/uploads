@@ -12,17 +12,9 @@
 namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\AdminGui;
-use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarVar;
-use xarSec;
-use xarModVars;
-use xarMod;
-use xarTpl;
 use xarModHooks;
-use xarController;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

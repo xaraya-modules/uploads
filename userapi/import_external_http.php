@@ -93,7 +93,7 @@ class ImportExternalHttpMethod extends MethodClass
 
         // Create a temporary file for storing
         // the contents of this new file
-        $tmpName = tempnam(null, 'xarul');
+        $tmpName = tempnam(sys_get_temp_dir(), 'xarul');
 
         // TODO: handle duplicates - cfr. prepare_uploads()
 

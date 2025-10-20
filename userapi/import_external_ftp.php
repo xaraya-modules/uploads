@@ -99,7 +99,7 @@ class ImportExternalFtpMethod extends MethodClass
 
         // Create a temporary file for storing
         // the contents of this new file
-        $tmpName = tempnam(null, 'xarul');
+        $tmpName = tempnam(sys_get_temp_dir(), 'xarul');
 
         // Set up the fileInfo array
         $fileInfo['fileName']     = basename($uri['path']);

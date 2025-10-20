@@ -13,9 +13,9 @@
                 :: Error encountered!
             </xar:if>
         </title> 
-        <base href="&xar-baseurl;index.php"/>
+        <base href="#xarServer::getBaseURL()#index.php"/>
         <style type="text/css">
-            @import url(&xar-baseurl;#xarTpl::getThemeDir()#/style/style.css); 
+            @import url(#xarTpl::getThemeUrl()#/style/style.css); 
         </style> 
     </head>
     <body>

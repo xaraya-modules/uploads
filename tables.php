@@ -15,8 +15,6 @@
 
 namespace Xaraya\Modules\Uploads;
 
-use xarDB;
-
 class Tables
 {
     /**
@@ -24,12 +22,10 @@ class Tables
      * loaded.  It adds in the information
      * Original Author of file: Carl P. corliss
      */
-    public function __invoke(?string $prefix = null)
+    public function __invoke(string $prefix = 'xar')
     {
         // Initialise table array
         $xartable = [];
-
-        $prefix ??= xarDB::getPrefix();
 
         // Get the name for the uploads item table.  This is not necessary
         // but helps in the following statements and keeps them readable

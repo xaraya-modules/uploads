@@ -67,7 +67,7 @@ class DownloadMethod extends MethodClass
             // Let any hooked modules know that we've just pushed a file
             // the hitcount module in particular needs to know to save the fact
             // that we just pushed a file and not display the count
-            $this->var()->setCached('Hooks.hitcount', 'save', 1);
+            $this->mem()->set('Hooks.hitcount', 'save', 1);
 
             // File has been pushed to the client, now shut down.
             $this->exit();
@@ -143,7 +143,7 @@ class DownloadMethod extends MethodClass
                 // Let any hooked modules know that we've just pushed a file
                 // the hitcount module in particular needs to know to save the fact
                 // that we just pushed a file and not display the count
-                $this->var()->setCached('Hooks.hitcount', 'save', 1);
+                $this->mem()->set('Hooks.hitcount', 'save', 1);
 
                 // Note: we're ignoring the output from the display hooks here
                 xarModHooks::call(

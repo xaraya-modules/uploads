@@ -141,8 +141,8 @@ class UploadProperty extends FileUploadProperty
         }
 
         // retrieve new value for preview + new/modify combinations
-        if ($this->var()->isCached('DynamicData.Upload', $name)) {
-            $this->value = $this->var()->getCached('DynamicData.Upload', $name);
+        if ($this->mem()->has('DynamicData.Upload', $name)) {
+            $this->value = $this->mem()->get('DynamicData.Upload', $name);
             return true;
         }
 
@@ -183,7 +183,7 @@ class UploadProperty extends FileUploadProperty
                         $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
-                    $this->var()->setCached('DynamicData.Upload', $name, $this->value);
+                    $this->mem()->set('DynamicData.Upload', $name, $this->value);
                     return true;
                 }
 
@@ -220,7 +220,7 @@ class UploadProperty extends FileUploadProperty
                         $this->sync_associations($moduleid, $itemtype, $itemid);
                     }
                     $this->value = null;
-                    $this->var()->setCached('DynamicData.Upload', $name, $this->value);
+                    $this->mem()->set('DynamicData.Upload', $name, $this->value);
                     return true;
                 }
 
@@ -241,7 +241,7 @@ class UploadProperty extends FileUploadProperty
             case '-2':
                 // clear stored value
                 $this->value = '';
-                $this->var()->setCached('DynamicData.Upload', $name, $this->value);
+                $this->mem()->set('DynamicData.Upload', $name, $this->value);
                 return true;
             default:
                 if (isset($value)) {
@@ -264,7 +264,7 @@ class UploadProperty extends FileUploadProperty
 
         // Store the particulares so the createValue method can find them
         $this->propertydata = $data;
-        $this->var()->setCached('DynamicData.Upload', $name, $this->value);
+        $this->mem()->set('DynamicData.Upload', $name, $this->value);
         return true;
     }
 
@@ -344,7 +344,7 @@ class UploadProperty extends FileUploadProperty
     {
         // inform anyone that we're showing a file upload field, and that they need to use
         // <form ... enctype="multipart/form-data" ... > in their input form
-        $this->var()->setCached('Hooks.dynamicdata', 'withupload', 1);
+        $this->mem()->set('Hooks.dynamicdata', 'withupload', 1);
 
         if (!empty($data['name'])) {
             $this->name = $data['name'];

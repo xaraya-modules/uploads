@@ -167,7 +167,7 @@ class PrepareUploadsMethod extends MethodClass
         } else {
             // if we're not obfuscating it,
             // just use the name of the uploaded file
-            $filename = $this->var()->prepPath($fileInfo['fileName']);
+            $filename = \xarVarPrep::forOS($fileInfo['fileName']);
             $fileInfo['fileDest'] = $savePath . '/' . $filename;
             // But first make sure we don't already have a file by that name
             $i = 0;

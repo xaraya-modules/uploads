@@ -58,7 +58,7 @@ class GetitemlinksMethod extends MethodClass
 
             $itemlinks[$itemid] = ['url'   => $this->mod()->getURL( 'user', 'download', ['fileId' => $file['fileId']]),
                 'title' => $file['DownloadLabel'],
-                'label' => \xarVarPrep::forDisplay($file['fileName']), ];
+                'label' => $this->prep()->text($file['fileName']), ];
         }
         return $itemlinks;
     }

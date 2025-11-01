@@ -78,16 +78,16 @@ class UploadProperty extends FileUploadProperty
             $uid = $this->user()->getId();
             if (!empty($this->initialization_basedirectory) && preg_match('/\{user\}/', $this->initialization_basedirectory)) {
                 // Note: we add the userid just to make sure it's unique e.g. when filtering
-                // out unwanted characters through xarVarPrep::forOS, or if the database makes
+                // out unwanted characters through $this->prep()->path, or if the database makes
                 // a difference between upper-case and lower-case and the OS doesn't...
-                $udir = \xarVarPrep::forOS($this->initialization_directory_name) . $uid;
+                $udir = $this->prep()->path($this->initialization_directory_name) . $uid;
                 $this->initialization_basedirectory = preg_replace('/\{user\}/', $udir, $this->initialization_basedirectory);
             }
             if (!empty($this->initialization_import_directory) && preg_match('/\{user\}/', $this->initialization_import_directory)) {
                 // Note: we add the userid just to make sure it's unique e.g. when filtering
-                // out unwanted characters through xarVarPrep::forOS, or if the database makes
+                // out unwanted characters through $this->prep()->path, or if the database makes
                 // a difference between upper-case and lower-case and the OS doesn't...
-                $udir = \xarVarPrep::forOS($this->initialization_directory_name) . $uid;
+                $udir = $this->prep()->path($this->initialization_directory_name) . $uid;
                 $this->initialization_import_directory = preg_replace('/\{user\}/', $udir, $this->initialization_import_directory);
             }
         }
@@ -155,7 +155,7 @@ class UploadProperty extends FileUploadProperty
         switch ($data['action']) {
             case Defines::GET_UPLOAD:
                 $this->var()->get($name . '_max_file_size', $this->validation_max_file_size, "int::$this->validation_max_file_size");
-                if (!xarVar::validate('array', $_FILES[$name . '_attach_upload'])) {
+                if (!$this->prep()->validate('array', $_FILES[$name . '_attach_upload'])) {
                     return;
                 }
 

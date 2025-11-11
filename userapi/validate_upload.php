@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModHooks;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi validate_upload function

@@ -15,10 +15,7 @@ use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads admin assoc function
@@ -233,7 +230,6 @@ class AssocMethod extends MethodClass
             }
             */
             if ($numstats < $data['numlinks']) {
-                sys::import('modules.base.class.pager');
                 $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $data['numlinks'],

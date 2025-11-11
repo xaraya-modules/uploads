@@ -15,10 +15,7 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi db_get_file function
@@ -57,9 +54,9 @@ class DbGetFileMethod extends MethodClass
     {
         extract($args);
 
-        if (!isset($fileId) && !isset($fileName) && !isset($fileStatus) && !isset($fileLocation) &&
-            !isset($userId)  && !isset($fileType) && !isset($store_type) && !isset($fileHash) &&
-            !isset($fileLocationMD5) && empty($getnext) && empty($getprev)) {
+        if (!isset($fileId) && !isset($fileName) && !isset($fileStatus) && !isset($fileLocation)
+            && !isset($userId)  && !isset($fileType) && !isset($store_type) && !isset($fileHash)
+            && !isset($fileLocationMD5) && empty($getnext) && empty($getprev)) {
             $msg = $this->ml('Missing parameters for function [#(1)] in module [#(2)]', 'db_get_file', 'uploads');
             throw new Exception($msg);
         }
@@ -344,7 +341,7 @@ class DbGetFileMethod extends MethodClass
                 $imgcache[$fileInfo['fileType']] = $mimeapi->getMimeImage(['mimeType' => $fileInfo['fileType']]);
             }
             $fileInfo['mimeImage']     = $imgcache[$fileInfo['fileType']];
-            $fileInfo['fileDownload']  = $this->mod()->getURL( 'user', 'download', ['fileId' => $fileInfo['fileId']]);
+            $fileInfo['fileDownload']  = $this->mod()->getURL('user', 'download', ['fileId' => $fileInfo['fileId']]);
             $fileInfo['fileURL']       = $fileInfo['fileDownload'];
             $fileInfo['DownloadLabel'] = $this->ml('Download file: #(1)', $fileInfo['fileName']);
             if (!empty($fileInfo['fileLocation']) && file_exists($fileInfo['fileLocation'])) {
@@ -392,8 +389,8 @@ class DbGetFileMethod extends MethodClass
 
             $instance = implode(':', $instance);
 
-            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED ||
-                $this->sec()->check('EditUploads', 0, 'File', $instance)) {
+            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED
+                || $this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 $fileList[$fileInfo['fileId']] = $fileInfo;
             }
         }

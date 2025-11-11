@@ -13,9 +13,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi file_create function

@@ -15,9 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads admin view function
@@ -228,7 +225,6 @@ class ViewMethod extends MethodClass
 
         // Add pager
         if (!empty($numitems) && $countitems > $numitems) {
-            sys::import('modules.base.class.pager');
             $data['pager'] = $this->tpl()->getPager(
                 $startnum,
                 $countitems,

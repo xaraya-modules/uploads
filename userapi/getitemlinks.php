@@ -13,9 +13,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi getitemlinks function
@@ -56,7 +53,7 @@ class GetitemlinksMethod extends MethodClass
 
             $file = $fileList[$itemid];
 
-            $itemlinks[$itemid] = ['url'   => $this->mod()->getURL( 'user', 'download', ['fileId' => $file['fileId']]),
+            $itemlinks[$itemid] = ['url'   => $this->mod()->getURL('user', 'download', ['fileId' => $file['fileId']]),
                 'title' => $file['DownloadLabel'],
                 'label' => $this->prep()->text($file['fileName']), ];
         }

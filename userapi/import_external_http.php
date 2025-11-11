@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi import_external_http function

@@ -15,9 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi prepare_uploads function
@@ -78,9 +75,9 @@ class PrepareUploadsMethod extends MethodClass
 
         // If we don't have the right data structure, then we can't do much
         // here, so return immediately with an exception set
-        if ((!isset($fileInfo)          || !is_array($fileInfo))      ||
-             !isset($fileInfo['name'])  || !isset($fileInfo['type'])  ||
-             !isset($fileInfo['size'])  || !isset($fileInfo['tmp_name'])) {
+        if ((!isset($fileInfo)          || !is_array($fileInfo))
+             || !isset($fileInfo['name'])  || !isset($fileInfo['type'])
+             || !isset($fileInfo['size'])  || !isset($fileInfo['tmp_name'])) {
             $fileInfo['fileType']   = 'unknown';
             $fileInfo['fileSrc']    = 'missing';
             $fileInfo['fileSize']   = 0;
@@ -138,8 +135,8 @@ class PrepareUploadsMethod extends MethodClass
         ]);
 
         // If duplicate and we have a file location, overwrite existing file here (cfr. process_files)
-        if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2 &&
-            !empty($fileInfo['fileLocation'])) {
+        if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2
+            && !empty($fileInfo['fileLocation'])) {
             // Note: this could be some dummy location for database storage, or the file might be gone
             $fileInfo['fileDest'] = $fileInfo['fileLocation'];
         }

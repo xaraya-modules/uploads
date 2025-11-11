@@ -15,9 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi db_getall_files function
@@ -194,7 +191,7 @@ class DbGetallFilesMethod extends MethodClass
                 $imgcache[$fileInfo['fileType']] = $mimeapi->getMimeImage(['mimeType' => $fileInfo['fileType']]);
             }
             $fileInfo['mimeImage']     = $imgcache[$fileInfo['fileType']];
-            $fileInfo['fileDownload']  = $this->mod()->getURL( 'user', 'download', ['fileId' => $fileInfo['fileId']]);
+            $fileInfo['fileDownload']  = $this->mod()->getURL('user', 'download', ['fileId' => $fileInfo['fileId']]);
             $fileInfo['fileURL']       = $fileInfo['fileDownload'];
             $fileInfo['DownloadLabel'] = $this->ml('Download file: #(1)', $fileInfo['fileName']);
             if (!empty($fileInfo['fileLocation']) && file_exists($fileInfo['fileLocation'])) {
@@ -242,8 +239,8 @@ class DbGetallFilesMethod extends MethodClass
 
             $instance = implode(':', $instance);
 
-            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED ||
-                $this->sec()->check('EditUploads', 0, 'File', $instance)) {
+            if ($fileInfo['fileStatus'] == Defines::STATUS_APPROVED
+                || $this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 $fileList[$fileInfo['fileId']] = $fileInfo;
             }
         }

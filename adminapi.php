@@ -12,9 +12,6 @@
 namespace Xaraya\Modules\Uploads;
 
 use Xaraya\Modules\AdminApiClass;
-use sys;
-
-sys::import('xaraya.modules.adminapi');
 
 /**
  * Handle the uploads admin API

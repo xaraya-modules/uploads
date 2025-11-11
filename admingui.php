@@ -12,10 +12,6 @@
 namespace Xaraya\Modules\Uploads;
 
 use Xaraya\Modules\AdminGuiClass;
-use sys;
-
-sys::import('xaraya.modules.admingui');
-sys::import('modules.uploads.adminapi');
 
 /**
  * Handle the uploads admin GUI

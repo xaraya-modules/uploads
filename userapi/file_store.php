@@ -15,10 +15,7 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi file_store function
@@ -59,8 +56,8 @@ class FileStoreMethod extends MethodClass
 
         $instance = implode(':', $instance);
 
-        if ((isset($fileInfo['fileStatus']) && $fileInfo['fileStatus'] == Defines::STATUS_APPROVED) ||
-             $this->sec()->check('AddUploads', 1, 'File', $instance)) {
+        if ((isset($fileInfo['fileStatus']) && $fileInfo['fileStatus'] == Defines::STATUS_APPROVED)
+             || $this->sec()->check('AddUploads', 1, 'File', $instance)) {
             if (!isset($storeType)) {
                 $storeType = Defines::STORE_FSDB;
             }
@@ -93,8 +90,8 @@ class FileStoreMethod extends MethodClass
             if ($storeType & Defines::STORE_DB_ENTRY) {
                 $fileInfo['store_type'] = $storeType;
 
-                if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2 &&
-                    !empty($fileInfo['fileId'])) {
+                if (!empty($fileInfo['isDuplicate']) && $fileInfo['isDuplicate'] == 2
+                    && !empty($fileInfo['fileId'])) {
                     // we *want* to overwrite a duplicate here
                     $userapi->dbModifyFile($fileInfo);
 

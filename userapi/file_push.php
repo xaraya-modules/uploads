@@ -14,11 +14,8 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi file_push function

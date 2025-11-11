@@ -15,8 +15,6 @@ use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * uploads userapi import_chdir function
  * @extends MethodClass<UserApi>

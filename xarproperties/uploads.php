@@ -20,8 +20,6 @@
  * @subpackage properties
  */
 /* Include parent class */
-sys::import('modules.base.xarproperties.fileupload');
-sys::import('modules.uploads.defines');
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 

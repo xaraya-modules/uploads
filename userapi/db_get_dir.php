@@ -16,8 +16,6 @@ use Xaraya\Modules\MethodClass;
 use sys;
 use Exception;
 
-sys::import('xaraya.modules.method');
-
 /**
  * uploads userapi db_get_dir function
  * @extends MethodClass<UserApi>

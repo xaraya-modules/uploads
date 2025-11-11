@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi import_get_filelist function
@@ -144,10 +141,10 @@ class ImportGetFilelistMethod extends MethodClass
                 }
                 $fileName = $fileLocation;
                 // if we are searching for specific files, then check and break if search doesn't match
-                if ((isset($search) && preg_match("/$search/", $fileName)) &&
-                    (!isset($exclude) || !preg_match("/$exclude/", $fileName))) {
-                    $fileList["$type:$fileName"] =
-                            $userapi->fileGetMetadata([
+                if ((isset($search) && preg_match("/$search/", $fileName))
+                    && (!isset($exclude) || !preg_match("/$exclude/", $fileName))) {
+                    $fileList["$type:$fileName"]
+                            = $userapi->fileGetMetadata([
                                 'fileLocation' => $fileLocation,
                                 'analyze'      => $analyze,
                             ]);
@@ -192,8 +189,8 @@ class ImportGetFilelistMethod extends MethodClass
                                     }
                                 }
 
-                                if ((!isset($search) || preg_match("/$search/", $fileName)) &&
-                                    (!isset($exclude) || !preg_match("/$exclude/", $fileName))) {
+                                if ((!isset($search) || preg_match("/$search/", $fileName))
+                                    && (!isset($exclude) || !preg_match("/$exclude/", $fileName))) {
                                     $file = $userapi->fileGetMetadata([
                                         'fileLocation' => $fileName,
                                         'analyze'      => $analyze,
@@ -213,8 +210,8 @@ class ImportGetFilelistMethod extends MethodClass
                                     ]);
                                     $fileList += $files;
                                 } else {
-                                    if ((!isset($search) || preg_match("/$search/", $dirName)) &&
-                                        (!isset($exclude) || !preg_match("/$exclude/", $dirName))) {
+                                    if ((!isset($search) || preg_match("/$search/", $dirName))
+                                        && (!isset($exclude) || !preg_match("/$exclude/", $dirName))) {
                                         $files = $userapi->fileGetMetadata([
                                             'fileLocation' => $dirName,
                                             'analyze'      => $analyze,

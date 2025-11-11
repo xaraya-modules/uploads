@@ -13,9 +13,6 @@ namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads admin newhook function

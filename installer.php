@@ -20,10 +20,7 @@ use xarTableDDL;
 use xarPrivileges;
 use xarMasks;
 use xarModHooks;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.installer');
 
 /**
  * Handle module installer functions
@@ -127,7 +124,6 @@ class Installer extends InstallerClass
         $file_data_table  = $xartable['file_data'];
         $file_assoc_table = $xartable['file_associations'];
 
-        sys::import('xaraya.tableddl');
 
         $file_entry_fields = [
             'xar_fileEntry_id' => ['type' => 'integer', 'size' => 'big', 'null' => false,  'increment' => true,'primary_key' => true],

@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads user display_attachments function

@@ -16,9 +16,6 @@ use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModHooks;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads admin modifyconfig function
@@ -71,9 +68,9 @@ class ModifyconfigMethod extends MethodClass
         $data['approveList']['admin']      = Defines::APPROVE_ADMIN;
         $data['approveList']['everyone']   = Defines::APPROVE_EVERYONE;
 
-        if ($data['file']['auto-approve'] != Defines::APPROVE_NOONE &&
-            $data['file']['auto-approve'] != Defines::APPROVE_ADMIN &&
-            $data['file']['auto-approve'] != Defines::APPROVE_EVERYONE) {
+        if ($data['file']['auto-approve'] != Defines::APPROVE_NOONE
+            && $data['file']['auto-approve'] != Defines::APPROVE_ADMIN
+            && $data['file']['auto-approve'] != Defines::APPROVE_EVERYONE) {
             $data['file']['auto-approve'] = Defines::APPROVE_NOONE;
         }
 

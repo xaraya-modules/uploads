@@ -19,8 +19,6 @@ use xarModHooks;
 use sys;
 use Exception;
 
-sys::import('xaraya.modules.method');
-
 /**
  * uploads user download function
  * @extends MethodClass<UserGui>
@@ -152,7 +150,7 @@ class DownloadMethod extends MethodClass
                     $fileId,
                     ['module'    => 'uploads',
                         'itemtype'  => 1, // Files
-                        'returnurl' => $this->mod()->getURL( 'user', 'download', ['fileId' => $fileId]), ]
+                        'returnurl' => $this->mod()->getURL('user', 'download', ['fileId' => $fileId]), ]
                 );
 
                 // File has been pushed to the client, now shut down.

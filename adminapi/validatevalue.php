@@ -18,8 +18,6 @@ use Xaraya\Modules\MethodClass;
 use sys;
 use Exception;
 
-sys::import('xaraya.modules.method');
-
 /**
  * uploads adminapi validatevalue function
  * @extends MethodClass<AdminApi>

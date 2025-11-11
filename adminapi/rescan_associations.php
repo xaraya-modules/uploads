@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\Uploads\AdminApi;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads adminapi rescan_associations function
@@ -103,8 +100,8 @@ class RescanAssociationsMethod extends MethodClass
                     continue;
                 }
                 // see if uploads is hooked where necessary
-                if (($proptypelist[$proptype] == 'fileupload' || $proptypelist[$proptype] == 'textupload') &&
-                    !$this->mod()->isHooked('uploads', $modnames[$modid], $itemtype)) {
+                if (($proptypelist[$proptype] == 'fileupload' || $proptypelist[$proptype] == 'textupload')
+                    && !$this->mod()->isHooked('uploads', $modnames[$modid], $itemtype)) {
                     // skip this property
                     continue;
                 }

@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi prepare_imports function
@@ -78,7 +75,8 @@ class PrepareImportsMethod extends MethodClass
         ]);
         if ($imports) {
             // @todo what's this about then, and where can we find it?
-            $imports = $userapi->import_prepare_files(['fileList'  => $imports,
+            $imports = $userapi->import_prepare_files(
+                ['fileList'  => $imports,
                     'savePath'  => $import_directory,
                     'obfuscate' => $import_obfuscate, ]
             );

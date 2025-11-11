@@ -16,10 +16,7 @@ use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
 use xarModHooks;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * uploads userapi db_add_file function
@@ -77,8 +74,8 @@ class DbAddFileMethod extends MethodClass
         if (!isset($fileStatus)) {
             $autoApprove = $this->mod()->getVar('file.auto-approve');
 
-            if ($autoApprove == Defines::APPROVE_EVERYONE ||
-               ($autoApprove == Defines::APPROVE_ADMIN && $this->sec()->checkAccess('AdminUploads', 0))) {
+            if ($autoApprove == Defines::APPROVE_EVERYONE
+               || ($autoApprove == Defines::APPROVE_ADMIN && $this->sec()->checkAccess('AdminUploads', 0))) {
                 $fileStatus = Defines::STATUS_APPROVED;
             } else {
                 $fileStatus = Defines::STATUS_SUBMITTED;

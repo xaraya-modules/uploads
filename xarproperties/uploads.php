@@ -608,7 +608,7 @@ class UploadProperty extends FileUploadProperty
     /*
         function parseValidation($validation = '')
         {
-            list($multiple, $methods, $basedir, $importdir) = $this->mod()->apiMethod('uploads', 'admin', 'dd_configure', $validation);
+            list($multiple, $methods, $basedir, $importdir) = $this->mod()->apiMethod('uploads', 'adminapi', 'dd_configure', $validation);
 
             $this->initialization_multiple_files = $multiple;
             $this->initialization_methods = $methods;

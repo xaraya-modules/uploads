@@ -15,7 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use Exception;
 
 /**
@@ -164,7 +163,7 @@ class DbAddFileMethod extends MethodClass
         // Pass the arguments to the hook modules too
         $args['module'] = 'uploads';
         $args['itemtype'] = 1; // Files
-        xarModHooks::call('item', 'create', $fileId, $args);
+        $this->mod()->callHooks('item', 'create', $fileId, $args);
 
         return $fileId;
     }

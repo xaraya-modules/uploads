@@ -14,7 +14,7 @@ namespace Xaraya\Modules\Uploads;
 use Xaraya\Modules\ModuleClass;
 
 /**
- * Get uploads module classes via xarMod::getModule()
+ * Get uploads module classes via xar::mod()->getModule()
  */
 class Module extends ModuleClass
 {

@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use Exception;
 
 /**
@@ -94,7 +93,7 @@ class ValidateUploadMethod extends MethodClass
         }
 
         // future functionality - ...
-        // if (!xarModHooks::call('item', 'validation', array('type' => 'file', 'fileInfo' => $fileInfo))) {
+        // if (!$this->mod()->callHooks('item', 'validation', array('type' => 'file', 'fileInfo' => $fileInfo))) {
         //     return FALSE;
         // }
         return true;

@@ -15,7 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 
 /**
  * uploads admin modifyconfig function
@@ -74,7 +73,7 @@ class ModifyconfigMethod extends MethodClass
             $data['file']['auto-approve'] = Defines::APPROVE_NOONE;
         }
 
-        $hooks = xarModHooks::call(
+        $hooks = $this->mod()->callHooks(
             'module',
             'modifyconfig',
             'uploads',

@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads;
 
 use Xaraya\Modules\UserApiClass;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
-use xarMod;
 
 /**
  * Handle the uploads user API
@@ -58,8 +57,8 @@ use xarMod;
  *  array{modid: int, itemtype: int, itemid: int, fileId: int}
  * @method mixed dbModifyFile(array $args) Modifies a file's metadata stored in the database
  *  array{fileId: int, userId?: int, filename?: string, fileLocation?: string, status?: int, fileType?: string, fileSize?: string, store_type?: int, extrainfo?: array}
- * @method mixed decodeShorturl(array $args = []) extract function and arguments from short URLs for this module, and pass - them back to xarGetRequestInfo()
- * @method mixed encodeShorturl(array $args = []) return the path for a short URL to xarController::URL for this module
+ * @method mixed decodeShorturl(array $args = []) extract function and arguments from short URLs for this module, and pass - them back to xar::req()->getRequest()->getInfo()
+ * @method mixed encodeShorturl(array $args = []) return the path for a short URL to xar::ctl()->getModuleURL for this module
  * @method mixed fileCreate(array $args) Creates a file on the filesystem in the specified location with -  the specified contents.and adds an entry to the new file in the -  file_entry table after creations. Note: you must test specifically -  for false if you are creating a ZERO BYTE file, as this function -  will return zero for that file (ie: !== FALSE as opposed to != FALSE).
  *  array{filename: string, fileLocation: string, mime_type: string, contents: string}
  * @method mixed fileDelete(array $args) Delete a file from the filesystem
@@ -118,7 +117,7 @@ class UserApi extends UserApiClass
     public function getMimeAPI()
     {
         /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::userapi('mime');
+        $mimeapi = $this->mod()->userapi('mime');
         return $mimeapi;
     }
 

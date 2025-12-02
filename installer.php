@@ -15,7 +15,6 @@ namespace Xaraya\Modules\Uploads;
 
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\InstallerClass;
-use xarMod;
 use xarTableDDL;
 use xarPrivileges;
 use xarMasks;
@@ -58,16 +57,16 @@ class Installer extends InstallerClass
     public function init()
     {
         //Not needed anymore with the dependency checks.
-        if (!xarMod::isAvailable('mime')) {
+        if (!$this->mod()->isAvailable('mime')) {
             $msg = $this->ml('The mime module should be activated first');
             throw new Exception($msg);
         }
 
         // load the predefined constants
-        xarMod::apiLoad('uploads', 'user');
+        $this->mod()->apiLoad('uploads', 'user');
 
-        if ($this->ctl()->getServerVar('SCRIPT_FILENAME')) {
-            $base_directory = dirname(realpath($this->ctl()->getServerVar('SCRIPT_FILENAME')));
+        if ($this->req()->getServerVar('SCRIPT_FILENAME')) {
+            $base_directory = dirname(realpath($this->req()->getServerVar('SCRIPT_FILENAME')));
         } else {
             $base_directory = './';
         }
@@ -104,7 +103,7 @@ class Installer extends InstallerClass
         $mimetypes = & $data['filters']['mimetypes'];
 
         /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::userapi('mime');
+        $mimeapi = $this->mod()->userapi('mime');
 
         $mimetypes += $mimeapi->getallTypes();
 
@@ -250,6 +249,6 @@ class Installer extends InstallerClass
         */
 
         $module = 'uploads';
-        return xarMod::apiFunc('modules', 'admin', 'standarddeinstall', ['module' => $module]);
+        return $this->mod()->apiFunc('modules', 'admin', 'standarddeinstall', ['module' => $module]);
     }
 }

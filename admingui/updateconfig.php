@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads\AdminGui;
 
 use Xaraya\Modules\Uploads\AdminGui;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 
 /**
  * uploads admin updateconfig function
@@ -106,7 +105,7 @@ class UpdateconfigMethod extends MethodClass
         // $this->mod()->delVar('path.imports-cwd');
         $this->mod()->setVar('path.imports-cwd', $this->mod()->getVar('imports_directory'));
 
-        xarModHooks::call(
+        $this->mod()->callHooks(
             'module',
             'updateconfig',
             'uploads',

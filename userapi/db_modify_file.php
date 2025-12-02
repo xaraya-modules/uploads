@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use Exception;
 
 /**
@@ -133,7 +132,7 @@ class DbModifyFileMethod extends MethodClass
         // Pass the arguments to the hook modules too
         $args['module'] = 'uploads';
         $args['itemtype'] = 1; // Files
-        xarModHooks::call('item', 'update', $fileId, $args);
+        $this->mod()->callHooks('item', 'update', $fileId, $args);
 
         return true;
     }

@@ -15,7 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use sys;
 use Exception;
 
@@ -144,7 +143,7 @@ class DownloadMethod extends MethodClass
                 $this->mem()->set('Hooks.hitcount', 'save', 1);
 
                 // Note: we're ignoring the output from the display hooks here
-                xarModHooks::call(
+                $this->mod()->callHooks(
                     'item',
                     'display',
                     $fileId,

@@ -299,10 +299,10 @@ class DbGetFileMethod extends MethodClass
         $importDir = str_replace('/$', '', $importDir);
         $uploadDir = str_replace('/$', '', $uploadDir);
 
-        if ($this->ctl()->getServerVar('PATH_TRANSLATED')) {
-            $base_directory = dirname(realpath($this->ctl()->getServerVar('PATH_TRANSLATED')));
-        } elseif ($this->ctl()->getServerVar('SCRIPT_FILENAME')) {
-            $base_directory = dirname(realpath($this->ctl()->getServerVar('SCRIPT_FILENAME')));
+        if ($this->req()->getServerVar('PATH_TRANSLATED')) {
+            $base_directory = dirname(realpath($this->req()->getServerVar('PATH_TRANSLATED')));
+        } elseif ($this->req()->getServerVar('SCRIPT_FILENAME')) {
+            $base_directory = dirname(realpath($this->req()->getServerVar('SCRIPT_FILENAME')));
         } else {
             $base_directory = './';
         }

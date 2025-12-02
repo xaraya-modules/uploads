@@ -103,7 +103,7 @@ class UploadProperty extends FileUploadProperty
     public function userapi()
     {
         /** @var UserApi $userapi */
-        $userapi = xarMod::userapi('uploads');
+        $userapi = $this->mod()->userapi('uploads');
         return $userapi;
     }
 

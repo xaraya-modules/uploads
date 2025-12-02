@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Uploads\UserApi;
 
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use Exception;
 
 /**
@@ -73,7 +72,7 @@ class DbDeleteFileMethod extends MethodClass
         // Pass the arguments to the hook modules too
         $args['module'] = 'uploads';
         $args['itemtype'] = 1; // Files
-        xarModHooks::call('item', 'delete', $fileId, $args);
+        $this->mod()->callHooks('item', 'delete', $fileId, $args);
 
         return true;
     }

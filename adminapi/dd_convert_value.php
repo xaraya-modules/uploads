@@ -53,8 +53,8 @@ class DdConvertValueMethod extends MethodClass
         }
 
         if (!isset($basePath)) {
-            if ($this->ctl()->getServerVar('SCRIPT_FILENAME')) {
-                $base_directory = dirname(realpath($this->ctl()->getServerVar('SCRIPT_FILENAME')));
+            if ($this->req()->getServerVar('SCRIPT_FILENAME')) {
+                $base_directory = dirname(realpath($this->req()->getServerVar('SCRIPT_FILENAME')));
             } else {
                 $base_directory = './';
             }

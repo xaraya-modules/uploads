@@ -15,7 +15,6 @@ use Xaraya\Modules\Uploads\Defines;
 use Xaraya\Modules\Uploads\UserGui;
 use Xaraya\Modules\Uploads\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use Exception;
 
 /**
@@ -68,7 +67,7 @@ class FilePropertiesMethod extends MethodClass
             $instance = implode(':', $instance);
             if ($this->sec()->check('EditUploads', 0, 'File', $instance)) {
                 $data['allowedit'] = 1;
-                $data['hooks'] = xarModHooks::call(
+                $data['hooks'] = $this->mod()->callHooks(
                     'item',
                     'modify',
                     $fileId,

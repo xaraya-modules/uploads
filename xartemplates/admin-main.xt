@@ -122,10 +122,10 @@
              Further information on the Uploads module can be found at
         </p>
         <ul>
-            <li>Uploads Extension page at <a title="#xarML('Uploads Module - Xaraya Extension 666')#" href="http://www.xaraya.com/index.php/release/36.html">Xaraya Extension and Releases</a>.
+            <li>Uploads Extension page at <a title="#$xar->ml('Uploads Module - Xaraya Extension 666')#" href="http://www.xaraya.com/index.php/release/36.html">Xaraya Extension and Releases</a>.
                  Click on Version History tab at the bottom to get the latest release information.
             </li>
-            <li>Related tutorials and documentation on Uploads found at <a href="http://www.xaraya.com/index.php/keywords/uploads/" title="#xarML('Related documentation on Uploads')#">Xaraya Documentation.</a></li>
+            <li>Related tutorials and documentation on Uploads found at <a href="http://www.xaraya.com/index.php/keywords/uploads/" title="#$xar->ml('Related documentation on Uploads')#">Xaraya Documentation.</a></li>
         </ul>
         <p class="xar-sub">
             <strong>&#160;Uploads Module Overview</strong><br />&#160;Version 1.0.0&#160; 2006-03-08

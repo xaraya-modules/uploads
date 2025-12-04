@@ -37,16 +37,16 @@
 
             <table summary="Files" border="0" class="xar-fullwidth xar-accent-outline">
                     <tr>
-                        <th><a href="#xarController::URL('uploads','admin','view')#">Select</a></th>
-                        <th><a href="#xarController::URL('uploads','admin','view',array('sort' => 'name'))#">File Name</a></th>
+                        <th><a href="#$xar->ctl()->URL('uploads','admin','view')#">Select</a></th>
+                        <th><a href="#$xar->ctl()->URL('uploads','admin','view',array('sort' => 'name'))#">File Name</a></th>
                         <th>&#160;</th>
-                        <th><a href="#xarController::URL('uploads','admin','view',array('sort' => 'size'))#">File Size</a></th>
-                        <th><a href="#xarController::URL('uploads','admin','view',array('sort' => 'id'))#">File Date</a></th>
-                        <th><a href="#xarController::URL('uploads','admin','view',array('sort' => 'user'))#">Uploaded By</a></th>
-                        <th><a href="#xarController::URL('uploads','admin','view',array('sort' => 'status'))#">Status</a></th>
+                        <th><a href="#$xar->ctl()->URL('uploads','admin','view',array('sort' => 'size'))#">File Size</a></th>
+                        <th><a href="#$xar->ctl()->URL('uploads','admin','view',array('sort' => 'id'))#">File Date</a></th>
+                        <th><a href="#$xar->ctl()->URL('uploads','admin','view',array('sort' => 'user'))#">Uploaded By</a></th>
+                        <th><a href="#$xar->ctl()->URL('uploads','admin','view',array('sort' => 'status'))#">Status</a></th>
                     </tr>
             <xar:if condition="count($items)">
-                <form id="viewfiles" action="#xarController::URL('uploads','admin','view')#" method="post">
+                <form id="viewfiles" action="#$xar->ctl()->URL('uploads','admin','view')#" method="post">
                     <xar:loop name="$items">
                     <xar:if condition="(($loop:index + 1) % 2)">
                     <tr>    
@@ -54,13 +54,13 @@
                             <input type="checkbox" name="fileId[]" id="fileId_#$loop:item['fileId']#" value="#$loop:item['fileId']#"/>
                         </td>
                         <td class="xar-norm" align="center">&#160;
-                            <a style="cursor: pointer;" onclick="PropertiesDialog('#xarController::URL('uploads','user','file_properties', array('fileId' => $loop:item['fileId']))#'); return false;">
+                            <a style="cursor: pointer;" onclick="PropertiesDialog('#$xar->ctl()->URL('uploads','user','file_properties', array('fileId' => $loop:item['fileId']))#'); return false;">
                                 #$loop:item['fileName']#
                             </a>
                         </td>
-                        <td class="xar-norm" align="center">&#160;<xar:if condition="!empty($numassoc[$loop:item['fileId']])"><a href="#xarController::URL('uploads','admin','assoc',array('fileId' => $loop:item['fileId']))#">#$numassoc[$loop:item['fileId']]#</a></xar:if></td>
+                        <td class="xar-norm" align="center">&#160;<xar:if condition="!empty($numassoc[$loop:item['fileId']])"><a href="#$xar->ctl()->URL('uploads','admin','assoc',array('fileId' => $loop:item['fileId']))#">#$numassoc[$loop:item['fileId']]#</a></xar:if></td>
                         <td class="xar-norm" align="right">&#160;#$loop:item['fileSize']#</td>
-                        <td class="xar-norm" align="center">&#160;<xar:if condition="!empty($loop:item['fileModified'])">#xarLocale::getFormattedDate('medium',$loop:item['fileModified'])#</xar:if></td>
+                        <td class="xar-norm" align="center">&#160;<xar:if condition="!empty($loop:item['fileModified'])">#$xar->mls()->getFormattedDate('medium',$loop:item['fileModified'])#</xar:if></td>
                         <td class="xar-norm" align="center">&#160;#$loop:item['userName']#</td>
                         <td class="xar-norm" align="center">&#160;#$loop:item['fileStatusName']#</td>
                     </tr>
@@ -70,13 +70,13 @@
                             <input type="checkbox" name="fileId[]" id="fileId_#$loop:item['fileId']#" value="#$loop:item['fileId']#"/>
                         </td>
                         <td class="xar-accent" align="center">&#160;
-                            <a style="cursor: pointer;" onclick="PropertiesDialog('#xarController::URL('uploads','user','file_properties', array('fileId' => $loop:item['fileId']))#'); return false;">
+                            <a style="cursor: pointer;" onclick="PropertiesDialog('#$xar->ctl()->URL('uploads','user','file_properties', array('fileId' => $loop:item['fileId']))#'); return false;">
                                 #$loop:item['fileName']#
                             </a>
                         </td>
-                        <td class="xar-accent" align="center">&#160;<xar:if condition="!empty($numassoc[$loop:item['fileId']])"><a href="#xarController::URL('uploads','admin','assoc',array('fileId' => $loop:item['fileId']))#">#$numassoc[$loop:item['fileId']]#</a></xar:if></td>
+                        <td class="xar-accent" align="center">&#160;<xar:if condition="!empty($numassoc[$loop:item['fileId']])"><a href="#$xar->ctl()->URL('uploads','admin','assoc',array('fileId' => $loop:item['fileId']))#">#$numassoc[$loop:item['fileId']]#</a></xar:if></td>
                         <td class="xar-accent" align="right">&#160;#$loop:item['fileSize']#</td>
-                        <td class="xar-accent" align="center">&#160;<xar:if condition="!empty($loop:item['fileModified'])">#xarLocale::getFormattedDate('medium',$loop:item['fileModified'])#</xar:if></td>
+                        <td class="xar-accent" align="center">&#160;<xar:if condition="!empty($loop:item['fileModified'])">#$xar->mls()->getFormattedDate('medium',$loop:item['fileModified'])#</xar:if></td>
                         <td class="xar-accent" align="center">&#160;#$loop:item['userName']#</td>
                         <td class="xar-accent" align="center">&#160;#$loop:item['fileStatusName']#</td>
                     </tr>  
@@ -115,9 +115,9 @@
                 </form>
                 <tr>
                     <td colspan="7" style="text-align:right;">
-                        <xar:if condition="!xarModVars::get('uploads','file.auto-purge')">
-                        <form action="#xarController::URL('uploads','admin','purge_rejected')#" method="post">
-                            <input type="hidden" name="authid" value="#xarSec::genAuthKey()#"/>
+                        <xar:if condition="!$xar->mod('uploads')->getVar('file.auto-purge')">
+                        <form action="#$xar->ctl()->URL('uploads','admin','purge_rejected')#" method="post">
+                            <input type="hidden" name="authid" value="#$xar->sec()->genAuthKey()#"/>
                             <xar:var name="label">Purge Rejected Files</xar:var>
                             <xar:button type="submit" name="fileDo" id="fileDo_purge" label="$label"/>
                         </form>

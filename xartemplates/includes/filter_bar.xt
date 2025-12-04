@@ -7,7 +7,7 @@
             </th>
         </tr>
         <tr>
-            <form action="#xarController::URL('uploads','admin','view')#" method="post">
+            <form action="#$xar->ctl()->URL('uploads','admin','view')#" method="post">
             <td width="15%" align="center">
                 <label for="inverse">
                     
@@ -115,7 +115,7 @@
             </td>
             </form>
         </tr>
-        <xar:if condition="xarMod::isAvailable('categories') and xarHooks::isAttached('categories','uploads',1)">
+        <xar:if condition="$xar->mod()->isAvailable('categories') and $xar->mod()->isHooked('categories','uploads',1)">
         <tr>
             <td colspan="6">
                 <xar:template file="catnavigation" type="module"/>

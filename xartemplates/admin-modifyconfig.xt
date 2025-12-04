@@ -5,7 +5,7 @@
         <h2>
             Modify Uploads Configuration
         </h2>
-        <form method="post" action="#xarController::URL('uploads', 'admin', 'updateconfig')#">
+        <form method="post" action="#$xar->ctl()->URL('uploads', 'admin', 'updateconfig')#">
             <xar:data-form object="$module_settings"/>
             <fieldset>
                 <legend>
@@ -13,12 +13,12 @@
                 </legend>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="uploads_directory" class="xar-form-label" title="#xarML('Full path to your upload directory')#">
+                            <label for="uploads_directory" class="xar-form-label" title="#$xar->ml('Full path to your upload directory')#">
                                 Uploads Directory:
                             </label>
                         </div>
                         <div class="xar-col">
-                            <xar:set name="value">xarModVars::get('uploads','uploads_directory')</xar:set>
+                            <xar:set name="value">$xar->mod('uploads')->getVar('uploads_directory')</xar:set>
                             <input type="text" name="uploads_directory" value="#$value#" size="60"/>
                             <xar:if condition="!empty($uploads_directory_message)">
                                 &#160;<span class="xar-alert">#$uploads_directory_message#</span>
@@ -32,12 +32,12 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="imports_directory" class="xar-form-label" title="#xarML('Full path to the local trusted directory')#">                            
+                            <label for="imports_directory" class="xar-form-label" title="#$xar->ml('Full path to the local trusted directory')#">                            
                                 Trusted Directory:                            
                             </label>
                         </div>
                         <div class="xar-col">
-                            <xar:set name="value">xarModVars::get('uploads','imports_directory')</xar:set>
+                            <xar:set name="value">$xar->mod('uploads')->getVar('imports_directory')</xar:set>
                             <input type="text" name="imports_directory" value="#$value#" size="60"/>
                             <xar:if condition="!empty($imports_directory_message)">
                                 &#160;<span class="xar-alert">#$imports_directory_message#</span>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[maxsize]" class="xar-form-label" title="#xarML('Auto approve files')#">
+                            <label for="file[maxsize]" class="xar-form-label" title="#$xar->ml('Auto approve files')#">
                                 Maximum Upload Size :
                             </label>
                         </div>
@@ -69,16 +69,16 @@
                      </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[auto-approve]" class="xar-form-label" title="#xarML('Auto approve files')#">
+                            <label for="file[auto-approve]" class="xar-form-label" title="#$xar->ml('Auto approve files')#">
                                 Auto approve files added by:
                             </label>
                         </div>
                         <div class="xar-col">
                             <xar:set name="options">
                                 array(
-                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_NOONE, 'name' => xarML('No one')),
-                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_ADMIN, 'name' => xarML('Admin')),
-                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_EVERYONE, 'name' => xarML('Everyone')),
+                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_NOONE, 'name' => $xar->ml('No one')),
+                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_ADMIN, 'name' => $xar->ml('Admin')),
+                                      array('id' => \Xaraya\Modules\Uploads\Defines::APPROVE_EVERYONE, 'name' => $xar->ml('Everyone')),
                                      )
                             </xar:set>
                             <xar:data-input type="radio" name="file[auto-approve]" id="auto-approve" value="$file['auto-approve']" options="$options"/>
@@ -89,13 +89,13 @@
                     </div>
                     <xar:set name="options">
                         array(
-                              array('id' => 0, 'name' => xarML('No')),
-                              array('id' => 1, 'name' => xarML('Yes')),
+                              array('id' => 0, 'name' => $xar->ml('No')),
+                              array('id' => 1, 'name' => $xar->ml('Yes')),
                              )
                     </xar:set>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[delete-confirmation]" class="xar-form-label" title="#xarML('Confirm deletion of files')#">
+                            <label for="file[delete-confirmation]" class="xar-form-label" title="#$xar->ml('Confirm deletion of files')#">
                                 Confirm deletion of files:
                             </label>
                         </div>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[auto-purge]" class="xar-form-label" title="#xarML('Auto purge files marked as rejected')#">
+                            <label for="file[auto-purge]" class="xar-form-label" title="#$xar->ml('Auto purge files marked as rejected')#">
                                 Auto purge 'rejected' files:
                             </label>
                         </div>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[obfuscate-on-import]" class="xar-form-label" title="#xarML('Obfuscate/Secure Imported Files')#">
+                            <label for="file[obfuscate-on-import]" class="xar-form-label" title="#$xar->ml('Obfuscate/Secure Imported Files')#">
                                     Secure Imported Files:
                             </label>
                         </div>
@@ -136,7 +136,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[obfuscate-on-upload]" class="xar-form-label" title="#xarML('Obfuscate/Secure Uploaded Files')#">
+                            <label for="file[obfuscate-on-upload]" class="xar-form-label" title="#$xar->ml('Obfuscate/Secure Uploaded Files')#">
                                 Secure Uploaded Files:
                             </label>
                         </div>
@@ -154,15 +154,15 @@
                      </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[allow-duplicate-upload]" class="xar-form-label" title="#xarML('Reaction to Duplicate Filenames')#">
+                            <label for="file[allow-duplicate-upload]" class="xar-form-label" title="#$xar->ml('Reaction to Duplicate Filenames')#">
                                 Allow Duplicate Filenames?
                             </label>
                         </div>
                         <div class="xar-col">
                             <xar:set name="dup_options">
-                                array('0' => xarML('No upload allowed'),
-                                      '1' => xarML('Save as new version'),
-                                      '2' => xarML('Replace original'),
+                                array('0' => $xar->ml('No upload allowed'),
+                                      '1' => $xar->ml('Save as new version'),
+                                      '2' => $xar->ml('Replace original'),
                                      )
                             </xar:set>
                             <select name="file[allow-duplicate-upload]" id="file_allow_duplicate_upload">
@@ -181,7 +181,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="file[cache-expire" class="xar-form-label" title="#xarML('Cache trusted file information')#">
+                            <label for="file[cache-expire" class="xar-form-label" title="#$xar->ml('Cache trusted file information')#">
                                 Cache trusted file information:
                             </label>
                         </div>
@@ -193,7 +193,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="view[itemsperpage]" class="xar-form-label" title="#xarML('Items per page in admin view')#">
+                            <label for="view[itemsperpage]" class="xar-form-label" title="#$xar->ml('Items per page in admin view')#">
                                 Items per page in admin view:
                             </label>
                         </div>
@@ -302,17 +302,17 @@
                     </legend>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="permit_download" class="xar-form-label" title="#xarML('Full path to your upload directory')#">
+                            <label for="permit_download" class="xar-form-label" title="#$xar->ml('Full path to your upload directory')#">
                                 Permitted:
                             </label>
                         </div>
                         <div class="xar-col">
                             <xar:set name="options">
                                 array(
-                                    array('id' => 0, 'name' => xarML('No downloads')),
-                                    array('id' => 1, 'name' => xarML('Personally owned files')),
-                                    array('id' => 2, 'name' => xarML('Group owned files')),
-                                    array('id' => 3, 'name' => xarML('All files')),
+                                    array('id' => 0, 'name' => $xar->ml('No downloads')),
+                                    array('id' => 1, 'name' => $xar->ml('Personally owned files')),
+                                    array('id' => 2, 'name' => $xar->ml('Group owned files')),
+                                    array('id' => 3, 'name' => $xar->ml('All files')),
                                 )
                             </xar:set>
                             <xar:set name="value"><xar:var scope="module" module="uploads" name="permit_download"/></xar:set>
@@ -321,7 +321,7 @@
                     </div>
                     <div class="xar-row">
                         <div class="xar-col">
-                            <label for="permit_download_function" class="xar-form-label" title="#xarML('Full path to your upload directory')#">
+                            <label for="permit_download_function" class="xar-form-label" title="#$xar->ml('Full path to your upload directory')#">
                                 Permission Function:
                             </label>
                         </div>

@@ -13,9 +13,9 @@
                 :: Error encountered!
             </xar:if>
         </title> 
-        <base href="#xarServer::getBaseURL()#index.php"/>
+        <base href="#$xar->ctl()->getBaseURL()#index.php"/>
         <style type="text/css">
-            @import url(#xarTpl::getThemeUrl()#/style/style.css); 
+            @import url(#$xar->tpl()->getThemeUrl()#/style/style.css); 
         </style> 
     </head>
     <body>
@@ -26,7 +26,7 @@
                 <xar:if condition="!empty($allowedit)">
                 <tr>
                     <td align="center">
-                        <form action="#xarController::URL('uploads','user','file_properties')#" method="post">
+                        <form action="#$xar->ctl()->URL('uploads','user','file_properties')#" method="post">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="xar-norm">
                             <tr>
                                 <td width="20%">
@@ -150,14 +150,14 @@
                                 </td>
                                 <td class="xar-accent" width="80%">&#160;
                                     #$fileInfo['numassoc']# 
-                                    <xar:if condition="!empty($fileInfo['numassoc']) and xarSecurity::check('AdminUploads',0)">
-                                        [<a target="main" href="#xarController::URL('uploads','admin','assoc',array('fileId' => $fileInfo['fileId']))#">
+                                    <xar:if condition="!empty($fileInfo['numassoc']) and $xar->sec()->check('AdminUploads',0)">
+                                        [<a target="main" href="#$xar->ctl()->URL('uploads','admin','assoc',array('fileId' => $fileInfo['fileId']))#">
                                             view
                                         </a>]
                                     </xar:if>
                                 </td>
                             </tr>
-                            <xar:if condition="xarHooks::isAttached('dynamicdata','uploads',1)">
+                            <xar:if condition="$xar->mod()->isHooked('dynamicdata','uploads',1)">
                                 <xar:data-getitem name="ddprops" module="uploads" itemtype="1" itemid="$fileInfo['fileId']"/>
                                 <xar:if condition="!empty($ddprops)">
                                     <xar:foreach in="$ddprops" key="$ddname">
@@ -187,11 +187,11 @@
                                 </tr>
                                 <tr>
                                     <td align="center">
-                                        <a href="#$fileInfo['fileDownload']#" alt="#xarMl('View full sized image')#"> 
-                                            <xar:if condition="xarMod::isAvailable('images')">
+                                        <a href="#$fileInfo['fileDownload']#" alt="#$xar->ml('View full sized image')#"> 
+                                            <xar:if condition="$xar->mod()->isAvailable('images')">
                                                 <xar:template file="image-thumbnail" type="module"/>
                                             <xar:else />
-                                                <img src="#xarController::URL('uploads', 'user', 'download', array('fileId' => $fileInfo['fileId']))#" 
+                                                <img src="#$xar->ctl()->URL('uploads', 'user', 'download', array('fileId' => $fileInfo['fileId']))#" 
                                                      height="#$fileInfo['image']['height']#" 
                                                      width="#$fileInfo['image']['width']#" 
                                                      alt="#$fileInfo['fileName']#"/>
@@ -207,8 +207,8 @@
                                         
                                             Download File:
                                         &#160;
-                                        <a href="#xarController::URL('uploads', 'user', 'download', array('fileId' => $fileInfo['fileId']))#" 
-                                           alt="#xarMl('Download this file.')#">#$fileInfo['fileName']#
+                                        <a href="#$xar->ctl()->URL('uploads', 'user', 'download', array('fileId' => $fileInfo['fileId']))#" 
+                                           alt="#$xar->ml('Download this file.')#">#$fileInfo['fileName']#
                                         </a>
                                     </td>
                                 </tr>

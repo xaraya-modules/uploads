@@ -30,10 +30,10 @@
               &#160;
             </td>
             <td width="65%" class="xar-norm" align="left">&#160;
-              <a href="#xarController::URL('uploads', 'admin', 'get_files', array('inode' => '...', 'action' => $getAction['REFRESH']))#"
-                 alt="#xarML('Open Folder')#"
-                 title="#xarML('Open Folder')#">
-                <img src="#xarTpl::getImage('folder.png', 'uploads')#" width="16" height="18"/>
+              <a href="#$xar->ctl()->URL('uploads', 'admin', 'get_files', array('inode' => '...', 'action' => $getAction['REFRESH']))#"
+                 alt="#$xar->ml('Open Folder')#"
+                 title="#$xar->ml('Open Folder')#">
+                <img src="#$xar->tpl()->getImage('folder.png', 'uploads')#" width="16" height="18"/>
                 
                   <strong>Previous Folder</strong>
                 
@@ -51,7 +51,7 @@
             </xar:if>
           </td>
           <td width="65%" align="left">&#160;
-            <img src="#xarTpl::getImage('folder.png', 'uploads')#" width="16" height="18"/>&#160;
+            <img src="#$xar->tpl()->getImage('folder.png', 'uploads')#" width="16" height="18"/>&#160;
               <strong>Current Folder</strong>
           </td>
           <td width="25%" align="right">
@@ -73,13 +73,13 @@
               <td width="65%" class="#$rowclass#" align="left">&#160;
                 <xar:if condition="$loop:item['inodeType'] eq $inodeType['DIRECTORY']">
                   <a href="#$local_import_post_url#&amp;inode=#$loop:item['fileName']#&amp;action=#$getAction['REFRESH']#"
-                     alt="#xarML('Open Folder')#"
-                     title="#xarML('Open Folder')#">
-                    <img src="#xarTpl::getImage('folder.png', 'uploads')#" width="16" height="18"/>
+                     alt="#$xar->ml('Open Folder')#"
+                     title="#$xar->ml('Open Folder')#">
+                    <img src="#$xar->tpl()->getImage('folder.png', 'uploads')#" width="16" height="18"/>
                       <strong>#$loop:item['fileName']#</strong>
                   </a>
                   <xar:else />
-                  <img src="#xarMod::apiFunc('mime', 'user', 'get_mime_image', array('mimeType' => $loop:item['fileType']))#"
+                  <img src="#$xar->mod()->apiFunc('mime', 'user', 'get_mime_image', array('mimeType' => $loop:item['fileType']))#"
                        width="16" height="18"/>&#160;
                   #$loop:item['fileName']#
                 </xar:if>

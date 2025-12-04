@@ -10,13 +10,13 @@
                         
                     </p>
                 <xar:else />
-                    <form action="#xarController::URL('uploads','admin','purge_rejected')#" method="post">
+                    <form action="#$xar->ctl()->URL('uploads','admin','purge_rejected')#" method="post">
                         <fieldset>
                             <legend>
                                 Delete confirmation
                             </legend>
                             <div class="xar-form-input-wrapper">
-                                <label for="confirmdelete" class="xar-form-label" title="#xarML('Confirm deletion of this rejected file')#">
+                                <label for="confirmdelete" class="xar-form-label" title="#$xar->ml('Confirm deletion of this rejected file')#">
                                     
                                         Are you sure you want to delete the following files?
                                     &#160;
@@ -30,7 +30,7 @@
                                 <xar:loop name="$fileList">
                                     <!-- TODO: reformulate this -->
                                <li style="list-type-style:none;">
-                                <a onclick="MyWindow=window.open('#xarController::URL('uploads','user','file_properties')#&amp;fileId=#$loop:item['fileId']#',
+                                <a onclick="MyWindow=window.open('#$xar->ctl()->URL('uploads','user','file_properties')#&amp;fileId=#$loop:item['fileId']#',
                                                                 '#$loop:item['fileName']#',
                                                                 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500,height=375,left=20,top=20');
                                                                 return false;">

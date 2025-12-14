@@ -94,8 +94,7 @@ class ShowoutputMethod extends MethodClass
             }
 
             $data['format'] = $format;
-            $data['context'] ??= $this->getContext();
-            return $this->mod()->template('attachment-list', $data, null);
+            return $this->render('attachment-list', $data, null);
         } else {
             // return a raw array for now
             return $userapi->dbGetFile(['fileId' => $value]);

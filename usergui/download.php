@@ -58,7 +58,7 @@ class DownloadMethod extends MethodClass
             try {
                 $result = $userapi->filePush($fileInfo);
             } catch (Exception $e) {
-                return $this->mod()->template('errors', ['layout' => 'not_accessible']);
+                return $this->render('errors', ['layout' => 'not_accessible']);
             }
 
             // Let any hooked modules know that we've just pushed a file
@@ -114,17 +114,17 @@ class DownloadMethod extends MethodClass
 
             // If you are an administrator OR the file is approved, continue
             if ($fileInfo['fileStatus'] != Defines::STATUS_APPROVED && !$this->sec()->check('EditUploads', 0, 'File', $instance)) {
-                return $this->mod()->template('errors', ['layout' => 'no_permission']);
+                return $this->render('errors', ['layout' => 'no_permission']);
             }
 
             if ($this->sec()->check('ViewUploads', 1, 'File', $instance)) {
                 if ($fileInfo['storeType'] & Defines::STORE_FILESYSTEM || ($fileInfo['storeType'] == Defines::STORE_DB_ENTRY)) {
                     if (!file_exists($fileInfo['fileLocation'])) {
-                        return $this->mod()->template('errors', ['layout' => 'not_accessible']);
+                        return $this->render('errors', ['layout' => 'not_accessible']);
                     }
                 } elseif ($fileInfo['storeType'] & Defines::STORE_DB_FULL) {
                     if (!$userapi->dbCountData(['fileId' => $fileInfo['fileId']])) {
-                        return $this->mod()->template('errors', ['layout' => 'not_accessible']);
+                        return $this->render('errors', ['layout' => 'not_accessible']);
                     }
                 }
 

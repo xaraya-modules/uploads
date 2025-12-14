@@ -173,7 +173,6 @@ class FilePropertiesMethod extends MethodClass
 
                 $data['fileInfo'] = $fileInfo;
 
-                $data['context'] ??= $this->getContext();
                 echo $this->tpl()->module('uploads', 'user', 'file_properties', $data, null);
                 $this->exit();
                 return;

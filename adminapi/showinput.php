@@ -203,7 +203,6 @@ class ShowinputMethod extends MethodClass
         if (!empty($invalid)) {
             $data['invalid'] = $invalid;
         }
-        $data['context'] ??= $this->getContext();
         // TODO: different formats ?
         return ($list ?? '') . $this->tpl()->module('uploads', 'user', 'attach_files', $data, null);
     }

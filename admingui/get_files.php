@@ -126,7 +126,7 @@ class GetFilesMethod extends MethodClass
         }
         $list = $userapi->processFiles($args);
         if (is_array($list) && count($list)) {
-            return $this->mod()->template('addfile-status', ['fileList' => $list], null);
+            return $this->render('addfile-status', ['fileList' => $list], null);
         } else {
             $this->ctl()->redirect($this->mod()->getURL('admin', 'get_files'));
             return;

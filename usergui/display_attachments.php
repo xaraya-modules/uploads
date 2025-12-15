@@ -62,7 +62,7 @@ class DisplayAttachmentsMethod extends MethodClass
         }
 
         if (empty($modname)) {
-            $modname = $this->mod()->getName();
+            $modname = $this->req()->getModule();
         }
 
         $args['modName']  = $modname;

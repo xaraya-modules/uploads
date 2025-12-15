@@ -62,7 +62,7 @@ class EncodeShorturlMethod extends MethodClass
         $path = '';
         // if we want to add some common arguments as URL parameters below
         $join = '?';
-        // we can't rely on $this->mod()->getName() here -> you must specify the modname !
+        // we can't rely on $this->req()->getModule() here -> you must specify the modname !
         $module = 'uploads';
 
         // specify some short URLs relevant to your module
